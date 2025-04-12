@@ -1,9 +1,10 @@
 enum BottomItem {
   home,
   appointment,
+  schedule,
   payout,
-  settings,
   profile,
+  settings,
 }
 
 class BottomBarItem {

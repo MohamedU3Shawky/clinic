@@ -20,6 +20,7 @@ import '../appointment/appointments_controller.dart';
 import '../appointment/appointments_screen.dart';
 import '../home/home_controller.dart';
 import '../home/home_screen.dart';
+import '../schedule/schedule_screen.dart';
 import 'components/menu.dart';
 
 class DashboardController extends GetxController {
@@ -27,20 +28,53 @@ class DashboardController extends GetxController {
   RxBool isLoading = false.obs;
 
   RxList<BottomBarItem> bottomNavItems = [
-    BottomBarItem(title: locale.value.home, icon: Assets.navigationIcHomeOutlined, activeIcon: Assets.navigationIcHomeFilled, type: BottomItem.home.name),
-    BottomBarItem(title: locale.value.appointments, icon: Assets.navigationIcCalenderOutlined, activeIcon: Assets.navigationIcCalenderFilled, type: BottomItem.appointment.name),
-    if (loginUserData.value.userRole.contains(EmployeeKeyConst.vendor)) BottomBarItem(title: locale.value.payouts, icon: Assets.iconsIcTotalPayout, activeIcon: Assets.iconsIcTotalPayout, type: BottomItem.payout.name),
+    BottomBarItem(
+        title: locale.value.home,
+        icon: Assets.navigationIcHomeOutlined,
+        activeIcon: Assets.navigationIcHomeFilled,
+        type: BottomItem.home.name),
+    BottomBarItem(
+        title: locale.value.appointments,
+        icon: Assets.navigationIcCalenderOutlined,
+        activeIcon: Assets.navigationIcCalenderFilled,
+        type: BottomItem.appointment.name),
+    BottomBarItem(
+        title: locale.value.schedule,
+        icon: Assets.calendarTodayFilled,
+        activeIcon: Assets.calendarTodayOutlined,
+        type: BottomItem.schedule.name),
+    if (loginUserData.value.userRole.contains(EmployeeKeyConst.vendor))
+      BottomBarItem(
+          title: locale.value.payouts,
+          icon: Assets.iconsIcTotalPayout,
+          activeIcon: Assets.iconsIcTotalPayout,
+          type: BottomItem.payout.name),
     isLoggedIn.value
-        ? BottomBarItem(title: locale.value.profile, icon: Assets.navigationIcUserOutlined, activeIcon: Assets.navigationIcUserFilled, type: BottomItem.profile.name)
-        : BottomBarItem(title: locale.value.settings, icon: Assets.iconsIcSettingOutlined, activeIcon: Assets.iconsIcSetting, type: BottomItem.settings.name),
+        ? BottomBarItem(
+            title: locale.value.profile,
+            icon: Assets.navigationIcUserOutlined,
+            activeIcon: Assets.navigationIcUserFilled,
+            type: BottomItem.profile.name)
+        : BottomBarItem(
+            title: locale.value.settings,
+            icon: Assets.iconsIcSettingOutlined,
+            activeIcon: Assets.iconsIcSetting,
+            type: BottomItem.settings.name),
   ].obs;
 
-  Rx<BottomBarItem> selectedBottonNav = BottomBarItem(title: locale.value.home, icon: Assets.navigationIcHomeOutlined, activeIcon: Assets.navigationIcHomeFilled, type: BottomItem.home.name).obs;
+  Rx<BottomBarItem> selectedBottonNav = BottomBarItem(
+          title: locale.value.home,
+          icon: Assets.navigationIcHomeOutlined,
+          activeIcon: Assets.navigationIcHomeFilled,
+          type: BottomItem.home.name)
+      .obs;
 
   RxList<StatelessWidget> screen = [
     HomeScreen(),
     AppointmentsScreen(),
-    if (loginUserData.value.userRole.contains(EmployeeKeyConst.vendor)) PayoutHistory(isFromBottomBar: true),
+    ScheduleScreen(),
+    if (loginUserData.value.userRole.contains(EmployeeKeyConst.vendor))
+      PayoutHistory(isFromBottomBar: true),
     isLoggedIn.value ? ProfileScreen() : SettingScreen(),
   ].obs;
 
@@ -49,7 +83,7 @@ class DashboardController extends GetxController {
     if (!isLoggedIn.value) {
       ProfileController().getAboutPageData();
     }
-   // PushNotificationService().registerFCMandTopics();
+    // PushNotificationService().registerFCMandTopics();
     getAppConfigurations(isFromDashboard: true).then((value) {
       Future.delayed(const Duration(seconds: 2), () {
         if (Get.context != null) {
@@ -64,10 +98,12 @@ class DashboardController extends GetxController {
   void onReady() {
     reloadBottomTabs();
     if (Get.context != null) {
-      View.of(Get.context!).platformDispatcher.onPlatformBrightnessChanged = () {
+      View.of(Get.context!).platformDispatcher.onPlatformBrightnessChanged =
+          () {
         WidgetsBinding.instance.handlePlatformBrightnessChanged();
         try {
-          final getThemeFromLocal = getValueFromLocal(SettingsLocalConst.THEME_MODE);
+          final getThemeFromLocal =
+              getValueFromLocal(SettingsLocalConst.THEME_MODE);
           if (getThemeFromLocal is int) {
             toggleThemeMode(themeId: getThemeFromLocal);
           }
@@ -82,17 +118,45 @@ class DashboardController extends GetxController {
   void reloadBottomTabs() {
     log('reloadBottomTabs ISLOGGEDIN.VALUE: ${isLoggedIn.value}');
     bottomNavItems([
-      BottomBarItem(title: locale.value.home, icon: Assets.navigationIcHomeOutlined, activeIcon: Assets.navigationIcHomeFilled, type: BottomItem.home.name),
-      BottomBarItem(title: locale.value.appointments, icon: Assets.navigationIcCalenderOutlined, activeIcon: Assets.navigationIcCalenderFilled, type: BottomItem.appointment.name),
-      if (loginUserData.value.userRole.contains(EmployeeKeyConst.vendor)) BottomBarItem(title: locale.value.payouts, icon: Assets.iconsIcTotalPayout, activeIcon: Assets.iconsIcTotalPayout, type: BottomItem.payout.name),
+      BottomBarItem(
+          title: locale.value.home,
+          icon: Assets.navigationIcHomeOutlined,
+          activeIcon: Assets.navigationIcHomeFilled,
+          type: BottomItem.home.name),
+      BottomBarItem(
+          title: locale.value.appointments,
+          icon: Assets.navigationIcCalenderOutlined,
+          activeIcon: Assets.navigationIcCalenderFilled,
+          type: BottomItem.appointment.name),
+      BottomBarItem(
+          title: locale.value.schedule,
+          icon: Assets.calendarTodayFilled,
+          activeIcon: Assets.calendarTodayOutlined,
+          type: BottomItem.schedule.name),
+      if (loginUserData.value.userRole.contains(EmployeeKeyConst.vendor))
+        BottomBarItem(
+            title: locale.value.payouts,
+            icon: Assets.iconsIcTotalPayout,
+            activeIcon: Assets.iconsIcTotalPayout,
+            type: BottomItem.payout.name),
       isLoggedIn.value
-          ? BottomBarItem(title: locale.value.profile, icon: Assets.navigationIcUserOutlined, activeIcon: Assets.navigationIcUserFilled, type: BottomItem.profile.name)
-          : BottomBarItem(title: locale.value.settings, icon: Assets.iconsIcSettingOutlined, activeIcon: Assets.iconsIcSetting, type: BottomItem.settings.name),
+          ? BottomBarItem(
+              title: locale.value.profile,
+              icon: Assets.navigationIcUserOutlined,
+              activeIcon: Assets.navigationIcUserFilled,
+              type: BottomItem.profile.name)
+          : BottomBarItem(
+              title: locale.value.settings,
+              icon: Assets.iconsIcSettingOutlined,
+              activeIcon: Assets.iconsIcSetting,
+              type: BottomItem.settings.name),
     ]);
     screen(<StatelessWidget>[
       HomeScreen(),
       AppointmentsScreen(),
-      if (loginUserData.value.userRole.contains(EmployeeKeyConst.vendor)) PayoutHistory(isFromBottomBar: true),
+      ScheduleScreen(),
+      if (loginUserData.value.userRole.contains(EmployeeKeyConst.vendor))
+        PayoutHistory(isFromBottomBar: true),
       isLoggedIn.value ? ProfileScreen() : SettingScreen(),
     ]);
 
@@ -125,11 +189,15 @@ changebottomIndex(index) {
       aCont.page(1);
       aCont.getAppointmentList();
     } else if (index == 2) {
-      if (loginUserData.value.userRole.contains(EmployeeKeyConst.vendor)) {
-        PayoutHistoryCont pCont = Get.find();
-        pCont.page(1);
-        pCont.getPayoutList();
+      // Handle schedule tab
+      if (isLoggedIn.value) {
+        // TODO: Implement schedule functionality
       }
+    } else if (index == 3 &&
+        loginUserData.value.userRole.contains(EmployeeKeyConst.vendor)) {
+      PayoutHistoryCont pCont = Get.find();
+      pCont.page(1);
+      pCont.getPayoutList();
     }
   } catch (e) {
     log('onItemSelected Err: $e');

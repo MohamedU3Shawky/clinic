@@ -13,7 +13,7 @@ class APIEndPoints {
   static const String deleteUserAccount = 'delete-account';
   static const String getNotification = 'notification-list';
   static const String removeNotification = 'notification-remove';
-  static const String clearAllNotification = 'notification-deleteall'; 
+  static const String clearAllNotification = 'notification-deleteall';
   //home choose service api
   static const String vendorDashboardList = 'vendor-dashboard-list';
   static const String receptionistDashboardList = 'receptionist-dashboard-list';
@@ -129,4 +129,17 @@ class APIEndPoints {
   static const String checkOut = 'attendance';
   static const String isChecked = 'attendance/is-checked';
   static const String allAttendance = 'attendance/records';
+
+  // Schedule endpoints
+  static const String getShifts = 'shift';
+  static const String addShift = 'shift';
+  static const String updateShift = 'shift';
+  static const String deleteShift = 'shift';
+
+  // Leave endpoints
+  static const String getLeaveSettings = 'leaves-settings';
+  static const String getLeaves = 'leaves';
+  static const String addLeave = 'leaves';
+  static const String updateLeave = 'leaves';
+  static const String deleteLeave = 'leaves';
 }

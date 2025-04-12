@@ -30,25 +30,39 @@ Widget get commonDivider => Column(
         Divider(
           height: 1,
           thickness: 1.5,
-          color: isDarkMode.value ? borderColor.withValues(alpha: 0.1) : borderColor.withValues(alpha: 0.5),
+          color: isDarkMode.value
+              ? borderColor.withValues(alpha: 0.1)
+              : borderColor.withValues(alpha: 0.5),
         ),
       ],
     );
 
-final fontFamilyWeight700 = GoogleFonts.interTight(fontWeight: FontWeight.w700).fontFamily;
+final fontFamilyWeight700 =
+    GoogleFonts.interTight(fontWeight: FontWeight.w700).fontFamily;
 
 void handleRate() async {
   if (isAndroid) {
-    if (appConfigs.value.clinicadminAppUrl.clinicadminAppPlayStore.trim().isNotEmpty) {
-      commonLaunchUrl(appConfigs.value.clinicadminAppUrl.clinicadminAppPlayStore.trim(), launchMode: LaunchMode.externalApplication);
+    if (appConfigs.value.clinicadminAppUrl.clinicadminAppPlayStore
+        .trim()
+        .isNotEmpty) {
+      commonLaunchUrl(
+          appConfigs.value.clinicadminAppUrl.clinicadminAppPlayStore.trim(),
+          launchMode: LaunchMode.externalApplication);
     } else {
-      commonLaunchUrl('${getSocialMediaLink(LinkProvider.PLAY_STORE)}${await getPackageName()}', launchMode: LaunchMode.externalApplication);
+      commonLaunchUrl(
+          '${getSocialMediaLink(LinkProvider.PLAY_STORE)}${await getPackageName()}',
+          launchMode: LaunchMode.externalApplication);
     }
   } else if (isIOS) {
-    if (appConfigs.value.clinicadminAppUrl.clinicadminAppAppStore.trim().isNotEmpty) {
-      commonLaunchUrl(appConfigs.value.clinicadminAppUrl.clinicadminAppAppStore.trim(), launchMode: LaunchMode.externalApplication);
+    if (appConfigs.value.clinicadminAppUrl.clinicadminAppAppStore
+        .trim()
+        .isNotEmpty) {
+      commonLaunchUrl(
+          appConfigs.value.clinicadminAppUrl.clinicadminAppAppStore.trim(),
+          launchMode: LaunchMode.externalApplication);
     } else {
-      commonLaunchUrl(APP_APPSTORE_URL, launchMode: LaunchMode.externalApplication);
+      commonLaunchUrl(APP_APPSTORE_URL,
+          launchMode: LaunchMode.externalApplication);
     }
   }
 }
@@ -81,22 +95,33 @@ void toggleThemeMode({required int themeId}) {
 
 List<LanguageDataModel> languageList() {
   return [
-    LanguageDataModel(id: 1, name: 'English', languageCode: 'en', fullLanguageCode: 'en-US', flag: Assets.flagsIcUs),
-    LanguageDataModel(id: 2, name: 'Hindi', languageCode: 'hi', fullLanguageCode: 'hi-IN', flag: Assets.flagsIcIn),
-    LanguageDataModel(id: 3, name: 'Arabic', languageCode: 'ar', fullLanguageCode: 'ar-AR', flag: Assets.flagsIcAr),
-    LanguageDataModel(id: 4, name: 'French', languageCode: 'fr', fullLanguageCode: 'fr-FR', flag: Assets.flagsIcFr),
-    LanguageDataModel(id: 5, name: 'German', languageCode: 'de', fullLanguageCode: 'de-DE', flag: Assets.flagsIcDe),
+    LanguageDataModel(
+        id: 1,
+        name: 'English',
+        languageCode: 'en',
+        fullLanguageCode: 'en-US',
+        flag: Assets.flagsIcUs),
+    LanguageDataModel(
+        id: 2,
+        name: 'Arabic',
+        languageCode: 'ar',
+        fullLanguageCode: 'ar-AR',
+        flag: Assets.flagsIcAr),
   ];
 }
 
-Widget appCloseIconButton(BuildContext context, {required void Function() onPressed, double size = 12}) {
+Widget appCloseIconButton(BuildContext context,
+    {required void Function() onPressed, double size = 12}) {
   return IconButton(
     iconSize: size,
     padding: EdgeInsets.zero,
     onPressed: onPressed,
     icon: Container(
       padding: EdgeInsets.all(size - 8),
-      decoration: boxDecorationDefault(color: context.cardColor, borderRadius: BorderRadius.circular(size - 4), border: Border.all(color: iconColor)),
+      decoration: boxDecorationDefault(
+          color: context.cardColor,
+          borderRadius: BorderRadius.circular(size - 4),
+          border: Border.all(color: iconColor)),
       child: Icon(
         Icons.close_rounded,
         size: size,
@@ -106,7 +131,8 @@ Widget appCloseIconButton(BuildContext context, {required void Function() onPres
   );
 }
 
-Widget commonLeadingWid({required String imgPath, Color? color, double size = 20}) {
+Widget commonLeadingWid(
+    {required String imgPath, Color? color, double size = 20}) {
   return Image.asset(
     imgPath,
     width: size,
@@ -121,7 +147,8 @@ Widget commonLeadingWid({required String imgPath, Color? color, double size = 20
   );
 }
 
-Future<void> commonLaunchUrl(String address, {LaunchMode launchMode = LaunchMode.inAppWebView}) async {
+Future<void> commonLaunchUrl(String address,
+    {LaunchMode launchMode = LaunchMode.inAppWebView}) async {
   await launchUrl(Uri.parse(address), mode: launchMode).catchError((e) {
     toast('${locale.value.invalidUrl}: $address');
   });
@@ -136,16 +163,19 @@ void viewFiles(String url) {
 void launchCall(String? url) {
   if (url.validate().isNotEmpty) {
     if (isIOS) {
-      commonLaunchUrl('tel://${url!}', launchMode: LaunchMode.externalApplication);
+      commonLaunchUrl('tel://${url!}',
+          launchMode: LaunchMode.externalApplication);
     } else {
-      commonLaunchUrl('tel:${url!}', launchMode: LaunchMode.externalApplication);
+      commonLaunchUrl('tel:${url!}',
+          launchMode: LaunchMode.externalApplication);
     }
   }
 }
 
 void launchMap(String? url) {
   if (url.validate().isNotEmpty) {
-    commonLaunchUrl(Constants.googleMapPrefix + url!, launchMode: LaunchMode.externalApplication);
+    commonLaunchUrl(Constants.googleMapPrefix + url!,
+        launchMode: LaunchMode.externalApplication);
   }
 }
 
@@ -177,7 +207,8 @@ extension DateData on String {
 
   String get dateInMMMMDyyyyFormat {
     try {
-      return DateFormat(DateFormatConst.MMMM_D_yyyy).format(dateInyyyyMMddHHmmFormat);
+      return DateFormat(DateFormatConst.MMMM_D_yyyy)
+          .format(dateInyyyyMMddHHmmFormat);
     } catch (e) {
       return this;
     }
@@ -185,7 +216,8 @@ extension DateData on String {
 
   String get dateInEEEEDMMMMAtHHmmAmPmFormat {
     try {
-      return DateFormat(DateFormatConst.EEEE_D_MMMM_At_HH_mm_a).format(dateInyyyyMMddHHmmFormat);
+      return DateFormat(DateFormatConst.EEEE_D_MMMM_At_HH_mm_a)
+          .format(dateInyyyyMMddHHmmFormat);
     } catch (e) {
       return this;
     }
@@ -193,7 +225,8 @@ extension DateData on String {
 
   String get dateInDMMMMyyyyFormat {
     try {
-      return DateFormat(DateFormatConst.D_MMMM_yyyy).format(dateInyyyyMMddHHmmFormat);
+      return DateFormat(DateFormatConst.D_MMMM_yyyy)
+          .format(dateInyyyyMMddHHmmFormat);
     } catch (e) {
       return this;
     }
@@ -201,7 +234,8 @@ extension DateData on String {
 
   String get dateInDMMMyyyyFormat {
     try {
-      return DateFormat(DateFormatConst.D_MMM_yyyy).format(dateInyyyyMMddHHmmFormat);
+      return DateFormat(DateFormatConst.D_MMM_yyyy)
+          .format(dateInyyyyMMddHHmmFormat);
     } catch (e) {
       return this;
     }
@@ -225,7 +259,8 @@ extension DateData on String {
 
   String get dateInMMMMDyyyyAtHHmmAmPmFormat {
     try {
-      return DateFormat(DateFormatConst.MMMM_D_yyyy_At_HH_mm_a).format(dateInyyyyMMddHHmmFormat);
+      return DateFormat(DateFormatConst.MMMM_D_yyyy_At_HH_mm_a)
+          .format(dateInyyyyMMddHHmmFormat);
     } catch (e) {
       return this;
     }
@@ -233,7 +268,8 @@ extension DateData on String {
 
   String get dateInddMMMyyyyHHmmAmPmFormat {
     try {
-      return DateFormat(DateFormatConst.dd_MMM_yyyy_HH_mm_a).format(dateInyyyyMMddHHmmFormat);
+      return DateFormat(DateFormatConst.dd_MMM_yyyy_HH_mm_a)
+          .format(dateInyyyyMMddHHmmFormat);
     } catch (e) {
       try {
         return "$dateInyyyyMMddHHmmFormat";
@@ -250,13 +286,16 @@ extension DateData on String {
       try {
         try {
           if (DateTime.parse(this).isUtc) {
-            return DateFormat(DateFormatConst.yyyy_MM_dd_HH_mm).parse(DateTime.parse(this).toLocal().toString());
+            return DateFormat(DateFormatConst.yyyy_MM_dd_HH_mm)
+                .parse(DateTime.parse(this).toLocal().toString());
           } else {
-            return DateFormat(DateFormatConst.yyyy_MM_dd_HH_mm).parse(DateTime.parse(this).toString());
+            return DateFormat(DateFormatConst.yyyy_MM_dd_HH_mm)
+                .parse(DateTime.parse(this).toString());
           }
         } catch (e) {
           log('dateInyyyyMMddHHmmFormat Check isUtc Error in $this: $e');
-          return DateFormat(DateFormatConst.yyyy_MM_dd_HH_mm).parse(DateTime.parse(this).toString());
+          return DateFormat(DateFormatConst.yyyy_MM_dd_HH_mm)
+              .parse(DateTime.parse(this).toString());
         }
       } catch (e) {
         log('dateInyyyyMMddHHmmFormat Error in $this: $e');
@@ -271,14 +310,16 @@ extension DateData on String {
 
   String get timeInHHmmAmPmFormat {
     try {
-      return DateFormat(DateFormatConst.HH_mm12Hour).format(dateInyyyyMMddHHmmFormat);
+      return DateFormat(DateFormatConst.HH_mm12Hour)
+          .format(dateInyyyyMMddHHmmFormat);
     } catch (e) {
       return this;
     }
   }
 
   TimeOfDay get timeOfDay24Format {
-    return TimeOfDay.fromDateTime(DateFormat(DateFormatConst.yyyy_MM_dd_HH_mm).parse(this));
+    return TimeOfDay.fromDateTime(
+        DateFormat(DateFormatConst.yyyy_MM_dd_HH_mm).parse(this));
   }
 
   String get amPMto24HourFormat {
@@ -346,10 +387,12 @@ extension DateData on String {
 
       String formattedDuration = '';
       if (hours > 0) {
-        formattedDuration += "$hours ${showFullTitleHoursMinutes ? 'hour' : 'hr'} ";
+        formattedDuration +=
+            "$hours ${showFullTitleHoursMinutes ? 'hour' : 'hr'} ";
       }
       if (minutes > 0) {
-        formattedDuration += '$minutes ${showFullTitleHoursMinutes ? 'minute' : 'min'}';
+        formattedDuration +=
+            '$minutes ${showFullTitleHoursMinutes ? 'minute' : 'min'}';
       }
       return formattedDuration.trim();
     } catch (e) {
@@ -481,7 +524,8 @@ extension TimeExtension on TimeOfDay {
   /// Returns a string representing the formatted time.
   String formatTimeHHmm24Hour() {
     final timeIn24Hour = DateFormat(DateFormatConst.HH_mm24Hour);
-    final tempDateTime = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, hour, minute);
+    final tempDateTime = DateTime(DateTime.now().year, DateTime.now().month,
+        DateTime.now().day, hour, minute);
     return timeIn24Hour.format(tempDateTime);
   }
 
@@ -490,15 +534,20 @@ extension TimeExtension on TimeOfDay {
   /// Returns a string representing the formatted time.
   String formatTimeHHmmAMPM() {
     final timeInAMPM = DateFormat(DateFormatConst.HH_mm12Hour);
-    final tempDateTime = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, hour, minute);
+    final tempDateTime = DateTime(DateTime.now().year, DateTime.now().month,
+        DateTime.now().day, hour, minute);
     return timeInAMPM.format(tempDateTime);
   }
 }
 
-TextStyle get appButtonTextStyleGray => boldTextStyle(color: appColorSecondary, size: 14);
-TextStyle get appButtonTextStyleWhite => boldTextStyle(color: Colors.white, size: 14);
-TextStyle get appButtonPrimaryColorText => boldTextStyle(color: appColorPrimary);
-TextStyle get appButtonFontColorText => boldTextStyle(color: Colors.grey, size: 14);
+TextStyle get appButtonTextStyleGray =>
+    boldTextStyle(color: appColorSecondary, size: 14);
+TextStyle get appButtonTextStyleWhite =>
+    boldTextStyle(color: Colors.white, size: 14);
+TextStyle get appButtonPrimaryColorText =>
+    boldTextStyle(color: appColorPrimary);
+TextStyle get appButtonFontColorText =>
+    boldTextStyle(color: Colors.grey, size: 14);
 
 InputDecoration inputDecoration(
   BuildContext context, {
@@ -516,12 +565,15 @@ InputDecoration inputDecoration(
 }) {
   labelText = hintText;
   return InputDecoration(
-    contentPadding: contentPadding ?? const EdgeInsets.only(left: 12, bottom: 10, top: 10, right: 10),
+    contentPadding: contentPadding ??
+        const EdgeInsets.only(left: 12, bottom: 10, top: 10, right: 10),
     labelText: labelText,
     counterText: "",
     // hintText: hintText,
-    hintStyle: secondaryTextStyle(size: 12, color: secondaryTextColor.withValues(alpha: 0.6)),
-    labelStyle: secondaryTextStyle(size: 12, color: secondaryTextColor.withValues(alpha: 0.6)),
+    hintStyle: secondaryTextStyle(
+        size: 12, color: secondaryTextColor.withValues(alpha: 0.6)),
+    labelStyle: secondaryTextStyle(
+        size: 12, color: secondaryTextColor.withValues(alpha: 0.6)),
     alignLabelWithHint: false,
     prefixIcon: prefixIcon,
     prefixIconConstraints: prefixIconConstraints,
@@ -560,9 +612,16 @@ InputDecoration inputDecoration(
 }
 
 InputDecoration inputDecorationWithOutBorder(BuildContext context,
-    {Widget? prefixIcon, Widget? suffixIcon, String? labelText, String? hintText, double? borderRadius, bool? filled, Color? fillColor}) {
+    {Widget? prefixIcon,
+    Widget? suffixIcon,
+    String? labelText,
+    String? hintText,
+    double? borderRadius,
+    bool? filled,
+    Color? fillColor}) {
   return InputDecoration(
-    contentPadding: const EdgeInsets.only(left: 12, bottom: 10, top: 10, right: 10),
+    contentPadding:
+        const EdgeInsets.only(left: 12, bottom: 10, top: 10, right: 10),
     labelText: labelText,
     hintText: hintText,
     hintStyle: secondaryTextStyle(size: 12),
@@ -644,7 +703,8 @@ Widget backButton({Object? result}) {
     onPressed: () {
       Get.back(result: result);
     },
-    icon: const Icon(Icons.arrow_back_ios_new_outlined, color: Colors.grey, size: 20),
+    icon: const Icon(Icons.arrow_back_ios_new_outlined,
+        color: Colors.grey, size: 20),
   );
 }
 
@@ -668,7 +728,12 @@ extension WidgetExt on Widget {
   Container circularLightPrimaryBg({double? padding, Color? color}) {
     return Container(
       padding: EdgeInsets.all(padding ?? 12),
-      decoration: boxDecorationDefault(shape: BoxShape.circle, color: color ?? (isDarkMode.value ? Colors.grey.withValues(alpha: 0.1) : extraLightPrimaryColor)),
+      decoration: boxDecorationDefault(
+          shape: BoxShape.circle,
+          color: color ??
+              (isDarkMode.value
+                  ? Colors.grey.withValues(alpha: 0.1)
+                  : extraLightPrimaryColor)),
       child: this,
     );
   }
@@ -726,7 +791,8 @@ extension StrEtx on String {
     );
   }
 
-  Widget showSvg({double? size, Color? color, double? width, double? height, bool? fit}) {
+  Widget showSvg(
+      {double? size, Color? color, double? width, double? height, bool? fit}) {
     if (fit ?? false) {
       return SvgPicture.asset(
         this,
@@ -750,12 +816,22 @@ extension StrEtx on String {
 }
 
 void pickCountry(BuildContext context, {required Function(Country) onSelect}) {
-  showCountryPicker(context: context, countryListTheme: CountryListThemeData(textStyle: secondaryTextStyle(), searchTextStyle: primaryTextStyle()), showPhoneCode: true, onSelect: onSelect);
+  showCountryPicker(
+      context: context,
+      countryListTheme: CountryListThemeData(
+          textStyle: secondaryTextStyle(), searchTextStyle: primaryTextStyle()),
+      showPhoneCode: true,
+      onSelect: onSelect);
 }
 
-void showNewUpdateDialog(BuildContext context, {required int currentAppVersionCode}) async {
-  bool canClose =
-      (isAndroid && currentAppVersionCode >= appConfigs.value.clinicadminAndroidMinForceUpdateCode) || (isIOS && currentAppVersionCode >= appConfigs.value.clinicadminIosMinForceUpdateCode);
+void showNewUpdateDialog(BuildContext context,
+    {required int currentAppVersionCode}) async {
+  bool canClose = (isAndroid &&
+          currentAppVersionCode >=
+              appConfigs.value.clinicadminAndroidMinForceUpdateCode) ||
+      (isIOS &&
+          currentAppVersionCode >=
+              appConfigs.value.clinicadminIosMinForceUpdateCode);
   showInDialog(
     context,
     contentPadding: EdgeInsets.zero,
@@ -770,9 +846,17 @@ void showNewUpdateDialog(BuildContext context, {required int currentAppVersionCo
 }
 
 Future<void> showForceUpdateDialog(BuildContext context) async {
-  if ((isAndroid && appConfigs.value.isForceUpdateforAndroid && appConfigs.value.clinicadminAndroidLatestVersionUpdateCode > currentPackageinfo.value.versionCode.validate().toInt()) ||
-      (isIOS && appConfigs.value.isForceUpdateforIos && appConfigs.value.clinicadminIosLatestVersionUpdateCode > currentPackageinfo.value.versionCode.validate().toInt())) {
-    showNewUpdateDialog(context, currentAppVersionCode: currentPackageinfo.value.versionCode.validate().toInt());
+  if ((isAndroid &&
+          appConfigs.value.isForceUpdateforAndroid &&
+          appConfigs.value.clinicadminAndroidLatestVersionUpdateCode >
+              currentPackageinfo.value.versionCode.validate().toInt()) ||
+      (isIOS &&
+          appConfigs.value.isForceUpdateforIos &&
+          appConfigs.value.clinicadminIosLatestVersionUpdateCode >
+              currentPackageinfo.value.versionCode.validate().toInt())) {
+    showNewUpdateDialog(context,
+        currentAppVersionCode:
+            currentPackageinfo.value.versionCode.validate().toInt());
   }
 }
 
@@ -789,7 +873,9 @@ void doIfLoggedIn(VoidCallback callback) async {
     callback.call();
   } else {
     bool? res = await Get.to(() => SignInScreen(), binding: BindingsBuilder(() {
-      setStatusBarColor(transparentColor, statusBarIconBrightness: Brightness.light, statusBarBrightness: Brightness.light);
+      setStatusBarColor(transparentColor,
+          statusBarIconBrightness: Brightness.light,
+          statusBarBrightness: Brightness.light);
     }));
     log('doIfLoggedIn RES: $res');
 
@@ -811,40 +897,54 @@ String timeFormate({required String time}) {
     return DateFormat('hh:mm a').format(startTime);
   } catch (e) {
     log('timeFormate err $e');
-    return time.isValidTime ? "1970-01-01 $time".timeInHHmmAmPmFormat : "12:00 AM";
+    return time.isValidTime
+        ? "1970-01-01 $time".timeInHHmmAmPmFormat
+        : "12:00 AM";
   }
 }
 
-bool checkBreakValidationWithShift({required String breakStartTime, required String breakEndTime, required String shiftStartTime, required String shiftEndTime}) {
-  return checkBreakValidation(breakStartTime, shiftStartTime, shiftEndTime) && checkBreakValidation(breakEndTime, shiftStartTime, shiftEndTime);
+bool checkBreakValidationWithShift(
+    {required String breakStartTime,
+    required String breakEndTime,
+    required String shiftStartTime,
+    required String shiftEndTime}) {
+  return checkBreakValidation(breakStartTime, shiftStartTime, shiftEndTime) &&
+      checkBreakValidation(breakEndTime, shiftStartTime, shiftEndTime);
 }
 
 bool checkBreakValidation(String breakTime, String startTime, String endTime) {
   DateFormat formate = DateFormat("HH:mm:ss");
   return formate.parse(breakTime).isAtSameMomentAs(formate.parse(startTime)) ||
       formate.parse(breakTime).isAtSameMomentAs(formate.parse(endTime)) ||
-      (formate.parse(breakTime).isAfter(formate.parse(startTime)) && formate.parse(breakTime).isBefore(formate.parse(endTime)));
+      (formate.parse(breakTime).isAfter(formate.parse(startTime)) &&
+          formate.parse(breakTime).isBefore(formate.parse(endTime)));
 }
 
-bool checkBreakListValidation(List<BreakListModel> breakListModel, String breakStartTime, String breakEndTime, dynamic index, bool isAdd) {
+bool checkBreakListValidation(List<BreakListModel> breakListModel,
+    String breakStartTime, String breakEndTime, dynamic index, bool isAdd) {
   if (!isAdd) {
-    if (breakListModel[index].breakStartTime == breakStartTime && breakListModel[index].breakEndTime == breakEndTime) {
+    if (breakListModel[index].breakStartTime == breakStartTime &&
+        breakListModel[index].breakEndTime == breakEndTime) {
       return true;
     } else {
-      return isOutsideBreakTimeList(breakListModel, breakStartTime, breakEndTime);
+      return isOutsideBreakTimeList(
+          breakListModel, breakStartTime, breakEndTime);
     }
   } else {
     return isOutsideBreakTimeList(breakListModel, breakStartTime, breakEndTime);
   }
 }
 
-bool isOutsideBreakTimeList(List<BreakListModel> breakListModel, String breakStartTime, String breakEndTime) {
+bool isOutsideBreakTimeList(List<BreakListModel> breakListModel,
+    String breakStartTime, String breakEndTime) {
   DateTime breakStart = DateTime.parse("2024-01-01 $breakStartTime");
   DateTime breakEnd = DateTime.parse("2024-01-01 $breakEndTime");
   for (var interval in breakListModel) {
-    DateTime startTime = DateTime.parse("2024-01-01 ${interval.breakStartTime}");
+    DateTime startTime =
+        DateTime.parse("2024-01-01 ${interval.breakStartTime}");
     DateTime endTime = DateTime.parse("2024-01-01 ${interval.breakEndTime}");
-    if ((breakStart.isBefore(startTime) && breakEnd.isBefore(startTime)) || (breakStart.isAfter(endTime) && breakEnd.isAfter(endTime))) {
+    if ((breakStart.isBefore(startTime) && breakEnd.isBefore(startTime)) ||
+        (breakStart.isAfter(endTime) && breakEnd.isAfter(endTime))) {
       continue;
     } else {
       return false;
@@ -858,7 +958,9 @@ bool isOutsideBreakTimeList(List<BreakListModel> breakListModel, String breakSta
 class MyHttpOverrides extends HttpOverrides {
   @override
   HttpClient createHttpClient(SecurityContext? context) {
-    return super.createHttpClient(context)..badCertificateCallback = (X509Certificate cert, String host, int port) => true;
+    return super.createHttpClient(context)
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
   }
 }
 
@@ -906,28 +1008,52 @@ Widget detailWidget({
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     crossAxisAlignment: crossAxisAlignment ?? CrossAxisAlignment.start,
     children: [
-      leadingWidget ?? Text(title.validate(), style: leadingTextStyle ?? secondaryTextStyle()).expand(),
-      trailingWidget ?? Text(value.validate(), textAlign: TextAlign.right, style: trailingTextStyle ?? primaryTextStyle(size: 12, color: textColor)).expand(),
+      leadingWidget ??
+          Text(title.validate(),
+                  style: leadingTextStyle ?? secondaryTextStyle())
+              .expand(),
+      trailingWidget ??
+          Text(value.validate(),
+                  textAlign: TextAlign.right,
+                  style: trailingTextStyle ??
+                      primaryTextStyle(size: 12, color: textColor))
+              .expand(),
     ],
-  ).paddingBottom(10).visible(trailingWidget != null || value.validate().isNotEmpty);
+  )
+      .paddingBottom(10)
+      .visible(trailingWidget != null || value.validate().isNotEmpty);
 }
 
 String getAppointmentNotification({required String notification}) {
   if (notification.toLowerCase().contains(NotificationConst.newAppointment)) {
     return 'New Appointment Booked';
-  } else if (notification.toLowerCase().contains(NotificationConst.checkoutAppointment)) {
+  } else if (notification
+      .toLowerCase()
+      .contains(NotificationConst.checkoutAppointment)) {
     return 'Appointment Completed';
-  } else if (notification.toLowerCase().contains(NotificationConst.rejectAppointment)) {
+  } else if (notification
+      .toLowerCase()
+      .contains(NotificationConst.rejectAppointment)) {
     return 'Appointment Rejected';
-  } else if (notification.toLowerCase().contains(NotificationConst.cancelAppointment)) {
+  } else if (notification
+      .toLowerCase()
+      .contains(NotificationConst.cancelAppointment)) {
     return 'Appointment Cancelled';
-  } else if (notification.toLowerCase().contains(NotificationConst.rescheduleAppointment)) {
+  } else if (notification
+      .toLowerCase()
+      .contains(NotificationConst.rescheduleAppointment)) {
     return 'Appointment Rescheduled';
-  } else if (notification.toLowerCase().contains(NotificationConst.acceptAppointment)) {
+  } else if (notification
+      .toLowerCase()
+      .contains(NotificationConst.acceptAppointment)) {
     return 'Appointment Accepted';
-  } else if (notification.toLowerCase().contains(NotificationConst.changePassword)) {
+  } else if (notification
+      .toLowerCase()
+      .contains(NotificationConst.changePassword)) {
     return locale.value.changePassword;
-  } else if (notification.toLowerCase().contains(NotificationConst.forgetEmailPassword)) {
+  } else if (notification
+      .toLowerCase()
+      .contains(NotificationConst.forgetEmailPassword)) {
     return 'Forget Email Password';
   } else {
     return "";

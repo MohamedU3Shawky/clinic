@@ -13,7 +13,8 @@ class Assets {
   static const String flagsIcUs = 'assets/flags/ic_us.png';
   static const String iconsIcAdd = 'assets/icons/ic_add.png';
   static const String iconsIcBirthday = 'assets/icons/ic_birthday.png';
-  static const String iconsIcBookingSummary = 'assets/icons/ic_booking_summary.png';
+  static const String iconsIcBookingSummary =
+      'assets/icons/ic_booking_summary.png';
   static const String iconsIcBriefcase = 'assets/icons/ic_briefcase.png';
   static const String iconsIcCalendar = 'assets/icons/ic_calendar.png';
   static const String iconsIcCalendarplus = 'assets/icons/ic_calendarplus.png';
@@ -31,7 +32,8 @@ class Assets {
   static const String iconsIcDropdown = 'assets/icons/ic_dropdown.png';
   static const String iconsIcEdit = 'assets/icons/ic_edit.png';
   static const String iconsIcEditReview = 'assets/icons/ic_edit_review.png';
-  static const String iconsIcEditprofileOutlined = 'assets/icons/ic_editprofile_outlined.png';
+  static const String iconsIcEditprofileOutlined =
+      'assets/icons/ic_editprofile_outlined.png';
   static const String iconsIcEncounter = 'assets/icons/ic_encounter.png';
   static const String iconsIcEvening = 'assets/icons/ic_evening.png';
   static const String iconsIcExperience = 'assets/icons/ic_experience.png';
@@ -63,7 +65,8 @@ class Assets {
   static const String iconsIcPerson = 'assets/icons/ic_person.png';
   static const String iconsIcPersonBody = 'assets/icons/ic_person_body.png';
   static const String iconsIcPrinter = 'assets/icons/ic_printer.png';
-  static const String iconsIcQualification = 'assets/icons/ic_qualification.png';
+  static const String iconsIcQualification =
+      'assets/icons/ic_qualification.png';
   static const String iconsIcReceptionist = 'assets/icons/ic_receptionist.png';
   static const String iconsIcRegenerate = 'assets/icons/ic_regenerate.png';
   static const String iconsIcRequest = 'assets/icons/ic_request.png';
@@ -72,18 +75,22 @@ class Assets {
   static const String iconsIcSearch = 'assets/icons/ic_search.png';
   static const String iconsIcServices = 'assets/icons/ic_services.png';
   static const String iconsIcSetting = 'assets/icons/ic_setting.png';
-  static const String iconsIcSettingOutlined = 'assets/icons/ic_setting_outlined.png';
+  static const String iconsIcSettingOutlined =
+      'assets/icons/ic_setting_outlined.png';
   static const String iconsIcSignature = 'assets/icons/ic_signature.png';
   static const String iconsIcSoap = 'assets/icons/ic_soap.png';
-  static const String iconsIcSpecialization = 'assets/icons/ic_specialization.png';
+  static const String iconsIcSpecialization =
+      'assets/icons/ic_specialization.png';
   static const String iconsIcStar = 'assets/icons/ic_star.png';
   static const String iconsIcStarFilled = 'assets/icons/ic_star_filled.png';
   static const String iconsIcTextIcon = 'assets/icons/ic_text_icon.png';
   static const String iconsIcTimeOutlined = 'assets/icons/ic_time_outlined.png';
-  static const String iconsIcTotalCategory = 'assets/icons/ic_total_category.png';
+  static const String iconsIcTotalCategory =
+      'assets/icons/ic_total_category.png';
   static const String iconsIcTotalClinic = 'assets/icons/ic_total_clinic.png';
   static const String iconsIcTotalPayout = 'assets/icons/ic_total_payout.png';
-  static const String iconsIcTotalPendingPayouts = 'assets/icons/ic_total_pending_payouts.png';
+  static const String iconsIcTotalPendingPayouts =
+      'assets/icons/ic_total_pending_payouts.png';
   static const String iconsIcTotalService = 'assets/icons/ic_total_service.png';
   static const String iconsIcUndo = 'assets/icons/ic_undo.png';
   static const String iconsIcUniversity = 'assets/icons/ic_university.png';
@@ -95,7 +102,8 @@ class Assets {
   static const String iconsIcWrite = 'assets/icons/ic_write.png';
   static const String iconsLongArrowIcon = 'assets/icons/long_arrow_icon.png';
   static const String imagesAppleLogo = 'assets/images/apple_logo.png';
-  static const String imagesAppointmentCurve = 'assets/images/appointment_curve.png';
+  static const String imagesAppointmentCurve =
+      'assets/images/appointment_curve.png';
   static const String imagesClinic = 'assets/images/clinic.png';
   static const String imagesConfirm = 'assets/images/confirm.png';
   static const String imagesConfirmIcon = 'assets/images/confirm_icon.png';
@@ -117,18 +125,33 @@ class Assets {
   static const String lottieEmptyLottie = 'assets/lottie/empty_lottie.json';
   static const String lottieErrorLottie = 'assets/lottie/error_lottie.json';
   static const String lottieTyping = 'assets/lottie/typing.json';
-  static const String navigationIcCalenderFilled = 'assets/icons/navigation/ic_calender_filled.png';
-  static const String navigationIcCalenderOutlined = 'assets/icons/navigation/ic_calender_outlined.png';
-  static const String navigationIcHomeFilled = 'assets/icons/navigation/ic_home_filled.png';
-  static const String navigationIcHomeOutlined = 'assets/icons/navigation/ic_home_outlined.png';
-  static const String navigationIcNotifyFilled = 'assets/icons/navigation/ic_notify_filled.png';
-  static const String navigationIcNotifyOutlined = 'assets/icons/navigation/ic_notify_outlined.png';
-  static const String navigationIcUserFilled = 'assets/icons/navigation/ic_user_filled.png';
-  static const String navigationIcUserOutlined = 'assets/icons/navigation/ic_user_outlined.png';
-  static const String socialMediaIcDribble = 'assets/icons/social_media/ic_dribble.png';
+  static const String navigationIcCalenderFilled =
+      'assets/icons/navigation/ic_calender_filled.png';
+  static const String navigationIcCalenderOutlined =
+      'assets/icons/navigation/ic_calender_outlined.png';
+  static const String navigationIcHomeFilled =
+      'assets/icons/navigation/ic_home_filled.png';
+  static const String navigationIcHomeOutlined =
+      'assets/icons/navigation/ic_home_outlined.png';
+  static const String navigationIcNotifyFilled =
+      'assets/icons/navigation/ic_notify_filled.png';
+  static const String navigationIcNotifyOutlined =
+      'assets/icons/navigation/ic_notify_outlined.png';
+  static const String navigationIcUserFilled =
+      'assets/icons/navigation/ic_user_filled.png';
+  static const String navigationIcUserOutlined =
+      'assets/icons/navigation/ic_user_outlined.png';
+  static const String socialMediaIcDribble =
+      'assets/icons/social_media/ic_dribble.png';
   static const String socialMediaIcFb = 'assets/icons/social_media/ic_fb.png';
-  static const String socialMediaIcHumanistic = 'assets/icons/social_media/ic_humanistic.png';
-  static const String socialMediaIcInsta = 'assets/icons/social_media/ic_insta.png';
+  static const String socialMediaIcHumanistic =
+      'assets/icons/social_media/ic_humanistic.png';
+  static const String socialMediaIcInsta =
+      'assets/icons/social_media/ic_insta.png';
   static const String socialMediaIcX = 'assets/icons/social_media/ic_x.png';
 
+  static const String calendarTodayFilled =
+      'assets/icons/navigation/ic_calender_filled_schedule.png';
+  static const String calendarTodayOutlined =
+      'assets/icons/navigation/ic_calender_outlined_schedule.png';
 }

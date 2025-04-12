@@ -16,7 +16,8 @@ import 'analytics_card.dart';
 
 class ClinicAdminAnalyticComponent extends StatelessWidget {
   final HomeController homeScreenCont;
-  const ClinicAdminAnalyticComponent({Key? key, required this.homeScreenCont}) : super(key: key);
+  const ClinicAdminAnalyticComponent({Key? key, required this.homeScreenCont})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +29,9 @@ class ClinicAdminAnalyticComponent extends StatelessWidget {
           children: [
             AnalyticsCard(
               title: locale.value.totalClinic,
-              countText: "${homeScreenCont.dashboardData.value.data.vendorTotalClinic}".padLeft(2, "0"),
+              countText:
+                  "${homeScreenCont.dashboardData.value.data.vendorTotalClinic}"
+                      .padLeft(2, "0"),
               icon: Assets.iconsIcTotalClinic,
               onTap: () {
                 Get.to(() => ClinicListScreen());
@@ -37,7 +40,9 @@ class ClinicAdminAnalyticComponent extends StatelessWidget {
             16.width,
             AnalyticsCard(
               title: locale.value.totalServices,
-              countText: "${homeScreenCont.dashboardData.value.data.vendorTotalService}".padLeft(2, "0"),
+              countText:
+                  "${homeScreenCont.dashboardData.value.data.vendorTotalService}"
+                      .padLeft(2, "0"),
               icon: Assets.iconsIcTotalService,
               onTap: () {
                 Get.to(() => AllServicesScreen());
@@ -50,7 +55,9 @@ class ClinicAdminAnalyticComponent extends StatelessWidget {
           children: [
             AnalyticsCard(
               title: locale.value.totalAppointments,
-              countText: "${homeScreenCont.dashboardData.value.data.vendorTotalAppoinment}".padLeft(2, "0"),
+              countText:
+                  "${homeScreenCont.dashboardData.value.data.vendorTotalAppoinment}"
+                      .padLeft(2, "0"),
               icon: Assets.navigationIcCalenderOutlined,
               onTap: () {
                 changebottomIndex(1);
@@ -59,7 +66,9 @@ class ClinicAdminAnalyticComponent extends StatelessWidget {
             16.width,
             AnalyticsCard(
               title: locale.value.totalDoctors,
-              countText: "${homeScreenCont.dashboardData.value.data.vendorTotalDoctors}".padLeft(2, "0"),
+              countText:
+                  "${homeScreenCont.dashboardData.value.data.vendorTotalDoctors}"
+                      .padLeft(2, "0"),
               icon: Assets.iconsIcDoctor,
               onTap: () {
                 Get.to(() => DoctorsListScreen());
@@ -72,7 +81,9 @@ class ClinicAdminAnalyticComponent extends StatelessWidget {
           children: [
             AnalyticsCard(
               title: locale.value.totalPatient,
-              countText: "${homeScreenCont.dashboardData.value.data.vendorTotalPatient}".padLeft(2, "0"),
+              countText:
+                  "${homeScreenCont.dashboardData.value.data.vendorTotalPatient}"
+                      .padLeft(2, "0"),
               icon: Assets.iconsIcPatients,
               onTap: () {
                 Get.to(() => AllPatientList());

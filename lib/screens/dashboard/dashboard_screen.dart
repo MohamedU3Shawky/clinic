@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kivicare_clinic_admin/api/auth_apis.dart';
 import 'package:kivicare_clinic_admin/screens/auth/model/login_response.dart';
+import 'package:kivicare_clinic_admin/screens/schedule/schedule_controller.dart';
 import 'package:kivicare_clinic_admin/utils/local_storage.dart';
 import 'package:nb_utils/nb_utils.dart';
 import '../../main.dart';
@@ -18,7 +19,8 @@ import 'components/menu.dart';
 
 class DashboardScreen extends StatelessWidget {
   DashboardScreen({Key? key}) : super(key: key);
-  final DashboardController dashboardController = Get.put(DashboardController());
+  final DashboardController dashboardController =
+      Get.put(DashboardController());
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +29,8 @@ class DashboardScreen extends StatelessWidget {
       child: Scaffold(
         body: Stack(
           children: [
-            Obx(() => dashboardController.screen[dashboardController.currentIndex.value]),
+            Obx(() => dashboardController
+                .screen[dashboardController.currentIndex.value]),
             Obx(
               () => Align(
                 alignment: Alignment.bottomCenter,
@@ -35,11 +38,15 @@ class DashboardScreen extends StatelessWidget {
                   // padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   margin: const EdgeInsets.symmetric(horizontal: 24),
                   decoration: BoxDecoration(
-                    color: isDarkMode.value ? fullDarkCanvasColor.withValues(alpha: 0.9) : canvasColor.withValues(alpha: 0.9),
+                    color: isDarkMode.value
+                        ? fullDarkCanvasColor.withValues(alpha: 0.9)
+                        : canvasColor.withValues(alpha: 0.9),
                     borderRadius: const BorderRadius.all(Radius.circular(50)),
                     boxShadow: [
                       BoxShadow(
-                        color: isDarkMode.value ? appBodyColor.withValues(alpha: 0.3) : canvasColor.withValues(alpha: 0.3),
+                        color: isDarkMode.value
+                            ? appBodyColor.withValues(alpha: 0.3)
+                            : canvasColor.withValues(alpha: 0.3),
                         offset: Offset(0, isDarkMode.value ? 5 : 20),
                         blurRadius: isDarkMode.value ? 5 : 20,
                       ),
@@ -52,14 +59,17 @@ class DashboardScreen extends StatelessWidget {
                       ...List.generate(
                         dashboardController.bottomNavItems.length,
                         (index) {
-                          BottomBarItem navBar = dashboardController.bottomNavItems[index];
+                          BottomBarItem navBar =
+                              dashboardController.bottomNavItems[index];
                           return Obx(
                             () => BtmNavItem(
                               navBar: navBar,
                               isFirst: index == 0,
-                              isLast: index == dashboardController.bottomNavItems.length - 1,
+                              isLast: index ==
+                                  dashboardController.bottomNavItems.length - 1,
                               press: () {
-                                if (!isLoggedIn.value && (index == 1 || index == 2)) {
+                                if (!isLoggedIn.value &&
+                                    (index == 1 || index == 2 || index == 3)) {
                                   doIfLoggedIn(() {
                                     handleChangeTabIndex(index);
                                   });
@@ -67,7 +77,8 @@ class DashboardScreen extends StatelessWidget {
                                   handleChangeTabIndex(index);
                                 }
                               },
-                              selectedNav: dashboardController.selectedBottonNav.value,
+                              selectedNav:
+                                  dashboardController.selectedBottonNav.value,
                             ),
                           );
                         },
@@ -86,10 +97,11 @@ class DashboardScreen extends StatelessWidget {
 
   void handleChangeTabIndex(int index) {
     hideKeyBoardWithoutContext();
-    dashboardController.selectedBottonNav(dashboardController.bottomNavItems[index]);
+    dashboardController
+        .selectedBottonNav(dashboardController.bottomNavItems[index]);
     dashboardController.currentIndex(index);
     try {
-      if (index == 0 || (index == 3 && isLoggedIn.value)) {
+      if (index == 0 || (index == 4 && isLoggedIn.value)) {
         HomeController hCont = Get.find();
         hCont.getDashboardDetail(showLoader: false);
       } else if (isLoggedIn.value && index == 1) {
@@ -97,7 +109,12 @@ class DashboardScreen extends StatelessWidget {
         aCont.searchCont.clear();
         aCont.page(1);
         aCont.getAppointmentList();
-      } else if (index == 2) {
+      } else if (isLoggedIn.value && index == 2) {
+        // Handle schedule tab
+        ScheduleController sCont = Get.find();
+        sCont.resetPagination();
+        sCont.getScheduleList();
+      } else if (index == 3) {
         AuthServiceApis.viewProfile().then((data) {
           loginUserData(UserData(
             id: loginUserData.value.id,
@@ -114,7 +131,8 @@ class DashboardScreen extends StatelessWidget {
             loginType: loginUserData.value.loginType,
             selectedClinic: selectedAppClinic.value,
           ));
-          setValueToLocal(SharedPreferenceConst.USER_DATA, loginUserData.toJson());
+          setValueToLocal(
+              SharedPreferenceConst.USER_DATA, loginUserData.toJson());
         }).catchError((e) {
           toast(e.toString());
         });

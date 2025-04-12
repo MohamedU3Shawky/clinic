@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 abstract class BaseLanguage {
-  static BaseLanguage of(BuildContext context) => Localizations.of<BaseLanguage>(context, BaseLanguage)!;
+  static BaseLanguage of(BuildContext context) =>
+      Localizations.of<BaseLanguage>(context, BaseLanguage)!;
 
   String get language;
 
@@ -380,6 +381,18 @@ abstract class BaseLanguage {
   String get total;
 
   String get appointments;
+
+  String get schedule;
+
+  String get leaves;
+
+  String get holidays;
+
+  String get shifts;
+
+  String get overtime;
+
+  String get noSchedulesFound;
 
   String get noAppointmentsFound;
 
@@ -1070,4 +1083,40 @@ abstract class BaseLanguage {
   String get pleaseSelectAServiceImage;
 
   String get sServices;
+
+  String get monthly;
+
+  String get list;
+
+  String get noLeavesOfThisType;
+
+  String get tapButtonToRequestLeave;
+
+  String get selectLeaveType;
+
+  String get leaveDates;
+
+  String get enterReason;
+
+  String get requestLeave;
+
+  String get leaveType;
+
+  String get reviewedBy;
+
+  String get totalLeaves;
+
+  String get isPaid;
+
+  String get from;
+
+  String get id;
+
+  String get to;
+
+  String get noLeavesDescription;
+
+  String get noLeavesFound;
+
+  String get pleaseSelectLeaveType;
 }
