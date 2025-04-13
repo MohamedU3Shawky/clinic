@@ -9,6 +9,7 @@ class LeavesController extends GetxController {
   final RxList<LeaveSettingModel> leaveSettings = <LeaveSettingModel>[].obs;
   final RxList<LeaveModel> leaves = <LeaveModel>[].obs;
   final RxBool isLoading = false.obs;
+  final RxBool isLoadingSettings = false.obs;
   final RxString error = ''.obs;
   final RxMap<DateTime, int> leavesPerDay = <DateTime, int>{}.obs;
   final Rx<DateTime> currentMonth = DateTime.now().obs;
@@ -20,8 +21,15 @@ class LeavesController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    fetchLeaveSettings();
-    fetchLeaves();
+    _initializeData();
+  }
+
+  // Initialize data in the correct order
+  Future<void> _initializeData() async {
+    await fetchLeaveSettings();
+    if (leaveSettings.isNotEmpty) {
+      await fetchLeaves();
+    }
   }
 
   // Toggle between monthly and list view
@@ -32,13 +40,15 @@ class LeavesController extends GetxController {
   // Set selected date
   void setSelectedDate(DateTime date) {
     selectedDate.value = date;
-    fetchLeaves();
+    if (leaveSettings.isNotEmpty) {
+      fetchLeaves();
+    }
   }
 
   // Fetch leave settings
   Future<void> fetchLeaveSettings() async {
     try {
-      isLoading.value = true;
+      isLoadingSettings.value = true;
       error.value = '';
 
       final response = await LeaveServiceApis.getLeaveSettings();
@@ -48,12 +58,17 @@ class LeavesController extends GetxController {
     } catch (e) {
       error.value = e.toString();
     } finally {
-      isLoading.value = false;
+      isLoadingSettings.value = false;
     }
   }
 
   // Fetch leaves for the current month
   Future<void> fetchLeaves() async {
+    if (leaveSettings.isEmpty) {
+      error.value = 'Leave settings not loaded';
+      return;
+    }
+
     try {
       isLoading.value = true;
       error.value = '';
@@ -82,6 +97,11 @@ class LeavesController extends GetxController {
     required DateTime to,
     required String reason,
   }) async {
+    if (leaveSettings.isEmpty) {
+      error.value = 'Leave settings not loaded';
+      return;
+    }
+
     try {
       isLoading.value = true;
       error.value = '';
@@ -110,6 +130,11 @@ class LeavesController extends GetxController {
     required DateTime to,
     required String reason,
   }) async {
+    if (leaveSettings.isEmpty) {
+      error.value = 'Leave settings not loaded';
+      return;
+    }
+
     try {
       isLoading.value = true;
       error.value = '';
@@ -133,6 +158,11 @@ class LeavesController extends GetxController {
 
   // Delete a leave
   Future<void> deleteLeaves(String leaveId) async {
+    if (leaveSettings.isEmpty) {
+      error.value = 'Leave settings not loaded';
+      return;
+    }
+
     try {
       isLoading.value = true;
       error.value = '';
@@ -152,7 +182,9 @@ class LeavesController extends GetxController {
   // Set current month
   void setCurrentMonth(DateTime month) {
     currentMonth.value = month;
-    fetchLeaves();
+    if (leaveSettings.isNotEmpty) {
+      fetchLeaves();
+    }
   }
 
   // Count leaves for a specific date
@@ -174,5 +206,12 @@ class LeavesController extends GetxController {
         currentDate = currentDate.add(const Duration(days: 1));
       }
     }
+  }
+
+  // Get leave type name by ID
+  String getLeaveTypeName(String leaveTypeId) {
+    final leaveType =
+        leaveSettings.firstWhereOrNull((lt) => lt.id == leaveTypeId);
+    return leaveType?.name ?? 'Unknown Leave Type';
   }
 }

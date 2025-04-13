@@ -1,0 +1,74 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Flutter: Run App",
+            "type": "shell",
+            "command": "flutter run --flavor development",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Flutter: Run App (Release)",
+            "type": "shell",
+            "command": "flutter run --flavor production --release",
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Flutter: Clean",
+            "type": "shell",
+            "command": "flutter clean",
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Flutter: Pub Get",
+            "type": "shell",
+            "command": "flutter pub get",
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Flutter: Build APK",
+            "type": "shell",
+            "command": "flutter build apk --flavor production",
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Flutter: Build iOS",
+            "type": "shell",
+            "command": "flutter build ios --flavor production",
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            },
+            "problemMatcher": []
+        }
+    ]
+} 

@@ -31,10 +31,17 @@ class LeavesScreen extends StatelessWidget {
       ],
       body: Column(
         children: [
-          // Wrap leave types in Obx to show when data is loaded
+          // Wrap leave types in Obx to show when settings are loaded
           Obx(() {
-            if (controller.isLoading.value) {
-              return const SizedBox(height: 140);
+            if (controller.isLoadingSettings.value) {
+              return const SizedBox(
+                height: 140,
+                child: Center(
+                  child: CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(appColorPrimary),
+                  ),
+                ),
+              );
             }
             return _buildLeaveTypes(controller);
           }),
@@ -356,6 +363,9 @@ class LeavesScreen extends StatelessWidget {
     final isInPast =
         leave.from.isBefore(DateTime(now.year, now.month, now.day));
 
+    // Use the controller method to get leave type name
+    final leaveTypeName = controller.getLeaveTypeName(leave.leaveSettingId);
+
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeInOut,
@@ -416,7 +426,7 @@ class LeavesScreen extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(
-                            leave.leaveSetting?.name ?? '',
+                            leaveTypeName,
                             style: boldTextStyle(
                               size: 16,
                               color: isDark ? Colors.white : textPrimaryColor,
@@ -1268,6 +1278,9 @@ class LeavesScreen extends StatelessWidget {
     final toDate = leave.to.obs;
     String reason = leave.reason;
 
+    // Use the controller method to get leave type name
+    final leaveTypeName = controller.getLeaveTypeName(leave.leaveSettingId);
+
     showDialog(
       context: context,
       builder: (context) => Dialog(
@@ -1290,6 +1303,14 @@ class LeavesScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 24),
+
+                  // Leave Type (non-editable)
+                  _buildReadOnlyField(
+                    label: locale.value.leaveType,
+                    value: leaveTypeName,
+                    icon: Icons.event_available_rounded,
+                  ),
+                  const SizedBox(height: 16),
 
                   // FROM Date
                   Obx(() => _buildDateField(
@@ -1434,7 +1455,59 @@ class LeavesScreen extends StatelessWidget {
     );
   }
 
-// 🔹 Helper Widget for Date Picker
+  // Helper method for read-only fields
+  Widget _buildReadOnlyField({
+    required String label,
+    required String value,
+    required IconData icon,
+  }) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: isDarkMode.value ? Colors.grey.withOpacity(0.3) : dividerColor,
+          width: 1.5,
+        ),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Row(
+        children: [
+          Icon(
+            icon,
+            size: 20,
+            color: isDarkMode.value ? Colors.grey[400] : textSecondaryColor,
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  label,
+                  style: secondaryTextStyle(
+                    size: 12,
+                    color: isDarkMode.value
+                        ? Colors.grey[400]
+                        : textSecondaryColor,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  value,
+                  style: boldTextStyle(
+                    size: 16,
+                    color: isDarkMode.value ? Colors.white : textPrimaryColor,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // 🔹 Helper Widget for Date Picker
   Widget _buildDateField(BuildContext context,
       {required String label,
       required DateTime date,

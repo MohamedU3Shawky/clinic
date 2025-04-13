@@ -1,0 +1,47 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Flutter: Run App",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main.dart",
+            "args": [
+                "--flavor",
+                "development"
+            ]
+        },
+        {
+            "name": "Flutter: Run App (Release)",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main.dart",
+            "args": [
+                "--flavor",
+                "production",
+                "--release"
+            ]
+        },
+        {
+            "name": "Flutter: Run App (Profile)",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main.dart",
+            "args": [
+                "--flavor",
+                "development",
+                "--profile"
+            ]
+        },
+        {
+            "name": "Flutter: Run Current File",
+            "request": "launch",
+            "type": "dart",
+            "program": "${file}",
+            "args": [
+                "--flavor",
+                "development"
+            ]
+        }
+    ]
+} 
