@@ -19,6 +19,7 @@ import 'clinic/model/clinics_res_model.dart';
 import 'dashboard/dashboard_screen.dart';
 import 'home/choose_clinic_screen.dart';
 import 'home/home_controller.dart';
+import '../services/user_data_service.dart';
 
 class SplashScreenController extends GetxController {
   @override
@@ -29,70 +30,79 @@ class SplashScreenController extends GetxController {
 
   @override
   void onReady() {
-
     super.onReady();
   }
 
   void init() {
-    Future.delayed(const Duration(seconds: 5),()=> getAppConfigurations());
+    Future.delayed(const Duration(seconds: 5), () => getAppConfigurations());
   }
 }
+
 RxBool isLoading = false.obs;
 
 ///Get ChooseService List
-getAppConfigurations() {
+getAppConfigurations() async {
   try {
     ///Navigation logic
-    bool? isRememberUser = CashHelper.getData(key: SharedPreferenceConst.REMEMBER_USER);
+    final isRememberUser = await UserDataService.shouldRememberUser();
     log("REMEMBER_USER value: $isRememberUser");
-    
-    if (isRememberUser == null || isRememberUser == false) {
+
+    if (!isRememberUser) {
       Get.offAll(() => SignInScreen());
       return;
     }
-    
+
     // User wants to be remembered, check if we have user data
-    final userData = CashHelper.getData(key: SharedPreferenceConst.USER_DATA);
+    final userData = await UserDataService.getUserData();
+    print("USER_DATA: ${userData?.toJson()}");
     if (userData == null) {
       log("User data not found, redirecting to login");
       Get.offAll(() => SignInScreen());
       return;
     }
-    
+
     try {
       isLoggedIn(true);
-      loginUserData.value = UserData.fromJson(userData);
-      
+      loginUserData(userData);
+
       // Check for clinic data
-      var clinicData = CashHelper.getData(key: SharedPreferenceConst.CLINIC_DATA);
+      final clinicData = await UserDataService.getClinicData();
       log("CLINIC_DATA: $clinicData");
-      
+
       if (clinicData != null) {
-        selectedAppClinic(ClinicData.fromJson(clinicData));
+        selectedAppClinic(clinicData);
       } else {
         selectedAppClinic(ClinicData()); // Default empty clinic
       }
-      
+
       // Check if clinic ID is selected
-      var clinicId = CashHelper.getData(key: SharedPreferenceConst.CLINIC_ID);
-      if (clinicId == null) {
-        // Navigate to clinic selection
-        Get.to(
-          () => ChooseClinicScreen(),
-          arguments: ClinicCenterArgumentModel(
-            selectedClinc: selectedAppClinic.value,
-          ),
-        )?.then((value) {
-          if (value is ClinicData) {
-            selectedAppClinic(value);
-            CashHelper.saveData(key: SharedPreferenceConst.CLINIC_DATA, value: value);
-            navigateToDashboard();
-          }
-        });
-      } else {
-        // Navigate directly to dashboard
-        navigateToDashboard();
-      }
+      final clinicId = clinicData?.id;
+
+      // Navigate directly to dashboard
+      navigateToDashboard();
+
+      // if (clinicId == null) {
+      //   // Navigate to clinic selection
+      //   Get.to(
+      //     () => ChooseClinicScreen(),
+      //     arguments: ClinicCenterArgumentModel(
+      //       selectedClinc: selectedAppClinic.value,
+      //     ),
+      //   )?.then((value) {
+      //     if (value is ClinicData) {
+      //       selectedAppClinic(value);
+      //       UserDataService.saveClinicData(value).then((_) {
+      //         navigateToDashboard();
+      //       }).catchError((e) {
+      //         log("Error saving clinic data: $e");
+      //         toast("Error saving clinic data", print: true);
+      //       });
+      //     }
+      //   });
+      // } else {
+      //   // Navigate directly to dashboard
+      //   navigateToDashboard();
+      // }
     } catch (e) {
       log("Error processing user data: $e");
       Get.offAll(() => SignInScreen());
@@ -107,7 +117,7 @@ void navigateToDashboard() {
   Get.offAll(
     () => DashboardScreen(),
     binding: BindingsBuilder(() {
-      Get.put(HomeController());
+      // Get.put(HomeController());
     }),
   );
 }

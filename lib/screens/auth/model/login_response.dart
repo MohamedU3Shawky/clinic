@@ -16,9 +16,11 @@ class UserResponse {
   factory UserResponse.fromJson(Map<String, dynamic> json) {
     return UserResponse(
       status: json['status'] is bool ? json['status'] : false,
-      userData: json['data'] is Map ? UserData.fromJson(json['data']) : UserData(),
+      userData:
+          json['data'] is Map ? UserData.fromJson(json['data']) : UserData(),
       message: json['message'] is String ? json['message'] : "",
-      data: json['data'] is Map ? Map<String, dynamic>.from(json['data']) : null,
+      data:
+          json['data'] is Map ? Map<String, dynamic>.from(json['data']) : null,
     );
   }
 
@@ -33,6 +35,7 @@ class UserResponse {
 
 class UserData {
   int id;
+  String idString;
   String firstName;
   String lastName;
   String userName;
@@ -57,6 +60,7 @@ class UserData {
 
   UserData({
     this.id = -1,
+    this.idString = "",
     this.firstName = "",
     this.lastName = "",
     this.userName = "",
@@ -81,31 +85,41 @@ class UserData {
   factory UserData.fromJson(Map<String, dynamic> json) {
     return UserData(
       id: json['id'] is int ? json['id'] : -1,
+      idString: json['id'] is String ? json['id'] : "",
       firstName: json['first_name'] is String ? json['first_name'] : "",
       lastName: json['last_name'] is String ? json['last_name'] : "",
-      userName: json['user_name'] is String ? json['user_name'] : "${json['first_name']} ${json['last_name']}",
+      userName: json['user_name'] is String
+          ? json['user_name']
+          : "${json['first_name']} ${json['last_name']}",
       mobile: json['mobile'] is String ? json['mobile'] : "",
       address: json['address'] is String ? json['address'] : "",
       email: json['email'] is String ? json['email'] : "",
       gender: json['gender'] is String ? json['gender'] : "",
-      userRole: json['user_role'] is List ? List<String>.from(json['user_role'].map((x) => x)) : [],
+      userRole: json['user_role'] is List
+          ? List<String>.from(json['user_role'].map((x) => x))
+          : [],
       apiToken: json['api_token'] is String ? json['api_token'] : "",
-      profileImage: json['profile_image'] is String ? json['profile_image'] : "",
+      profileImage:
+          json['profile_image'] is String ? json['profile_image'] : "",
       loginType: json['login_type'] is String ? json['login_type'] : "",
-      isSocialLogin: json['is_social_login'] is bool ? json['is_social_login'] : false,
+      isSocialLogin:
+          json['is_social_login'] is bool ? json['is_social_login'] : false,
       userType: json['user_type'] is String ? json['user_type'] : "",
       city: json['city'] is String ? json['city'] : "",
       state: json['state'] is String ? json['state'] : "",
       country: json['country'] is String ? json['country'] : "",
       pinCode: json['pinCode'] is String ? json['pinCode'] : "",
       dateOfBirth: json['date_of_birth'] is String ? json['date_of_birth'] : "",
-      selectedClinic: json['selected_clinic'] is Map ? ClinicData.fromJson(json['selected_clinic']) : ClinicData(),
+      selectedClinic: json['selected_clinic'] is Map
+          ? ClinicData.fromJson(json['selected_clinic'])
+          : ClinicData(),
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       'id': id,
+      'idString': idString,
       'first_name': firstName,
       'last_name': lastName,
       'user_name': userName,

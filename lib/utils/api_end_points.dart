@@ -142,4 +142,9 @@ class APIEndPoints {
   static const String addLeave = 'leaves';
   static const String updateLeave = 'leaves';
   static const String deleteLeave = 'leaves';
+  static const String getUserLeaveBalances = 'leaves/user-left-leaves';
+  static const String getUserPermissions = 'user/permissions';
+  static const String reviewLeave = 'leaves';
+
+  static const String getHolidays = 'holiday';
 }

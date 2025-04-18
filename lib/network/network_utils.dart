@@ -38,20 +38,24 @@ Map<String, String> buildHeaderTokens({
   if (endPoint == APIEndPoints.register) {
     header.putIfAbsent(HttpHeaders.acceptHeader, () => 'application/json');
   }
-  header.putIfAbsent(HttpHeaders.contentTypeHeader, () => 'application/json; charset=utf-8');
+  header.putIfAbsent(
+      HttpHeaders.contentTypeHeader, () => 'application/json; charset=utf-8');
 
   // Get the token from SharedPreferences for all authenticated requests
   String? apiToken;
-  
+
   if (isLoggedIn.value) {
     // First try to get the token from loginUserData
     apiToken = loginUserData.value.apiToken;
-    
+
     // If not found, try to get it from SharedPreferences
     if (apiToken.isEmpty) {
       try {
-        var tokenFromPrefs = CashHelper.getData(key: SharedPreferenceConst.API_TOKEN);
-        if (tokenFromPrefs != null && tokenFromPrefs is String && tokenFromPrefs.isNotEmpty) {
+        var tokenFromPrefs =
+            CashHelper.getData(key: SharedPreferenceConst.API_TOKEN);
+        if (tokenFromPrefs != null &&
+            tokenFromPrefs is String &&
+            tokenFromPrefs.isNotEmpty) {
           apiToken = tokenFromPrefs;
           log('Using API token from SharedPreferences: $apiToken');
         }
@@ -61,19 +65,28 @@ Map<String, String> buildHeaderTokens({
     }
   }
 
-  if (isLoggedIn.value && extraKeys.containsKey('isFlutterWave') && extraKeys['isFlutterWave']) {
-    header.putIfAbsent(HttpHeaders.authorizationHeader, () => "Bearer ${extraKeys!['flutterWaveSecretKey']}");
-  } else if (isLoggedIn.value && extraKeys.containsKey('isAirtelMoney') && extraKeys['isAirtelMoney']) {
-    header.putIfAbsent(HttpHeaders.contentTypeHeader, () => 'application/json; charset=utf-8');
-    header.putIfAbsent(HttpHeaders.authorizationHeader, () => 'Bearer ${extraKeys!['access_token']}');
+  if (isLoggedIn.value &&
+      extraKeys.containsKey('isFlutterWave') &&
+      extraKeys['isFlutterWave']) {
+    header.putIfAbsent(HttpHeaders.authorizationHeader,
+        () => "Bearer ${extraKeys!['flutterWaveSecretKey']}");
+  } else if (isLoggedIn.value &&
+      extraKeys.containsKey('isAirtelMoney') &&
+      extraKeys['isAirtelMoney']) {
+    header.putIfAbsent(
+        HttpHeaders.contentTypeHeader, () => 'application/json; charset=utf-8');
+    header.putIfAbsent(HttpHeaders.authorizationHeader,
+        () => 'Bearer ${extraKeys!['access_token']}');
     header.putIfAbsent('X-Country', () => '${extraKeys!['X-Country']}');
     header.putIfAbsent('X-Currency', () => '${extraKeys!['X-Currency']}');
   } else if (isLoggedIn.value && apiToken != null && apiToken.isNotEmpty) {
-    header.putIfAbsent(HttpHeaders.authorizationHeader, () => 'Bearer $apiToken');
+    header.putIfAbsent(
+        HttpHeaders.authorizationHeader, () => 'Bearer $apiToken');
     log('Added authorization header with token: Bearer $apiToken');
   } else if (isLoggedIn.value) {
     // Fallback to loginUserData token, though it might be empty
-    header.putIfAbsent(HttpHeaders.authorizationHeader, () => 'Bearer ${loginUserData.value.apiToken}');
+    header.putIfAbsent(HttpHeaders.authorizationHeader,
+        () => 'Bearer ${loginUserData.value.apiToken}');
     log('Warning: Could not find a valid token for request. Using possibly empty token from loginUserData.');
   }
 
@@ -100,7 +113,7 @@ Future<Response> buildHttpResponse(
 
   Response response;
   log('URL (${method.name}): $url');
-  
+
   // Add extra debugging for clinic-related endpoints
   if (endPoint.contains('branch') || endPoint.contains('get-clinic')) {
     log('Making clinic API request: $url');
@@ -110,21 +123,25 @@ Future<Response> buildHttpResponse(
   try {
     if (method == HttpMethodType.POST) {
       log('Request: ${jsonEncode(request)}');
-      response = await http.post(url, body: jsonEncode(request), headers: headers);
+      response =
+          await http.post(url, body: jsonEncode(request), headers: headers);
     } else if (method == HttpMethodType.DELETE) {
       response = await delete(url, headers: headers);
     } else if (method == HttpMethodType.PUT) {
       response = await put(url, body: jsonEncode(request), headers: headers);
+    } else if (method == HttpMethodType.PATCH) {
+      response =
+          await http.patch(url, body: jsonEncode(request), headers: headers);
     } else {
       response = await get(url, headers: headers);
     }
-    
+
     // Add extra debugging for clinic-related endpoints
     if (endPoint.contains('branch') || endPoint.contains('get-clinic')) {
       log('Clinic API response code: ${response.statusCode}');
       log('Clinic API response body: ${response.body.trim()}');
     }
-    
+
     apiPrint(
       url: url.toString(),
       endPoint: endPoint,
@@ -137,9 +154,12 @@ Future<Response> buildHttpResponse(
     );
     // log('Response (${method.name}) ${response.statusCode}: ${response.body.trim().trim()}');
 
-    if (isLoggedIn.value && response.statusCode == 401 && !endPoint.startsWith('http')) {
+    if (isLoggedIn.value &&
+        response.statusCode == 401 &&
+        !endPoint.startsWith('http')) {
       return await reGenerateToken().then((value) async {
-        return await buildHttpResponse(endPoint, method: method, request: request, extraKeys: extraKeys);
+        return await buildHttpResponse(endPoint,
+            method: method, request: request, extraKeys: extraKeys);
       }).catchError((e) async {
         if (!await isNetworkAvailable()) {
           throw errorInternetNotAvailable;
@@ -162,7 +182,9 @@ Future<void> reGenerateToken() async {
 
   Map req = {
     UserKeys.email: loginUserData.value.email,
-    UserKeys.userType: loginUserData.value.userRole.isNotEmpty ? loginUserData.value.userRole.first : loginUserData.value.userType,
+    UserKeys.userType: loginUserData.value.userRole.isNotEmpty
+        ? loginUserData.value.userRole.first
+        : loginUserData.value.userType,
   };
   if (loginUserData.value.isSocialLogin) {
     log('LOGINUSERDATA.VALUE.ISSOCIALLOGIN: ${loginUserData.value.isSocialLogin}');
@@ -170,14 +192,19 @@ Future<void> reGenerateToken() async {
   } else {
     req[UserKeys.password] = userPASSWORD;
   }
-  return await AuthServiceApis.loginUser(request: req, isSocialLogin: loginUserData.value.isSocialLogin).then((value) async {
+  return await AuthServiceApis.loginUser(
+          request: req, isSocialLogin: loginUserData.value.isSocialLogin)
+      .then((value) async {
     loginUserData.value.apiToken = value.userData.apiToken;
   }).catchError((e) {
     ProfileController().handleLogout();
   });
 }
 
-Future handleResponse(Response response, {HttpResponseType httpResponseType = HttpResponseType.JSON, bool? avoidTokenError, bool? isFlutterWave}) async {
+Future handleResponse(Response response,
+    {HttpResponseType httpResponseType = HttpResponseType.JSON,
+    bool? avoidTokenError,
+    bool? isFlutterWave}) async {
   if (!await isNetworkAvailable()) {
     throw errorInternetNotAvailable;
   }
@@ -187,27 +214,29 @@ Future handleResponse(Response response, {HttpResponseType httpResponseType = Ht
       Map body = jsonDecode(response.body.trim());
 
       // Special handling for clinic endpoints
-      if (response.request?.url.toString().contains("branch") == true || 
+      if (response.request?.url.toString().contains("branch") == true ||
           response.request?.url.toString().contains("get-clinic") == true) {
         log("Special handling for clinic endpoint response");
-        
+
         // Log the raw response structure to understand its format
         log("Clinic response structure: ${body.keys.toList()}");
-        
+
         // For debugging purposes, print the full response
         String fullResponse = jsonEncode(body);
         log("Full clinic response: ${fullResponse.substring(0, fullResponse.length > 500 ? 500 : fullResponse.length)}...");
-        
+
         // Special handling for the specific structure: {"status":true,"message":null,"data":{"data":[...]}}
-        if (body.containsKey('status') && body.containsKey('data') && 
-            body['data'] is Map && body['data'].containsKey('data') && 
+        if (body.containsKey('status') &&
+            body.containsKey('data') &&
+            body['data'] is Map &&
+            body['data'].containsKey('data') &&
             body['data']['data'] is List) {
           log("Found nested data.data structure with ${body['data']['data'].length} clinic items");
-          
+
           // Return the structure as is - our model will handle it
           return body;
         }
-        
+
         // If the response doesn't follow the standard structure but has data
         if (!body.containsKey('status')) {
           // Try to extract data from a non-standard response
@@ -222,32 +251,39 @@ Future handleResponse(Response response, {HttpResponseType httpResponseType = Ht
             if (body.containsKey('id') && body.containsKey('name')) {
               // This looks like a single clinic object
               log("Found single clinic object, wrapping in array");
-              return {"status": true, "data": [body]};
+              return {
+                "status": true,
+                "data": [body]
+              };
             }
-            
+
             // Try to find any key that might contain clinic data
             List<dynamic> possibleClinics = [];
             body.forEach((key, value) {
-              if (value is Map && value.containsKey('id') && value.containsKey('name')) {
+              if (value is Map &&
+                  value.containsKey('id') &&
+                  value.containsKey('name')) {
                 log("Found clinic in key: $key");
                 possibleClinics.add(value);
               } else if (value is List) {
                 // Some APIs nest lists inside maps
                 for (var item in value) {
-                  if (item is Map && item.containsKey('id') && item.containsKey('name')) {
+                  if (item is Map &&
+                      item.containsKey('id') &&
+                      item.containsKey('name')) {
                     log("Found clinic in list under key: $key");
                     possibleClinics.add(item);
                   }
                 }
               }
             });
-            
+
             if (possibleClinics.isNotEmpty) {
               log("Extracted ${possibleClinics.length} clinics from various places in the response");
               return {"status": true, "data": possibleClinics};
             }
           }
-        } 
+        }
         // If the response has status = 0 but contains data, we'll still return it
         else if (body.containsKey('data')) {
           if (body['data'] is List && body['data'].isNotEmpty) {
@@ -257,16 +293,18 @@ Future handleResponse(Response response, {HttpResponseType httpResponseType = Ht
             // Sometimes data might be a map of clinics
             Map<String, dynamic> clinicsMap = body['data'];
             List<dynamic> clinicList = [];
-            
+
             // Try to extract clinic objects
             clinicsMap.forEach((key, value) {
-              if (value is Map && value.containsKey('id') && value.containsKey('name')) {
+              if (value is Map &&
+                  value.containsKey('id') &&
+                  value.containsKey('name')) {
                 // This looks like a clinic object
                 log("Found clinic with id: ${value['id']} and name: ${value['name']}");
                 clinicList.add(value);
               }
             });
-            
+
             if (clinicList.isNotEmpty) {
               log("Extracted ${clinicList.length} clinics from data map");
               return {"status": true, "data": clinicList};
@@ -274,7 +312,7 @@ Future handleResponse(Response response, {HttpResponseType httpResponseType = Ht
           }
         }
       }
-      
+
       if (body.containsKey('status')) {
         if (isFlutterWave.validate()) {
           if (body['status'] == 'success') {
@@ -330,7 +368,8 @@ Future handleResponse(Response response, {HttpResponseType httpResponseType = Ht
 }
 
 //region CommonFunctions
-Future<Map<String, String>> getMultipartFields({required Map<String, dynamic> val}) async {
+Future<Map<String, String>> getMultipartFields(
+    {required Map<String, dynamic> val}) async {
   Map<String, String> data = {};
 
   val.forEach((key, value) {
@@ -340,16 +379,25 @@ Future<Map<String, String>> getMultipartFields({required Map<String, dynamic> va
   return data;
 }
 
-Future<MultipartRequest> getMultiPartRequest(String endPoint, {String? baseUrl}) async {
+Future<MultipartRequest> getMultiPartRequest(String endPoint,
+    {String? baseUrl}) async {
   String url = baseUrl ?? buildBaseUrl(endPoint).toString();
   // log(url);
   return MultipartRequest('POST', Uri.parse(url));
 }
 
-Future<void> sendMultiPartRequest(MultipartRequest multiPartRequest, {Function(dynamic)? onSuccess, Function(dynamic)? onError}) async {
-  http.Response response = await http.Response.fromStream(await multiPartRequest.send());
+Future<void> sendMultiPartRequest(MultipartRequest multiPartRequest,
+    {Function(dynamic)? onSuccess, Function(dynamic)? onError}) async {
+  http.Response response =
+      await http.Response.fromStream(await multiPartRequest.send());
   apiPrint(
-      url: multiPartRequest.url.toString(), headers: jsonEncode(multiPartRequest.headers), request: jsonEncode(multiPartRequest.fields), hasRequest: true, statusCode: response.statusCode, responseBody: response.body.trim(), methodtype: "MultiPart");
+      url: multiPartRequest.url.toString(),
+      headers: jsonEncode(multiPartRequest.headers),
+      request: jsonEncode(multiPartRequest.fields),
+      hasRequest: true,
+      statusCode: response.statusCode,
+      responseBody: response.body.trim(),
+      methodtype: "MultiPart");
   // log("Result: ${response.statusCode} - ${multiPartRequest.fields}");
   // log(response.body.trim());
   if (response.statusCode.isSuccessful()) {
@@ -358,7 +406,8 @@ Future<void> sendMultiPartRequest(MultipartRequest multiPartRequest, {Function(d
     if (isLoggedIn.value && response.statusCode == 401) {
       return await reGenerateToken().then((value) async {
         try {
-          http.Response response = await http.Response.fromStream(await multiPartRequest.send());
+          http.Response response =
+              await http.Response.fromStream(await multiPartRequest.send());
           if (response.statusCode.isSuccessful()) {
             onSuccess?.call(response.body.trim());
           } else {
@@ -378,25 +427,29 @@ Future<void> sendMultiPartRequest(MultipartRequest multiPartRequest, {Function(d
   }
 }
 
-Future<List<MultipartFile>> getMultipartImages({required List<PlatformFile> files, required String name}) async {
+Future<List<MultipartFile>> getMultipartImages(
+    {required List<PlatformFile> files, required String name}) async {
   List<MultipartFile> multiPartRequest = [];
 
   await Future.forEach<PlatformFile>(files, (element) async {
     int i = files.indexOf(element);
 
-    multiPartRequest.add(await MultipartFile.fromPath('$name[${i.toString()}]', element.path.validate()));
+    multiPartRequest.add(await MultipartFile.fromPath(
+        '$name[${i.toString()}]', element.path.validate()));
   });
 
   return multiPartRequest;
 }
 
-Future<List<MultipartFile>> getMultipartImages2({required List<XFile> files, required String name}) async {
+Future<List<MultipartFile>> getMultipartImages2(
+    {required List<XFile> files, required String name}) async {
   List<MultipartFile> multiPartRequest = [];
 
   await Future.forEach<XFile>(files, (element) async {
     int i = files.indexOf(element);
 
-    multiPartRequest.add(await MultipartFile.fromPath('$name[${i.toString()}]', element.path.validate()));
+    multiPartRequest.add(await MultipartFile.fromPath(
+        '$name[${i.toString()}]', element.path.validate()));
     log('MultipartFile: $name[${i.toString()}]');
   });
 
@@ -425,7 +478,8 @@ void apiPrint({
   bool fullLog = false,
 }) {
   if (fullLog) {
-    dev.log("┌───────────────────────────────────────────────────────────────────────────────────────────────────────");
+    dev.log(
+        "┌───────────────────────────────────────────────────────────────────────────────────────────────────────");
     dev.log("\u001b[93m Url: \u001B[39m $url");
     dev.log("\u001b[93m endPoint: \u001B[39m \u001B[1m$endPoint\u001B[22m");
     dev.log("\u001b[93m header: \u001B[39m \u001b[96m$headers\u001B[39m");
@@ -435,7 +489,8 @@ void apiPrint({
     dev.log(statusCode.isSuccessful() ? "\u001b[32m" : "\u001b[31m");
     dev.log('Response ($methodtype) $statusCode: $responseBody');
     dev.log("\u001B[0m");
-    dev.log("└───────────────────────────────────────────────────────────────────────────────────────────────────────");
+    dev.log(
+        "└───────────────────────────────────────────────────────────────────────────────────────────────────────");
   } else {
     log("┌───────────────────────────────────────────────────────────────────────────────────────────────────────");
     log("\u001b[93m Url: \u001B[39m $url");

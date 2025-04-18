@@ -3,6 +3,9 @@ import 'package:intl/intl.dart';
 import '../api/leave_apis.dart';
 import '../models/leave_model.dart';
 import '../main.dart';
+import '../utils/shared_preferences.dart';
+import '../utils/constants.dart';
+import '../controllers/permissions_controller.dart';
 
 class LeavesController extends GetxController {
   // Observable state
@@ -13,6 +16,8 @@ class LeavesController extends GetxController {
   final RxString error = ''.obs;
   final RxMap<DateTime, int> leavesPerDay = <DateTime, int>{}.obs;
   final Rx<DateTime> currentMonth = DateTime.now().obs;
+  final RxList<Map<String, dynamic>> userLeaveBalances =
+      <Map<String, dynamic>>[].obs;
 
   // View mode properties
   final RxString viewMode = 'monthly'.obs;
@@ -27,8 +32,52 @@ class LeavesController extends GetxController {
   // Initialize data in the correct order
   Future<void> _initializeData() async {
     await fetchLeaveSettings();
+    await fetchUserLeaveBalances();
     if (leaveSettings.isNotEmpty) {
       await fetchLeaves();
+    }
+  }
+
+  // Check if user has permission to review leaves
+  Future<bool> hasReviewPermission() async {
+    final permissionsController = Get.find<PermissionsController>();
+    return permissionsController.hasPermission('Review Leaves');
+  }
+
+  // Review a leave request
+  Future<bool> reviewLeave({
+    required String leaveId,
+    required String status,
+  }) async {
+    try {
+      isLoading.value = true;
+      error.value = '';
+
+      final success = await LeaveServiceApis.reviewLeave(
+        leaveId: leaveId,
+        status: status,
+      );
+
+      if (success) {
+        await fetchLeaves();
+      }
+
+      return success;
+    } catch (e) {
+      error.value = e.toString();
+      return false;
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  // Fetch user leave balances
+  Future<void> fetchUserLeaveBalances() async {
+    try {
+      final balances = await LeaveServiceApis.getUserLeaveBalances();
+      userLeaveBalances.value = balances;
+    } catch (e) {
+      error.value = e.toString();
     }
   }
 
@@ -126,6 +175,7 @@ class LeavesController extends GetxController {
   // Update an existing leave
   Future<void> updateLeave({
     required String leaveId,
+    required String leaveSettingId,
     required DateTime from,
     required DateTime to,
     required String reason,
@@ -141,6 +191,7 @@ class LeavesController extends GetxController {
 
       final response = await LeaveServiceApis.updateLeave(
         leaveId: leaveId,
+        leaveSettingId: leaveSettingId,
         from: from,
         to: to,
         reason: reason,
@@ -213,5 +264,110 @@ class LeavesController extends GetxController {
     final leaveType =
         leaveSettings.firstWhereOrNull((lt) => lt.id == leaveTypeId);
     return leaveType?.name ?? 'Unknown Leave Type';
+  }
+
+  // Get available days for a leave type based on user ID
+  int getAvailableDaysForLeaveType(String leaveTypeId) {
+    // Get current user ID from shared preferences
+    final userId = CashHelper.getData(key: SharedPreferenceConst.USER_ID);
+    if (userId == null) return 0;
+
+    // Find the leave type
+    final leaveType =
+        leaveSettings.firstWhereOrNull((lt) => lt.id == leaveTypeId);
+    if (leaveType == null) return 0;
+
+    // Check if user has a custom policy
+    for (var policy in leaveType.customPolicies) {
+      for (var user in policy.users) {
+        if (user.id == userId) {
+          return policy.noOfDays;
+        }
+      }
+    }
+
+    // Return default days if no custom policy found
+    return leaveType.defaultDays;
+  }
+
+  // Get leave type details including custom policy information
+  Map<String, dynamic> getLeaveTypeDetails(String leaveTypeId) {
+    final leaveType =
+        leaveSettings.firstWhereOrNull((lt) => lt.id == leaveTypeId);
+    if (leaveType == null) {
+      return {
+        'name': 'Unknown Leave Type',
+        'totalDays': 0,
+        'usedDays': 0,
+        'remainingDays': 0,
+        'isEnabled': false,
+        'isPaid': false,
+        'hasCustomPolicy': false,
+        'customPolicyName': '',
+        'customPolicyDays': 0
+      };
+    }
+
+    // Get current user ID
+    final userId = CashHelper.getData(key: SharedPreferenceConst.USER_ID);
+
+    // Check for custom policy
+    bool hasCustomPolicy = false;
+    String customPolicyName = '';
+    int customPolicyDays = 0;
+
+    for (var policy in leaveType.customPolicies) {
+      for (var user in policy.users) {
+        if (user.id == userId) {
+          hasCustomPolicy = true;
+          customPolicyName = policy.name;
+          customPolicyDays = policy.noOfDays;
+          break;
+        }
+      }
+      if (hasCustomPolicy) break;
+    }
+
+    // Check if we have balance data from the API
+    final balanceData = userLeaveBalances.firstWhereOrNull(
+        (balance) => balance['leaveSettingId'] == leaveTypeId);
+
+    // Calculate used days
+    int usedDays = 0;
+    int totalDays = 0;
+    int remainingDays = 0;
+
+    if (balanceData != null) {
+      // Use data from the API
+      totalDays = balanceData['leaveBalance'].toInt() ?? 0;
+      usedDays = balanceData['leaveTaken'].toInt() ?? 0;
+      remainingDays = balanceData['leaveRemaining'].toInt() ?? 0;
+    } else {
+      // Fallback to calculating from leaves
+      for (var leave in leaves) {
+        if (leave.leaveSettingId == leaveTypeId &&
+            (leave.status == 'Approved' || leave.status == 'approved')) {
+          // Calculate days between from and to dates
+          final difference = leave.to.difference(leave.from).inDays + 1;
+          usedDays += difference;
+        }
+      }
+
+      // Calculate total and remaining days
+      totalDays = hasCustomPolicy ? customPolicyDays : leaveType.defaultDays;
+      remainingDays = totalDays - usedDays;
+    }
+
+    return {
+      'name': leaveType.name,
+      'totalDays': totalDays,
+      'usedDays': usedDays,
+      'remainingDays': remainingDays,
+      'isEnabled': leaveType.isEnabled,
+      'isPaid': leaveType.isPaid,
+      'hasCustomPolicy': hasCustomPolicy,
+      'customPolicyName': customPolicyName,
+      'customPolicyDays': customPolicyDays
+    };
   }
 }

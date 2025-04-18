@@ -1119,4 +1119,132 @@ abstract class BaseLanguage {
   String get noLeavesFound;
 
   String get pleaseSelectLeaveType;
+
+  String get customPolicy;
+
+  String get usedLeaves;
+
+  String get remainingLeaves;
+
+  String get defaultDays;
+
+  String get ok;
+
+  String get type;
+  String get reason;
+  String get fromDate;
+  String get toDate;
+  String get inactive;
+
+  String get disabled;
+  String get used;
+  String get remaining;
+  String get shift;
+  String get addShift;
+  String get editShift;
+  String get deleteShift;
+  String get noShiftsScheduled;
+  String get pleaseSelectDate;
+  String get pleaseSelectTime;
+  String get pleaseSelectBranch;
+  String get pleaseSelectUser;
+  String get pleaseEnterTitle;
+  String get pleaseEnterDescription;
+  String get areYouSureDeleteShift;
+  // Shift related
+  String get shiftAddedSuccessfully;
+  String get shiftUpdatedSuccessfully;
+  String get shiftDeletedSuccessfully;
+  String get failedToAddShift;
+  String get failedToUpdateShift;
+  String get failedToDeleteShift;
+  String get failedToFetchShifts;
+  String get getShiftsError;
+  String get addShiftError;
+  String get updateShiftError;
+  String get deleteShiftError;
+
+// Leave specific
+  String get leaveTypes;
+  String get leaveHistory;
+  String get editLeave;
+  String get deleteLeave;
+  String get noLeavesScheduled;
+  String get noEnabledLeaveTypes;
+  String get leaveTypeDisabled;
+  String get pleaseSelectFromDate;
+  String get pleaseSelectToDate;
+  String get areYouSureDeleteLeave;
+  String get leaveAddedSuccessfully;
+  String get leaveUpdatedSuccessfully;
+  String get leaveDeletedSuccessfully;
+  String get failedToAddLeave;
+  String get failedToUpdateLeave;
+  String get failedToDeleteLeave;
+  String get failedToFetchLeaves;
+  String get getLeavesError;
+  String get addLeaveError;
+  String get updateLeaveError;
+  String get deleteLeaveError;
+  String get cannotEditPastLeaves;
+
+// Leave management
+  String get leaveSettings;
+  String get leavePolicies;
+  String get addLeavePolicy;
+  String get editLeavePolicy;
+  String get deleteLeavePolicy;
+  String get policyName;
+  String get policyDescription;
+  String get annualLeave;
+  String get sickLeave;
+  String get personalLeave;
+  String get maternityLeave;
+  String get paternityLeave;
+  String get bereavementLeave;
+  String get otherLeave;
+  String get leaveBalance;
+  String get leaveRequests;
+  String get pendingRequests;
+  String get approvedRequests;
+  String get rejectedRequests;
+  String get requestStatus;
+  String get requestDate;
+  String get approvedBy;
+  String get approvalDate;
+  String get comments;
+  String get attachments;
+  String get addAttachment;
+  String get removeAttachment;
+  String get submitRequest;
+  String get cancelRequest;
+  String get approveRequest;
+  String get rejectRequest;
+  String get requestSubmitted;
+  String get requestCancelled;
+  String get requestApproved;
+  String get requestRejected;
+  String get failedToSubmitRequest;
+  String get failedToCancelRequest;
+  String get failedToApproveRequest;
+  String get failedToRejectRequest;
+
+  String get close;
+  String get failedToFetchPermissions;
+  String get getPermissionsError;
+  String get youDontHavePermission;
+
+  String get leaveReviewedSuccessfully;
+  String get failedToReviewLeave;
+  String get reviewLeaveError;
+
+  String get noHolidaysFound;
+
+  String get noHolidaysDescription;
+
+  String get users;
+
+  String get viewDetails;
+
+  String get applyPermission;
 }

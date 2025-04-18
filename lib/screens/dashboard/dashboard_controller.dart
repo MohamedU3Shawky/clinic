@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:kivicare_clinic_admin/screens/schedule/screens/shifts_screen.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:kivicare_clinic_admin/screens/payout/payout_history.dart';
 import '../../generated/assets.dart';
@@ -29,7 +30,7 @@ class DashboardController extends GetxController {
 
   RxList<BottomBarItem> bottomNavItems = [
     BottomBarItem(
-        title: locale.value.home,
+        title: locale.value.shifts,
         icon: Assets.navigationIcHomeOutlined,
         activeIcon: Assets.navigationIcHomeFilled,
         type: BottomItem.home.name),
@@ -70,7 +71,7 @@ class DashboardController extends GetxController {
       .obs;
 
   RxList<StatelessWidget> screen = [
-    HomeScreen(),
+    ShiftsScreen(),
     AppointmentsScreen(),
     ScheduleScreen(),
     if (loginUserData.value.userRole.contains(EmployeeKeyConst.vendor))
@@ -119,7 +120,7 @@ class DashboardController extends GetxController {
     log('reloadBottomTabs ISLOGGEDIN.VALUE: ${isLoggedIn.value}');
     bottomNavItems([
       BottomBarItem(
-          title: locale.value.home,
+          title: locale.value.shifts,
           icon: Assets.navigationIcHomeOutlined,
           activeIcon: Assets.navigationIcHomeFilled,
           type: BottomItem.home.name),
@@ -152,7 +153,7 @@ class DashboardController extends GetxController {
               type: BottomItem.settings.name),
     ]);
     screen(<StatelessWidget>[
-      HomeScreen(),
+      ShiftsScreen(),
       AppointmentsScreen(),
       ScheduleScreen(),
       if (loginUserData.value.userRole.contains(EmployeeKeyConst.vendor))
@@ -181,9 +182,11 @@ changebottomIndex(index) {
   dCont.selectedBottonNav(dCont.bottomNavItems[index]);
   dCont.currentIndex(index);
   try {
-    if (index == 0 || (index == 3 && isLoggedIn.value)) {
-      HomeController hCont = Get.find();
-      hCont.getDashboardDetail(showLoader: false);
+    if (index == 0) {
+      // Handle shifts screen
+      if (isLoggedIn.value) {
+        // TODO: Implement shifts functionality
+      }
     } else if (isLoggedIn.value && index == 1) {
       AppointmentsController aCont = Get.find();
       aCont.page(1);

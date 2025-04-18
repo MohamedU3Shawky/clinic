@@ -1738,4 +1738,331 @@ class LanguageAr extends BaseLanguage {
 
   @override
   String get pleaseSelectLeaveType => 'الرجاء اختيار نوع الإجازة';
+
+  @override
+  String get customPolicy => 'سياسة خاصة';
+
+  @override
+  String get remainingLeaves => 'الإجازات المتبقية';
+
+  @override
+  String get usedLeaves => 'الإجازات المستخدمة';
+
+  @override
+  String get defaultDays => 'الأيام الافتراضية';
+
+  @override
+  String get addAttachment => 'إضافة الملفات';
+
+  @override
+  String get addLeaveError => 'خطأ في إضافة الإجازة';
+
+  @override
+  String get addLeavePolicy => 'إضافة سياسة الإجازة';
+
+  @override
+  String get addShift => 'إضافة الوقت';
+
+  @override
+  String get addShiftError => 'خطأ في إضافة الوقت';
+
+  @override
+  String get annualLeave => 'الإجازة السنوية';
+
+  @override
+  String get approvalDate => 'تاريخ الموافقة';
+
+  @override
+  String get approveRequest => 'موافقة طلب';
+
+  @override
+  String get approvedBy => 'موافق بواسطة';
+
+  @override
+  String get approvedRequests => 'طلبات الموافقة';
+
+  @override
+  String get areYouSureDeleteLeave => 'هل أنت متأكد أنك تريد حذف هذه الإجازة؟';
+
+  @override
+  String get areYouSureDeleteShift => 'هل أنت متأكد أنك تريد حذف هذا الوقت؟';
+
+  @override
+  String get attachments => 'الملفات';
+
+  @override
+  String get bereavementLeave => 'الإجازة المتعطشة';
+
+  @override
+  String get cancelRequest => 'إلغاء الطلب';
+
+  @override
+  String get cannotEditPastLeaves => 'لا يمكن تعديل الإجازات الماضية';
+
+  @override
+  String get close => 'إغلاق';
+
+  @override
+  String get comments => 'التعليقات';
+
+  @override
+  String get deleteLeave => 'حذف الإجازة';
+
+  @override
+  String get deleteLeaveError => 'خطأ في حذف الإجازة';
+
+  @override
+  String get deleteLeavePolicy => 'حذف سياسة الإجازة';
+
+  @override
+  String get deleteShift => 'حذف الوقت';
+
+  @override
+  String get deleteShiftError => 'خطأ في حذف الوقت';
+
+  @override
+  String get disabled => 'معطل';
+
+  @override
+  String get editLeave => 'تعديل الإجازة';
+
+  @override
+  String get editLeavePolicy => 'تعديل سياسة الإجازة';
+
+  @override
+  String get editShift => 'تعديل الوقت';
+
+  @override
+  String get failedToAddLeave => 'خطأ في إضافة الإجازة';
+
+  @override
+  String get failedToAddShift => 'خطأ في إضافة الوقت';
+
+  @override
+  String get failedToApproveRequest => 'خطأ في الموافقة على الطلب';
+
+  @override
+  String get failedToCancelRequest => 'خطأ في إلغاء الطلب';
+
+  @override
+  String get failedToDeleteLeave => 'خطأ في حذف الإجازة';
+
+  @override
+  String get failedToDeleteShift => 'خطأ في حذف الوقت';
+
+  @override
+  String get failedToFetchLeaves => 'خطأ في جلب الإجازات';
+
+  @override
+  String get failedToFetchPermissions => 'خطأ في جلب الصلاحيات';
+
+  @override
+  String get failedToFetchShifts => 'خطأ في جلب الوقت';
+
+  @override
+  String get failedToRejectRequest => 'خطأ في رفض الطلب';
+
+  @override
+  String get failedToSubmitRequest => 'خطأ في إرسال الطلب';
+
+  @override
+  String get failedToUpdateLeave => 'خطأ في تحديث الإجازة';
+
+  @override
+  String get failedToUpdateShift => 'خطأ في تحديث الوقت';
+
+  @override
+  String get fromDate => 'البدء من التاريخ';
+
+  @override
+  String get getLeavesError => 'خطأ في جلب الإجازات';
+
+  @override
+  String get getPermissionsError => 'خطأ في جلب الصلاحيات';
+
+  @override
+  String get getShiftsError => 'خطأ في جلب الوقت';
+
+  @override
+  String get inactive => 'غير مفعل';
+
+  @override
+  String get leaveAddedSuccessfully => 'تم إضافة الإجازة بنجاح';
+
+  @override
+  String get leaveBalance => 'الرصيد المتبقي للإجازات';
+
+  @override
+  String get leaveDeletedSuccessfully => 'تم حذف الإجازة بنجاح';
+
+  @override
+  String get leaveHistory => 'الإجازات المرافقة';
+
+  @override
+  String get leavePolicies => 'سياسات الإجازات';
+
+  @override
+  String get leaveRequests => 'طلبات الإجازات';
+
+  @override
+  String get leaveSettings => 'إعدادات الإجازات';
+
+  @override
+  String get leaveTypeDisabled => 'إجازة معطلة';
+
+  @override
+  String get leaveTypes => 'أنواع الإجازات';
+
+  @override
+  String get leaveUpdatedSuccessfully => 'تم تحديث الإجازة بنجاح';
+
+  @override
+  String get maternityLeave => 'الإجازة الأمومية';
+
+  @override
+  String get noEnabledLeaveTypes => 'لا يوجد أنواع إجازات مفعلة';
+
+  @override
+  String get noLeavesScheduled => 'لا يوجد إجازات مجدولة';
+
+  @override
+  String get noShiftsScheduled => 'لا يوجد وقت مجدول';
+
+  @override
+  String get ok => 'موافق';
+
+  @override
+  String get otherLeave => 'إجازة أخرى';
+
+  @override
+  String get paternityLeave => 'إجازة الأبوين';
+
+  @override
+  String get pendingRequests => 'طلبات معلقة';
+
+  @override
+  String get personalLeave => 'إجازة شخصية';
+
+  @override
+  String get pleaseEnterDescription => 'الرجاء إدخال الوصف';
+
+  @override
+  String get pleaseEnterTitle => 'الرجاء إدخال العنوان';
+
+  @override
+  String get pleaseSelectBranch => 'الرجاء اختيار الفرع';
+
+  @override
+  String get pleaseSelectDate => 'الرجاء اختيار التاريخ';
+
+  @override
+  String get pleaseSelectFromDate => 'الرجاء اختيار البدء من التاريخ';
+
+  @override
+  String get pleaseSelectTime => 'الرجاء اختيار الوقت';
+
+  @override
+  String get pleaseSelectToDate => 'الرجاء اختيار النهاية من التاريخ';
+
+  @override
+  String get pleaseSelectUser => 'الرجاء اختيار المستخدم';
+
+  @override
+  String get policyDescription => 'وصف السياسة';
+
+  @override
+  String get policyName => 'اسم السياسة';
+
+  @override
+  String get reason => 'السبب';
+
+  @override
+  String get rejectRequest => 'رفض الطلب';
+
+  @override
+  String get rejectedRequests => 'طلبات الرفض';
+
+  @override
+  String get remaining => 'المتبقي';
+
+  @override
+  String get removeAttachment => 'إزالة الملفات';
+
+  @override
+  String get requestApproved => 'موافقة طلب';
+
+  @override
+  String get requestCancelled => 'إلغاء الطلب';
+
+  @override
+  String get requestDate => 'تاريخ الطلب';
+
+  @override
+  String get requestRejected => 'رفض الطلب';
+
+  @override
+  String get requestStatus => 'حالة الطلب';
+
+  @override
+  String get requestSubmitted => 'إرسال الطلب';
+
+  @override
+  String get shift => 'الوقت';
+
+  @override
+  String get shiftAddedSuccessfully => 'تم إضافة الوقت بنجاح';
+
+  @override
+  String get shiftDeletedSuccessfully => 'تم حذف الوقت بنجاح';
+
+  @override
+  String get shiftUpdatedSuccessfully => 'تم تحديث الوقت بنجاح';
+
+  @override
+  String get sickLeave => 'إجازة عيادية';
+
+  @override
+  String get submitRequest => 'إرسال الطلب';
+
+  @override
+  String get toDate => 'النهاية من التاريخ';
+
+  @override
+  String get type => 'النوع';
+
+  @override
+  String get updateLeaveError => 'خطأ في تحديث الإجازة';
+
+  @override
+  String get updateShiftError => 'خطأ في تحديث الوقت';
+
+  @override
+  String get used => 'مستخدم';
+
+  @override
+  String get youDontHavePermission => 'ليس لديك صلاحية للوصول إلى هذه الصفحة';
+
+  @override
+  String get failedToReviewLeave => 'خطأ في مراجعة الإجازة';
+
+  @override
+  String get leaveReviewedSuccessfully => 'تم مراجعة الإجازة بنجاح';
+
+  @override
+  String get reviewLeaveError => 'خطأ في مراجعة الإجازة';
+
+  @override
+  String get noHolidaysDescription => 'لا يوجد عطل';
+
+  @override
+  String get noHolidaysFound => 'لا يوجد عطل';
+
+  @override
+  String get users => 'المستخدمين';
+
+  @override
+  String get viewDetails => 'عرض التفاصيل';
+
+  @override
+  String get applyPermission => 'تطبيق الإذن';
 }

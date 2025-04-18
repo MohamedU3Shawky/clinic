@@ -20,8 +20,10 @@ class ShiftsScreen extends StatelessWidget {
     final ShiftsController controller = Get.put(ShiftsController());
 
     return AppScaffoldNew(
+      hasLeadingWidget: false,
       appBartitleText: locale.value.shifts,
       appBarVerticalSize: Get.height * 0.12,
+      hideAppBar: false,
       actions: [
         IconButton(
           icon: const Icon(Icons.add_circle_outline, color: Colors.white),
@@ -49,7 +51,7 @@ class ShiftsScreen extends StatelessWidget {
 
   Widget _buildViewToggle(ShiftsController controller) {
     return Obx(() => Container(
-          margin: const EdgeInsets.all(16),
+          margin: const EdgeInsets.only(top: 16, left: 16, right: 16),
           decoration: BoxDecoration(
             color: isDarkMode.value ? appBodyColor : white,
             borderRadius: BorderRadius.circular(12),
@@ -118,35 +120,40 @@ class ShiftsScreen extends StatelessWidget {
 
   Widget _buildDateSelector(ShiftsController controller) {
     if (controller.viewMode.value == 'daily') {
-      return TableCalendar(
-        firstDay: DateTime.utc(2020, 1, 1),
-        lastDay: DateTime.utc(2030, 12, 31),
-        focusedDay: controller.selectedDate.value,
-        selectedDayPredicate: (day) {
-          return isSameDay(controller.selectedDate.value, day);
-        },
-        onDaySelected: (selectedDay, focusedDay) {
-          controller.setSelectedDate(selectedDay);
-        },
-        calendarStyle: CalendarStyle(
-          selectedDecoration: BoxDecoration(
-            color: appColorPrimary,
-            shape: BoxShape.circle,
+      return Container(
+        margin: const EdgeInsets.only(bottom: 4),
+        child: TableCalendar(
+          rowHeight: Get.height * 0.045,
+          firstDay: DateTime.utc(2020, 1, 1),
+          lastDay: DateTime.utc(2030, 12, 31),
+          focusedDay: controller.selectedDate.value,
+          selectedDayPredicate: (day) {
+            return isSameDay(controller.selectedDate.value, day);
+          },
+          onDaySelected: (selectedDay, focusedDay) {
+            controller.setSelectedDate(selectedDay);
+          },
+          calendarStyle: CalendarStyle(
+            selectedDecoration: BoxDecoration(
+              color: appColorPrimary,
+              shape: BoxShape.circle,
+            ),
+            todayDecoration: BoxDecoration(
+              color: appColorPrimary.withOpacity(0.5),
+              shape: BoxShape.circle,
+            ),
           ),
-          todayDecoration: BoxDecoration(
-            color: appColorPrimary.withOpacity(0.5),
-            shape: BoxShape.circle,
+          headerStyle: HeaderStyle(
+            formatButtonVisible: false,
+            titleCentered: true,
           ),
-        ),
-        headerStyle: HeaderStyle(
-          formatButtonVisible: false,
-          titleCentered: true,
         ),
       );
     } else {
       // Weekly view date selector
       return Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        margin: const EdgeInsets.only(bottom: 16),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -205,7 +212,12 @@ class ShiftsScreen extends StatelessWidget {
     }
 
     return ListView.builder(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.only(
+        left: 16,
+        right: 16,
+        top: 0,
+        bottom: 100, // Add padding for bottom navbar
+      ),
       itemCount: controller.shifts.length,
       itemBuilder: (context, index) {
         final shift = controller.shifts[index];
@@ -334,6 +346,42 @@ class ShiftsScreen extends StatelessWidget {
                   label: 'Period',
                   value:
                       '${DateFormat('MMM d').format(shift.startDate)} - ${DateFormat('MMM d, yyyy').format(shift.endDate ?? shift.startDate)}',
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    Expanded(
+                      child: ElevatedButton.icon(
+                        onPressed: () async {},
+                        icon: const Icon(Icons.check_circle_outline),
+                        label: Text(locale.value.checkIn),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.green,
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: ElevatedButton.icon(
+                        onPressed: () async {},
+                        icon: const Icon(Icons.cancel_outlined),
+                        label: Text(locale.value.applyPermission),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.red,
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),

@@ -1747,4 +1747,333 @@ class LanguageEn extends BaseLanguage {
 
   @override
   String get pleaseSelectLeaveType => 'Please Select Leave Type';
+
+  @override
+  String get customPolicy => 'Custom Policy';
+
+  @override
+  String get remainingLeaves => 'Remaining Leaves';
+
+  @override
+  String get usedLeaves => 'Used Leaves';
+
+  @override
+  String get defaultDays => 'Default Days';
+
+  @override
+  String get addAttachment => 'Add Attachment';
+
+  @override
+  String get addLeaveError => 'Add Leave Error';
+
+  @override
+  String get addLeavePolicy => 'Add Leave Policy';
+
+  @override
+  String get addShift => 'Add Shift';
+
+  @override
+  String get addShiftError => 'Add Shift Error';
+
+  @override
+  String get annualLeave => 'Annual Leave';
+
+  @override
+  String get approvalDate => 'Approval Date';
+
+  @override
+  String get approveRequest => 'Approve Request';
+
+  @override
+  String get approvedBy => 'Approved By';
+
+  @override
+  String get approvedRequests => 'Approved Requests';
+
+  @override
+  String get areYouSureDeleteLeave =>
+      'Are you sure you want to delete this leave?';
+
+  @override
+  String get areYouSureDeleteShift =>
+      'Are you sure you want to delete this shift?';
+
+  @override
+  String get attachments => 'Attachments';
+
+  @override
+  String get bereavementLeave => 'Bereavement Leave';
+
+  @override
+  String get cancelRequest => 'Cancel Request';
+
+  @override
+  String get cannotEditPastLeaves => 'Cannot edit past leaves';
+
+  @override
+  String get close => 'Close';
+
+  @override
+  String get comments => 'Comments';
+
+  @override
+  String get deleteLeave => 'Delete Leave';
+
+  @override
+  String get deleteLeaveError => 'Delete Leave Error';
+
+  @override
+  String get deleteLeavePolicy => 'Delete Leave Policy';
+
+  @override
+  String get deleteShift => 'Delete Shift';
+
+  @override
+  String get deleteShiftError => 'Delete Shift Error';
+
+  @override
+  String get disabled => 'Disabled';
+
+  @override
+  String get editLeave => 'Edit Leave';
+
+  @override
+  String get editLeavePolicy => 'Edit Leave Policy';
+
+  @override
+  String get editShift => 'Edit Shift';
+
+  @override
+  String get failedToAddLeave => 'Failed to Add Leave';
+
+  @override
+  String get failedToAddShift => 'Failed to Add Shift';
+
+  @override
+  String get failedToApproveRequest => 'Failed to Approve Request';
+
+  @override
+  String get failedToCancelRequest => 'Failed to Cancel Request';
+
+  @override
+  String get failedToDeleteLeave => 'Failed to Delete Leave';
+
+  @override
+  String get failedToDeleteShift => 'Failed to Delete Shift';
+
+  @override
+  String get failedToFetchLeaves => 'Failed to Fetch Leaves';
+
+  @override
+  String get failedToFetchPermissions => 'Failed to Fetch Permissions';
+
+  @override
+  String get failedToFetchShifts => 'Failed to Fetch Shifts';
+
+  @override
+  String get failedToRejectRequest => 'Failed to Reject Request';
+
+  @override
+  String get failedToSubmitRequest => 'Failed to Submit Request';
+
+  @override
+  String get failedToUpdateLeave => 'Failed to Update Leave';
+
+  @override
+  String get failedToUpdateShift => 'Failed to Update Shift';
+
+  @override
+  String get fromDate => 'From Date';
+
+  @override
+  String get getLeavesError => 'Get Leaves Error';
+
+  @override
+  String get getPermissionsError => 'Get Permissions Error';
+
+  @override
+  String get getShiftsError => 'Get Shifts Error';
+
+  @override
+  String get inactive => 'Inactive';
+
+  @override
+  String get leaveAddedSuccessfully => 'Leave Added Successfully';
+
+  @override
+  String get leaveBalance => 'Leave Balance';
+
+  @override
+  String get leaveDeletedSuccessfully => 'Leave Deleted Successfully';
+
+  @override
+  String get leaveHistory => 'Leave History';
+
+  @override
+  String get leavePolicies => 'Leave Policies';
+
+  @override
+  String get leaveRequests => 'Leave Requests';
+
+  @override
+  String get leaveSettings => 'Leave Settings';
+
+  @override
+  String get leaveTypeDisabled => 'Leave Type Disabled';
+
+  @override
+  String get leaveTypes => 'Leave Types';
+
+  @override
+  String get leaveUpdatedSuccessfully => 'Leave Updated Successfully';
+
+  @override
+  String get maternityLeave => 'Maternity Leave';
+
+  @override
+  String get noEnabledLeaveTypes => 'No Enabled Leave Types';
+
+  @override
+  String get noLeavesScheduled => 'No Leaves Scheduled';
+
+  @override
+  String get noShiftsScheduled => 'No Shifts Scheduled';
+
+  @override
+  String get ok => 'OK';
+
+  @override
+  String get otherLeave => 'Other Leave';
+
+  @override
+  String get paternityLeave => 'Paternity Leave';
+
+  @override
+  String get pendingRequests => 'Pending Requests';
+
+  @override
+  String get personalLeave => 'Personal Leave';
+
+  @override
+  String get pleaseEnterDescription => 'Please Enter Description';
+
+  @override
+  String get pleaseEnterTitle => 'Please Enter Title';
+
+  @override
+  String get pleaseSelectBranch => 'Please Select Branch';
+
+  @override
+  String get pleaseSelectDate => 'Please Select Date';
+
+  @override
+  String get pleaseSelectFromDate => 'Please Select From Date';
+
+  @override
+  String get pleaseSelectTime => 'Please Select Time';
+
+  @override
+  String get pleaseSelectToDate => 'Please Select To Date';
+
+  @override
+  String get pleaseSelectUser => 'Please Select User';
+
+  @override
+  String get policyDescription => 'Policy Description';
+
+  @override
+  String get policyName => 'Policy Name';
+
+  @override
+  String get reason => 'Reason';
+
+  @override
+  String get rejectRequest => 'Reject Request';
+
+  @override
+  String get rejectedRequests => 'Rejected Requests';
+
+  @override
+  String get remaining => 'Remaining';
+
+  @override
+  String get removeAttachment => 'Remove Attachment';
+
+  @override
+  String get requestApproved => 'Request Approved';
+
+  @override
+  String get requestCancelled => 'Request Cancelled';
+
+  @override
+  String get requestDate => 'Request Date';
+
+  @override
+  String get requestRejected => 'Request Rejected';
+
+  @override
+  String get requestStatus => 'Request Status';
+
+  @override
+  String get requestSubmitted => 'Request Submitted';
+
+  @override
+  String get shift => 'Shift';
+
+  @override
+  String get shiftAddedSuccessfully => 'Shift Added Successfully';
+
+  @override
+  String get shiftDeletedSuccessfully => 'Shift Deleted Successfully';
+
+  @override
+  String get shiftUpdatedSuccessfully => 'Shift Updated Successfully';
+
+  @override
+  String get sickLeave => 'Sick Leave';
+
+  @override
+  String get submitRequest => 'Submit Request';
+
+  @override
+  String get toDate => 'To Date';
+
+  @override
+  String get type => 'Type';
+
+  @override
+  String get updateLeaveError => 'Update Leave Error';
+
+  @override
+  String get updateShiftError => 'Update Shift Error';
+
+  @override
+  String get used => 'Used';
+
+  @override
+  String get youDontHavePermission => 'You Don\'t Have Permission';
+
+  @override
+  String get failedToReviewLeave => 'Failed to Review Leave';
+
+  @override
+  String get leaveReviewedSuccessfully => 'Leave Reviewed Successfully';
+
+  @override
+  String get reviewLeaveError => 'Review Leave Error';
+
+  @override
+  String get noHolidaysDescription => 'No Holidays Description';
+
+  @override
+  String get noHolidaysFound => 'No Holidays Found';
+
+  @override
+  String get users => 'Users';
+
+  @override
+  String get viewDetails => 'View Details';
+
+  @override
+  String get applyPermission => 'Apply Permission';
 }

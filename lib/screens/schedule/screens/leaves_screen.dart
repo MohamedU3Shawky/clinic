@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:kivicare_clinic_admin/utils/constants.dart';
+import 'package:kivicare_clinic_admin/utils/shared_preferences.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../../../components/app_scaffold.dart';
@@ -11,7 +13,6 @@ import '../../../main.dart';
 import '../../../models/leave_model.dart';
 import '../../../utils/app_common.dart';
 import '../../../utils/colors.dart';
-import '../../../utils/language.dart';
 
 class LeavesScreen extends StatelessWidget {
   const LeavesScreen({Key? key}) : super(key: key);
@@ -21,7 +22,7 @@ class LeavesScreen extends StatelessWidget {
     final LeavesController controller = Get.put(LeavesController());
 
     return AppScaffoldNew(
-      appBartitleText: language.leaves,
+      appBartitleText: locale.value.leaves,
       appBarVerticalSize: Get.height * 0.12,
       actions: [
         IconButton(
@@ -70,7 +71,7 @@ class LeavesScreen extends StatelessWidget {
 
   Widget _buildLeaveTypes(LeavesController controller) {
     return Container(
-      height: 140,
+      height: 170, // slightly increased for the new hint
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
@@ -80,6 +81,11 @@ class LeavesScreen extends StatelessWidget {
           final leaveType = controller.leaveSettings[index];
           final isEnabled = leaveType.isEnabled;
           final color = _getLeaveTypeColor(index);
+
+          final leaveDetails = controller.getLeaveTypeDetails(leaveType.id);
+          final hasCustomPolicy = leaveDetails['hasCustomPolicy'] as bool;
+          final totalDays = leaveDetails['totalDays'] as int;
+          final defaultDays = leaveType.defaultDays;
 
           return AnimatedContainer(
             duration: const Duration(milliseconds: 300),
@@ -115,7 +121,6 @@ class LeavesScreen extends StatelessWidget {
                 ),
                 child: Stack(
                   children: [
-                    // Background pattern
                     Positioned(
                       right: -5,
                       bottom: -5,
@@ -128,14 +133,11 @@ class LeavesScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-
-                    // Content
                     Padding(
                       padding: const EdgeInsets.all(16),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          // Icon with modern background
                           Container(
                             padding: const EdgeInsets.all(10),
                             decoration: BoxDecoration(
@@ -155,7 +157,6 @@ class LeavesScreen extends StatelessWidget {
 
                           const Spacer(),
 
-                          // Leave type name
                           Text(
                             leaveType.name,
                             style: boldTextStyle(
@@ -168,36 +169,64 @@ class LeavesScreen extends StatelessWidget {
 
                           const SizedBox(height: 4),
 
-                          // Days available
-                          Text(
-                            '${leaveType.defaultDays} ${locale.value.days}',
-                            style: secondaryTextStyle(
-                              size: 14,
-                              color: isEnabled
-                                  ? Colors.white.withOpacity(0.8)
-                                  : Colors.grey,
-                            ),
+                          Row(
+                            children: [
+                              Text(
+                                '$totalDays ${locale.value.days}',
+                                style: secondaryTextStyle(
+                                  size: 14,
+                                  color: isEnabled
+                                      ? Colors.white.withOpacity(0.8)
+                                      : Colors.grey,
+                                ),
+                              ),
+                              if (hasCustomPolicy && isEnabled) ...[
+                                const SizedBox(width: 4),
+                                Icon(
+                                  Icons.star,
+                                  size: 12,
+                                  color: Colors.amber,
+                                ),
+                              ],
+                            ],
                           ),
 
-                          // Status indicator
-                          if (!isEnabled) ...[
-                            const SizedBox(height: 4),
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 8, vertical: 2),
-                              decoration: BoxDecoration(
-                                color: Colors.white.withOpacity(0.2),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Text(
-                                locale.value.unavailable,
-                                style: secondaryTextStyle(
-                                  size: 10,
-                                  color: isEnabled ? Colors.white : Colors.grey,
-                                ),
+                          if (hasCustomPolicy && isEnabled) ...[
+                            const SizedBox(height: 2),
+                            Text(
+                              '${locale.value.defaultDays}: $defaultDays',
+                              style: secondaryTextStyle(
+                                size: 10,
+                                color: isEnabled
+                                    ? Colors.white.withOpacity(0.6)
+                                    : Colors.grey,
                               ),
                             ),
                           ],
+
+                          const SizedBox(height: 6),
+
+                          // New "View Details" hint
+                          Center(
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 8, vertical: 4),
+                              decoration: BoxDecoration(
+                                color: Colors.white.withOpacity(0.15),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Text(
+                                locale.value.viewDetails,
+                                style: secondaryTextStyle(
+                                  size: 11,
+                                  color: isEnabled
+                                      ? Colors.white.withOpacity(0.9)
+                                      : Colors.grey,
+                                  fontStyle: FontStyle.italic,
+                                ),
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -475,7 +504,7 @@ class LeavesScreen extends StatelessWidget {
                                     Icon(Icons.edit,
                                         size: 20, color: appColorPrimary),
                                     const SizedBox(width: 8),
-                                    Text(language.edit),
+                                    Text(locale.value.edit),
                                   ],
                                 ),
                               ),
@@ -487,7 +516,7 @@ class LeavesScreen extends StatelessWidget {
                                     Icon(Icons.delete,
                                         size: 20, color: Colors.red),
                                     const SizedBox(width: 8),
-                                    Text(language.delete),
+                                    Text(locale.value.delete),
                                   ],
                                 ),
                               ),
@@ -539,10 +568,70 @@ class LeavesScreen extends StatelessWidget {
                   const SizedBox(height: 12),
                   _buildModernDetailRow(
                     icon: Icons.note_outlined,
-                    label: language.reason,
+                    label: locale.value.reason,
                     value: leave.reason,
                     isDark: isDark,
                     isMultiline: true,
+                  ),
+                ],
+
+                // Review buttons for pending leaves
+                if (leave.status.toLowerCase() == 'pending') ...[
+                  const SizedBox(height: 16),
+                  FutureBuilder<bool>(
+                    future: controller.hasReviewPermission(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData && snapshot.data == true) {
+                        return Row(
+                          children: [
+                            Expanded(
+                              child: ElevatedButton.icon(
+                                onPressed: () async {
+                                  final success = await controller.reviewLeave(
+                                    leaveId: leave.id,
+                                    status: 'Approved',
+                                  );
+                                },
+                                icon: const Icon(Icons.check_circle_outline),
+                                label: Text(locale.value.approveRequest),
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.green,
+                                  foregroundColor: Colors.white,
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 12),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: ElevatedButton.icon(
+                                onPressed: () async {
+                                  final success = await controller.reviewLeave(
+                                    leaveId: leave.id,
+                                    status: 'Rejected',
+                                  );
+                                },
+                                icon: const Icon(Icons.cancel_outlined),
+                                label: Text(locale.value.rejectRequest),
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.red,
+                                  foregroundColor: Colors.white,
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 12),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        );
+                      }
+                      return const SizedBox.shrink();
+                    },
                   ),
                 ],
               ],
@@ -663,7 +752,7 @@ class LeavesScreen extends StatelessWidget {
                 color: Colors.white,
               ),
               label: Text(
-                language.requestLeave,
+                locale.value.requestLeave,
                 style: boldTextStyle(color: Colors.white),
               ),
               style: ElevatedButton.styleFrom(
@@ -754,6 +843,16 @@ class LeavesScreen extends StatelessWidget {
     final color =
         _getLeaveTypeColor(controller.leaveSettings.indexOf(leaveType));
 
+    // Get leave type details including custom policy information
+    final leaveDetails = controller.getLeaveTypeDetails(leaveType.id);
+    final hasCustomPolicy = leaveDetails['hasCustomPolicy'] as bool;
+    final customPolicyName = leaveDetails['customPolicyName'] as String;
+    final customPolicyDays = leaveDetails['customPolicyDays'] as int;
+    final totalDays = leaveDetails['totalDays'] as int;
+    final usedDays = leaveDetails['usedDays'] as int;
+    final remainingDays = leaveDetails['remainingDays'] as int;
+    final defaultDays = leaveType.defaultDays;
+
     showDialog(
       context: context,
       builder: (context) => Dialog(
@@ -831,11 +930,67 @@ class LeavesScreen extends StatelessWidget {
 
                     const SizedBox(height: 24),
 
+                    // Custom policy badge if applicable
+                    if (hasCustomPolicy) ...[
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 12, vertical: 8),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(
+                            color: Colors.white.withOpacity(0.3),
+                            width: 1,
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              Icons.star,
+                              color: Colors.amber,
+                              size: 18,
+                            ),
+                            const SizedBox(width: 8),
+                            Text(
+                              '${locale.value.customPolicy}: $customPolicyName',
+                              style: boldTextStyle(
+                                size: 14,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                    ],
+
                     // Details cards
                     _buildDetailCard(
                       icon: Icons.calendar_today,
                       title: '${locale.value.totalLeaves}:',
-                      value: '${leaveType.defaultDays} ${locale.value.days}',
+                      value: '$totalDays ${locale.value.days}',
+                      color: color,
+                      subtitle: hasCustomPolicy
+                          ? '${locale.value.customPolicy}: $customPolicyDays ${locale.value.days} | ${locale.value.defaultDays}: $defaultDays ${locale.value.days}'
+                          : '${locale.value.defaultDays}: $defaultDays ${locale.value.days}',
+                    ),
+
+                    const SizedBox(height: 12),
+
+                    _buildDetailCard(
+                      icon: Icons.event_busy,
+                      title: '${locale.value.usedLeaves}:',
+                      value: '$usedDays ${locale.value.days}',
+                      color: color,
+                    ),
+
+                    const SizedBox(height: 12),
+
+                    _buildDetailCard(
+                      icon: Icons.event_available,
+                      title: '${locale.value.remainingLeaves}:',
+                      value: '$remainingDays ${locale.value.days}',
                       color: color,
                     ),
 
@@ -889,7 +1044,7 @@ class LeavesScreen extends StatelessWidget {
                               ),
                             ),
                             child: Text(
-                              language.cancel,
+                              locale.value.close,
                               style: boldTextStyle(
                                 size: 16,
                                 color: Colors.white,
@@ -916,7 +1071,7 @@ class LeavesScreen extends StatelessWidget {
                               shadowColor: color.withOpacity(0.5),
                             ),
                             child: Text(
-                              language.requestLeave,
+                              locale.value.requestLeave,
                               style: boldTextStyle(
                                 size: 16,
                                 color: color,
@@ -941,6 +1096,7 @@ class LeavesScreen extends StatelessWidget {
     required String title,
     required String value,
     required Color color,
+    String? subtitle,
   }) {
     return Container(
       padding: const EdgeInsets.all(16),
@@ -963,24 +1119,37 @@ class LeavesScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 12),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                style: secondaryTextStyle(
-                  size: 14,
-                  color: Colors.white.withOpacity(0.8),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: secondaryTextStyle(
+                    size: 14,
+                    color: Colors.white.withOpacity(0.8),
+                  ),
                 ),
-              ),
-              Text(
-                value,
-                style: boldTextStyle(
-                  size: 16,
-                  color: Colors.white,
+                Text(
+                  value,
+                  style: boldTextStyle(
+                    size: 16,
+                    color: Colors.white,
+                  ),
                 ),
-              ),
-            ],
+                if (subtitle != null) ...[
+                  const SizedBox(height: 4),
+                  Text(
+                    subtitle,
+                    style: secondaryTextStyle(
+                      size: 12,
+                      color: Colors.white.withOpacity(0.7),
+                      fontStyle: FontStyle.italic,
+                    ),
+                  ),
+                ],
+              ],
+            ),
           ),
         ],
       ),
@@ -989,6 +1158,8 @@ class LeavesScreen extends StatelessWidget {
 
   void _showAddLeaveDialog(BuildContext context, LeavesController controller,
       {String? leaveTypeId}) {
+    print(
+        "userResponse: ${CashHelper.getData(key: SharedPreferenceConst.USER_ID)}");
     final formKey = GlobalKey<FormState>();
     LeaveSettingModel? selectedLeaveType;
     // Use Rx variables to make the UI reactive
@@ -1036,7 +1207,7 @@ class LeavesScreen extends StatelessWidget {
                         const SizedBox(width: 12),
                         Expanded(
                           child: Text(
-                            language.requestLeave,
+                            locale.value.requestLeave,
                             style: boldTextStyle(size: 20),
                           ),
                         ),
@@ -1193,7 +1364,7 @@ class LeavesScreen extends StatelessWidget {
 
                     // Reason
                     _SectionTitle(
-                        icon: Icons.notes_rounded, text: language.reason),
+                        icon: Icons.notes_rounded, text: locale.value.reason),
                     const SizedBox(height: 8),
                     TextFormField(
                       maxLines: 3,
@@ -1231,7 +1402,7 @@ class LeavesScreen extends StatelessWidget {
                       width: double.infinity,
                       child: ElevatedButton.icon(
                         icon: const Icon(Icons.send_rounded),
-                        label: Text(language.submit),
+                        label: Text(locale.value.submit),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: appColorPrimary,
                           foregroundColor: Colors.white,
@@ -1268,7 +1439,7 @@ class LeavesScreen extends StatelessWidget {
   void _showEditLeaveDialog(
       BuildContext context, LeaveModel leave, LeavesController controller) {
     if (leave.from.isBefore(DateTime.now())) {
-      toast(language.cannotEditPastLeaves);
+      toast(locale.value.cannotEditPastLeaves);
       return;
     }
 
@@ -1295,7 +1466,7 @@ class LeavesScreen extends StatelessWidget {
                 children: [
                   // Title
                   Text(
-                    language.editLeave,
+                    locale.value.editLeave,
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -1395,7 +1566,7 @@ class LeavesScreen extends StatelessWidget {
                       return null;
                     },
                     decoration: InputDecoration(
-                      labelText: language.enterReason,
+                      labelText: locale.value.enterReason,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
@@ -1417,7 +1588,7 @@ class LeavesScreen extends StatelessWidget {
                               borderRadius: BorderRadius.circular(12),
                             ),
                           ),
-                          child: Text(language.cancel),
+                          child: Text(locale.value.cancel),
                         ),
                       ),
                       const SizedBox(width: 12),
@@ -1427,6 +1598,7 @@ class LeavesScreen extends StatelessWidget {
                             if (formKey.currentState!.validate()) {
                               controller.updateLeave(
                                 leaveId: leave.id,
+                                leaveSettingId: leave.leaveSettingId,
                                 from: fromDate.value,
                                 to: toDate.value,
                                 reason: reason,
@@ -1441,7 +1613,7 @@ class LeavesScreen extends StatelessWidget {
                               borderRadius: BorderRadius.circular(12),
                             ),
                           ),
-                          child: Text(language.update),
+                          child: Text(locale.value.update),
                         ),
                       ),
                     ],
@@ -1545,12 +1717,12 @@ class LeavesScreen extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(language.delete),
+        title: Text(locale.value.delete),
         content: Text(locale.value.doYouWantToPerformThisAction),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text(language.cancel),
+            child: Text(locale.value.cancel),
           ),
           ElevatedButton(
             onPressed: () {
@@ -1561,7 +1733,7 @@ class LeavesScreen extends StatelessWidget {
               backgroundColor: Colors.red,
               foregroundColor: Colors.white,
             ),
-            child: Text(language.delete),
+            child: Text(locale.value.delete),
           ),
         ],
       ),

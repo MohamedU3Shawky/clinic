@@ -16,11 +16,14 @@ import '../payout/payout_history_controller.dart';
 import 'components/btm_nav_item.dart';
 import 'dashboard_controller.dart';
 import 'components/menu.dart';
+import '../../controllers/permissions_controller.dart';
 
 class DashboardScreen extends StatelessWidget {
   DashboardScreen({Key? key}) : super(key: key);
   final DashboardController dashboardController =
       Get.put(DashboardController());
+  final PermissionsController permissionsController =
+      Get.put(PermissionsController());
 
   @override
   Widget build(BuildContext context) {

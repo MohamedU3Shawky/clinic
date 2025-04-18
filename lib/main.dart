@@ -23,6 +23,8 @@ import 'utils/constants.dart';
 import 'utils/local_storage.dart';
 import 'utils/push_notification_service.dart';
 import 'utils/shared_preferences.dart';
+import 'controllers/leaves_controller.dart';
+import 'controllers/permissions_controller.dart';
 
 @pragma('vm:entry-point')
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -37,7 +39,7 @@ Rx<BaseLanguage> locale = LanguageEn().obs;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   // Initialize SharedPreferences before anything else
   try {
     await CashHelper.init();
@@ -46,7 +48,7 @@ void main() async {
     log('Error initializing SharedPreferences: $e');
     // We'll continue without shared preferences, but the app will use defaults
   }
-  
+
   // Initialize Firebase
   // try {
   //   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform).then((value) {
@@ -69,16 +71,19 @@ void main() async {
   } catch (e) {
     log('Error initializing GetStorage: $e');
   }
-  
+
   // Initialize app settings
   try {
     // Font configuration
-    fontFamilyPrimaryGlobal = GoogleFonts.interTight(fontWeight: FontWeight.w500).fontFamily;
+    fontFamilyPrimaryGlobal =
+        GoogleFonts.interTight(fontWeight: FontWeight.w500).fontFamily;
     textPrimarySizeGlobal = 14;
-    fontFamilySecondaryGlobal = GoogleFonts.interTight(fontWeight: FontWeight.w400).fontFamily;
+    fontFamilySecondaryGlobal =
+        GoogleFonts.interTight(fontWeight: FontWeight.w400).fontFamily;
     textSecondarySizeGlobal = 12;
-    fontFamilyBoldGlobal = GoogleFonts.interTight(fontWeight: FontWeight.w600).fontFamily;
-    
+    fontFamilyBoldGlobal =
+        GoogleFonts.interTight(fontWeight: FontWeight.w600).fontFamily;
+
     // Button and UI configuration
     defaultBlurRadius = 0;
     defaultRadius = 12;
@@ -87,18 +92,23 @@ void main() async {
     defaultAppButtonRadius = defaultRadius;
     defaultAppButtonElevation = 0;
     defaultAppButtonTextColorGlobal = Colors.white;
-    
+
     // Set minimum password length validation
     passwordLengthGlobal = 8;
-    
+
     // Initialize language settings
-    selectedLanguageCode(getValueFromLocal(SELECTED_LANGUAGE_CODE) ?? DEFAULT_LANGUAGE);
-    await initialize(aLocaleLanguageList: languageList(), defaultLanguage: selectedLanguageCode.value);
-    
-    BaseLanguage temp = await const AppLocalizations().load(Locale(selectedLanguageCode.value));
+    selectedLanguageCode(
+        getValueFromLocal(SELECTED_LANGUAGE_CODE) ?? DEFAULT_LANGUAGE);
+    await initialize(
+        aLocaleLanguageList: languageList(),
+        defaultLanguage: selectedLanguageCode.value);
+
+    BaseLanguage temp =
+        await const AppLocalizations().load(Locale(selectedLanguageCode.value));
     locale = temp.obs;
-    locale.value = await const AppLocalizations().load(Locale(selectedLanguageCode.value));
-    
+    locale.value =
+        await const AppLocalizations().load(Locale(selectedLanguageCode.value));
+
     // Initialize theme settings
     final getThemeFromLocal = getValueFromLocal(SettingsLocalConst.THEME_MODE);
     if (getThemeFromLocal is int) {
@@ -116,7 +126,7 @@ void main() async {
 
   // Set up custom HTTP overrides for handling certificates
   HttpOverrides.global = MyHttpOverrides();
-  
+
   // Run the app
   runApp(const MyApp());
 }
@@ -141,11 +151,13 @@ class MyApp extends StatelessWidget {
           ],
           builder: (context, child) {
             return MediaQuery(
-              data: MediaQuery.of(context).copyWith(textScaler: const TextScaler.linear(1.0)),
+              data: MediaQuery.of(context)
+                  .copyWith(textScaler: const TextScaler.linear(1.0)),
               child: child!,
             );
           },
-          localeResolutionCallback: (locale, supportedLocales) => Locale(selectedLanguageCode.value),
+          localeResolutionCallback: (locale, supportedLocales) =>
+              Locale(selectedLanguageCode.value),
           fallbackLocale: const Locale(DEFAULT_LANGUAGE),
           locale: Locale(selectedLanguageCode.value),
           theme: AppTheme.lightTheme,

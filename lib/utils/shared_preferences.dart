@@ -26,7 +26,7 @@ class CashHelper {
       log('Warning: Attempting to save data before CashHelper is initialized');
       await init();
     }
-    
+
     try {
       log('Saving data with key: $key, value: $value');
       if (value is double) {
@@ -56,20 +56,20 @@ class CashHelper {
       // Cannot initialize here since this method is not async
       return null;
     }
-    
+
     try {
       log('Retrieving data with key: $key');
       if (!sharedPreferences.containsKey(key)) {
         log('Key not found in SharedPreferences: $key');
         return null;
       }
-      
+
       var value = sharedPreferences.get(key);
       if (value == null) {
         log('Value is null for key: $key');
         return null;
       }
-      
+
       if (value is String) {
         try {
           return jsonDecode(value);
@@ -90,7 +90,7 @@ class CashHelper {
       log('Warning: Attempting to remove data before CashHelper is initialized');
       await init();
     }
-    
+
     try {
       log('Removing data with key: $key');
       return await sharedPreferences.remove(key);
@@ -106,7 +106,7 @@ class CashHelper {
         sharedPreferences = await SharedPreferences.getInstance();
         _isInitialized = true;
       }
-      
+
       log('Clearing all data from SharedPreferences');
       await sharedPreferences.clear();
     } catch (e) {

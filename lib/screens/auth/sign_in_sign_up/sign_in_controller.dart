@@ -17,6 +17,7 @@ import '../../../utils/constants.dart';
 import '../../../utils/local_storage.dart';
 import '../model/login_roles_model.dart';
 import '../../clinic/model/clinics_res_model.dart';
+import '../../../services/user_data_service.dart';
 
 class SignInController extends GetxController {
   RxBool isNavigateToDashboard = false.obs;
@@ -40,13 +41,13 @@ class SignInController extends GetxController {
 
   @override
   void onInit() {
- /*   if (Get.arguments is bool) {
+    /*   if (Get.arguments is bool) {
       log(Get.arguments);
       log("isNavigateToDashboard before:$isNavigateToDashboard");
       isNavigateToDashboard(Get.arguments == true);
       log("isNavigateToDashboard after:$isNavigateToDashboard");
     }*/
-   /* final userIsRemeberMe = getValueFromLocal(SharedPreferenceConst.IS_REMEMBER_ME);
+    /* final userIsRemeberMe = getValueFromLocal(SharedPreferenceConst.IS_REMEMBER_ME);
     final userNameFromLocal = getValueFromLocal(SharedPreferenceConst.USER_NAME);
     if (userNameFromLocal is String) {
       userName(userNameFromLocal);
@@ -70,13 +71,13 @@ class SignInController extends GetxController {
       toast("Please enter valid email and password");
       return;
     }
-    
+
     isLoading(true);
     Map<String, dynamic> req = {
       'email': emailCont.text.trim(),
       'password': passwordCont.text.trim(),
     };
-    
+
     await AuthServiceApis.loginUser(request: req).then((value) async {
       handleLoginResponse(loginResponse: value);
     }).catchError((e) {
@@ -88,14 +89,14 @@ class SignInController extends GetxController {
   void handleLoginResponse({required UserResponse loginResponse}) {
     try {
       log("test:isRememberMe.value##${isRememberMe.value}");
-      
+
       // Map the API response to our UserData model
       UserData userData = loginResponse.userData;
-      
+
       // Store the API token for future requests
       String apiToken = userData.apiToken;
       log("API Token received: $apiToken");
-      
+
       // If the token is empty, check if it's in the raw data
       if (apiToken.isEmpty && loginResponse.data != null) {
         // Check if token is directly in the data
@@ -105,36 +106,36 @@ class SignInController extends GetxController {
           log("API Token found in raw data: $apiToken");
         }
         // Check if token is inside a 'user' object
-        else if (loginResponse.data!.containsKey('user') && 
-                loginResponse.data!['user'] is Map && 
-                (loginResponse.data!['user'] as Map).containsKey('token')) {
+        else if (loginResponse.data!.containsKey('user') &&
+            loginResponse.data!['user'] is Map &&
+            (loginResponse.data!['user'] as Map).containsKey('token')) {
           apiToken = loginResponse.data!['user']['token'].toString();
           userData.apiToken = apiToken;
           log("API Token found in user object: $apiToken");
         }
       }
-      
+
       // If the userData object has empty or invalid values, we need to map from the API structure
       if (userData.firstName.isEmpty && apiToken.isNotEmpty) {
-        // The API response contains data in a different format than our model expects
         try {
           // Map the user's name (in this case, the 'name' from API would go to firstName)
           if (userData.userName.isNotEmpty) {
             List<String> nameParts = userData.userName.split(' ');
             if (nameParts.isNotEmpty) userData.firstName = nameParts[0];
-            if (nameParts.length > 1) userData.lastName = nameParts.sublist(1).join(' ');
+            if (nameParts.length > 1)
+              userData.lastName = nameParts.sublist(1).join(' ');
           }
-          
+
           // If we have raw data, try to extract more information
           if (loginResponse.data != null) {
             Map<String, dynamic> rawData = loginResponse.data!;
-            
+
             // Extract user data from different structures
             Map<String, dynamic>? userMap;
             if (rawData.containsKey('user') && rawData['user'] is Map) {
               userMap = Map<String, dynamic>.from(rawData['user']);
             }
-            
+
             if (userMap != null) {
               // Update fields that might be missing
               if (userData.email.isEmpty && userMap.containsKey('email')) {
@@ -142,14 +143,15 @@ class SignInController extends GetxController {
               }
               if (userData.userName.isEmpty && userMap.containsKey('name')) {
                 userData.userName = userMap['name'].toString();
-                
+
                 // Also update first/last name
                 List<String> nameParts = userData.userName.split(' ');
                 if (nameParts.isNotEmpty) userData.firstName = nameParts[0];
-                if (nameParts.length > 1) userData.lastName = nameParts.sublist(1).join(' ');
+                if (nameParts.length > 1)
+                  userData.lastName = nameParts.sublist(1).join(' ');
               }
-              if (userMap.containsKey('id') && userData.id < 0) {
-                userData.id = userMap['id'] is int ? userMap['id'] : int.tryParse(userMap['id'].toString()) ?? -1;
+              if (userMap.containsKey('id')) {
+                userData.idString = userMap['id'].toString();
               }
             }
           }
@@ -157,53 +159,45 @@ class SignInController extends GetxController {
           log("Error mapping user data: $e");
         }
       }
-      
-      // Save the user data
-      loginUserData(userData);
-      
-      // Make sure the token is not empty before saving
-      if (apiToken.isEmpty) {
-        log("Warning: API token is empty. Authentication may fail for future requests.");
-      } else {
-        log("Saving API token to preferences: $apiToken");
-      }
-      
-      // Save essential user data to shared preferences
-      CashHelper.saveData(key: SharedPreferenceConst.USER_ID, value: userData.id);
-      CashHelper.saveData(key: SharedPreferenceConst.API_TOKEN, value: apiToken);
-      
-      // We need to use toJson to properly serialize the object
-      CashHelper.saveData(key: SharedPreferenceConst.USER_DATA, value: userData.toJson());
-      CashHelper.saveData(key: SharedPreferenceConst.USER_PASSWORD, value: passwordCont.text.trim());
-      
-      // Update login status
-      isLoggedIn(true);
-      CashHelper.saveData(key: SharedPreferenceConst.IS_LOGGED_IN, value: true);
-      CashHelper.saveData(key: SharedPreferenceConst.REMEMBER_USER, value: isRememberMe.value);
 
-      isLoading(false);
+      // Save the user data using our service
+      UserDataService.saveUserData(
+        userData: userData,
+        password: passwordCont.text.trim(),
+        rememberUser: isRememberMe.value,
+        apiToken: apiToken,
+      ).then((_) {
+        // Update login status
+        isLoggedIn(true);
+        loginUserData(userData);
+        isLoading(false);
 
-      // Handle navigation
-      Get.to(
-        () => ChooseClinicScreen(),
-        arguments: ClinicCenterArgumentModel(
-          selectedClinc: selectedAppClinic.value,
-        ),
-      )?.then((value) {
-        if (value is ClinicData) {
-          selectedAppClinic(value);
-          log("Clinic selected: ${value.name}, ID: ${value.id}");
-          
-          // Save the clinic data properly using toJson
-          CashHelper.saveData(key: SharedPreferenceConst.CLINIC_DATA, value: value.toJson());
-          CashHelper.saveData(key: SharedPreferenceConst.CLINIC_ID, value: value.id);
-          
-          // Navigate to dashboard
-          Get.offAll(() => DashboardScreen(),
-            binding: BindingsBuilder(() {
-              Get.put(HomeController());
-            }));
-        }
+        // Handle navigation
+        Get.to(
+          () => DashboardScreen(),
+          arguments: ClinicCenterArgumentModel(
+            selectedClinc: selectedAppClinic.value,
+          ),
+        )?.then((value) {
+          if (value is ClinicData) {
+            selectedAppClinic(value);
+            log("Clinic selected: ${value.name}, ID: ${value.id}");
+
+            // Save the clinic data using our service
+            UserDataService.saveClinicData(value).then((_) {
+              // Navigate to dashboard
+              Get.offAll(() => DashboardScreen(), binding: BindingsBuilder(() {
+                Get.put(HomeController());
+              }));
+            }).catchError((e) {
+              log("Error saving clinic data: $e");
+              toast("Error saving clinic data: ${e.toString()}", print: true);
+            });
+          }
+        });
+      }).catchError((e) {
+        isLoading(false);
+        toast("Error saving user data: ${e.toString()}", print: true);
       });
     } catch (e) {
       log("Error in handleLoginResponse: $e");
