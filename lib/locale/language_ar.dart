@@ -2065,4 +2065,22 @@ class LanguageAr extends BaseLanguage {
 
   @override
   String get applyPermission => 'تطبيق الإذن';
+
+  @override
+  String get attendance => 'الحضور'; // 'Attendance'
+
+  @override
+  String get noAttendanceFound => 'لا يوجد حضور مسجل'; // 'No Attendance Found'
+
+  @override
+  String get noAttendanceFoundDesc =>
+      'لم يتم العثور على سجلات حضور لهذا التاريخ'; // 'No attendance records found for this date'
+
+  @override
+  String get getAttendanceError =>
+      'خطأ في جلب بيانات الحضور'; // 'Attendance Data Error'
+
+  @override
+  String get failedToFetchAttendance =>
+      'فشل تحميل بيانات الحضور'; // 'Failed to fetch attendance data'
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:kivicare_clinic_admin/screens/schedule/screens/attendance_screen.dart';
 import 'package:nb_utils/nb_utils.dart';
 import '../../main.dart';
 import '../../components/app_scaffold.dart';
@@ -11,7 +12,6 @@ import 'schedule_controller.dart';
 import 'components/schedule_type_card.dart';
 import 'screens/leaves_screen.dart';
 import 'screens/holidays_screen.dart';
-import 'screens/shifts_screen.dart';
 import 'screens/overtime_screen.dart';
 
 class ScheduleScreen extends StatelessWidget {
@@ -70,10 +70,10 @@ class ScheduleScreen extends StatelessWidget {
               onTap: () => Get.to(() => HolidaysScreen()),
             ),
             ScheduleTypeCard(
-              title: locale.value.shifts,
+              title: locale.value.attendance,
               icon: Assets.iconsIcClock,
               color: Colors.orange,
-              onTap: () => Get.to(() => const ShiftsScreen()),
+              onTap: () => Get.to(() => const AttendanceScreen()),
             ),
             ScheduleTypeCard(
               title: locale.value.overtime,

@@ -2076,4 +2076,23 @@ class LanguageEn extends BaseLanguage {
 
   @override
   String get applyPermission => 'Apply Permission';
+
+  @override
+  String get attendance => 'Attendance'; // 'Attendance'
+
+  @override
+  String get noAttendanceFound =>
+      'No Attendance Found'; // 'No Attendance Found'
+
+  @override
+  String get noAttendanceFoundDesc =>
+      'No attendance records found for this date'; // 'No attendance records found for this date'
+
+  @override
+  String get getAttendanceError =>
+      'Attendance Data Error'; // 'Attendance Data Error'
+
+  @override
+  String get failedToFetchAttendance =>
+      'Failed to fetch attendance data'; // 'Failed to fetch attendance data'
 }

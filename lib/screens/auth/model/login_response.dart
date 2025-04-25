@@ -85,7 +85,9 @@ class UserData {
   factory UserData.fromJson(Map<String, dynamic> json) {
     return UserData(
       id: json['id'] is int ? json['id'] : -1,
-      idString: json['id'] is String ? json['id'] : "",
+      idString: json['idString'] is String
+          ? json['idString']
+          : (json['id'] is String ? json['id'] : ""),
       firstName: json['first_name'] is String ? json['first_name'] : "",
       lastName: json['last_name'] is String ? json['last_name'] : "",
       userName: json['user_name'] is String

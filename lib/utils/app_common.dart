@@ -11,7 +11,9 @@ import '../screens/auth/model/login_response.dart';
 import 'colors.dart';
 import 'constants.dart';
 
-bool isIqonicProduct = DOMAIN_URL.contains("apps.iqonic.design") || DOMAIN_URL.contains("iqonic.design") || DOMAIN_URL.contains("innoquad.in");
+bool isIqonicProduct = DOMAIN_URL.contains("apps.iqonic.design") ||
+    DOMAIN_URL.contains("iqonic.design") ||
+    DOMAIN_URL.contains("innoquad.in");
 
 RxString selectedLanguageCode = DEFAULT_LANGUAGE.obs;
 RxBool isLoggedIn = false.obs;
@@ -36,24 +38,35 @@ Rx<PackageInfoData> currentPackageinfo = PackageInfoData().obs;
 Rx<ClinicData> selectedAppClinic = ClinicData().obs;
 
 // Currency position common
-bool get isCurrencyPositionLeft => appCurrency.value.currencyPosition == CurrencyPosition.CURRENCY_POSITION_LEFT;
+bool get isCurrencyPositionLeft =>
+    appCurrency.value.currencyPosition ==
+    CurrencyPosition.CURRENCY_POSITION_LEFT;
 
-bool get isCurrencyPositionRight => appCurrency.value.currencyPosition == CurrencyPosition.CURRENCY_POSITION_RIGHT;
+bool get isCurrencyPositionRight =>
+    appCurrency.value.currencyPosition ==
+    CurrencyPosition.CURRENCY_POSITION_RIGHT;
 
-bool get isCurrencyPositionLeftWithSpace => appCurrency.value.currencyPosition == CurrencyPosition.CURRENCY_POSITION_LEFT_WITH_SPACE;
+bool get isCurrencyPositionLeftWithSpace =>
+    appCurrency.value.currencyPosition ==
+    CurrencyPosition.CURRENCY_POSITION_LEFT_WITH_SPACE;
 
-bool get isCurrencyPositionRightWithSpace => appCurrency.value.currencyPosition == CurrencyPosition.CURRENCY_POSITION_RIGHT_WITH_SPACE;
+bool get isCurrencyPositionRightWithSpace =>
+    appCurrency.value.currencyPosition ==
+    CurrencyPosition.CURRENCY_POSITION_RIGHT_WITH_SPACE;
 //endregion
 
 RxList<AboutDataModel> aboutPages = RxList();
 
-Rx<SaveBookingRes> saveBookingRes = SaveBookingRes(saveBookingResData: SaveBookingResData()).obs;
+Rx<SaveBookingRes> saveBookingRes =
+    SaveBookingRes(saveBookingResData: SaveBookingResData()).obs;
 //Booking Success
 RxString bookingSuccessDate = "".obs;
 // Rx<SaveBookingRes> saveBookingRes = SaveBookingRes().obs;
 //
 
-bool canLaunchVideoCall({required String status}) => status.toLowerCase().contains(StatusConst.confirmed) || status.toLowerCase().contains(StatusConst.check_in);
+bool canLaunchVideoCall({required String status}) =>
+    status.toLowerCase().contains(StatusConst.confirmed) ||
+    status.toLowerCase().contains(StatusConst.check_in);
 
 String getBookingStatus({required String status}) {
   if (status.toLowerCase().contains(StatusConst.pending)) {
@@ -124,7 +137,9 @@ Color getPriceStatusColor({required String paymentStatus}) {
     return completedStatusColor;
   } else if (paymentStatus.toLowerCase().contains(PaymentStatus.PAID)) {
     return completedStatusColor;
-  } else if (paymentStatus.toLowerCase().contains(PaymentStatus.ADVANCE_REFUNDED)) {
+  } else if (paymentStatus
+      .toLowerCase()
+      .contains(PaymentStatus.ADVANCE_REFUNDED)) {
     return confirmedStatusColor;
   } else if (paymentStatus.toLowerCase().contains(PaymentStatus.REFUNDED)) {
     return confirmedStatusColor;
@@ -136,7 +151,8 @@ Color getPriceStatusColor({required String paymentStatus}) {
 String getRequestStatus({required String status}) {
   if (status.toLowerCase().contains(RequestStatus.pending)) {
     return locale.value.pending;
-  } else if (status.toLowerCase().contains(RequestStatus.approved) || status.toLowerCase().contains(RequestStatus.accept)) {
+  } else if (status.toLowerCase().contains(RequestStatus.approved) ||
+      status.toLowerCase().contains(RequestStatus.accept)) {
     return locale.value.approved;
   } else if (status.toLowerCase().contains(RequestStatus.rejected)) {
     return locale.value.rejected;
@@ -148,7 +164,8 @@ String getRequestStatus({required String status}) {
 Color getRequestStatusColor({required String requestStatus}) {
   if (requestStatus.toLowerCase().contains(RequestStatus.pending)) {
     return pendingStatusColor;
-  } else if (requestStatus.toLowerCase().contains(RequestStatus.approved) || requestStatus.toLowerCase().contains(RequestStatus.accept)) {
+  } else if (requestStatus.toLowerCase().contains(RequestStatus.approved) ||
+      requestStatus.toLowerCase().contains(RequestStatus.accept)) {
     return completedStatusColor;
   } else if (requestStatus.toLowerCase().contains(RequestStatus.rejected)) {
     return cancelStatusColor;
@@ -160,3 +177,12 @@ Color getRequestStatusColor({required String requestStatus}) {
 String getUserRoleTopic(String userRole) {
   return userRole.toLowerCase().replaceAll(' ', '_');
 }
+
+String get failedToFetchAttendance => 'Failed to fetch attendance';
+String get getAttendanceError => 'Error fetching attendance: ';
+String get checkInSuccess => 'Checked in successfully';
+String get failedToCheckIn => 'Failed to check in';
+String get checkInError => 'Error checking in: ';
+String get checkOutSuccess => 'Checked out successfully';
+String get failedToCheckOut => 'Failed to check out';
+String get checkOutError => 'Error checking out: ';

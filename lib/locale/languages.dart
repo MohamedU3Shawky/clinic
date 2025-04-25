@@ -1247,4 +1247,14 @@ abstract class BaseLanguage {
   String get viewDetails;
 
   String get applyPermission;
+
+  String get attendance ;
+
+  String get noAttendanceFound ;
+
+  String get noAttendanceFoundDesc ;
+
+  String get failedToFetchAttendance;
+
+  String get getAttendanceError;
 }
