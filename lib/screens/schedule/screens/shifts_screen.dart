@@ -10,6 +10,8 @@ import '../../../main.dart';
 import '../../../models/shift_model.dart';
 import '../../../utils/app_common.dart';
 import '../../../utils/colors.dart';
+import '../../../utils/api_end_points.dart';
+import '../../../network/network_utils.dart';
 import 'shifts_controller.dart';
 
 class ShiftsScreen extends StatelessWidget {
@@ -41,7 +43,7 @@ class ShiftsScreen extends StatelessWidget {
               if (controller.isLoading.value) {
                 return const Center(child: CircularProgressIndicator());
               }
-              return _buildShiftsList(controller);
+              return _buildShiftsList(context, controller);
             }),
           ),
         ],
@@ -187,7 +189,7 @@ class ShiftsScreen extends StatelessWidget {
     }
   }
 
-  Widget _buildShiftsList(ShiftsController controller) {
+  Widget _buildShiftsList(BuildContext context, ShiftsController controller) {
     if (controller.shifts.isEmpty) {
       return Center(
         child: Column(
@@ -221,12 +223,12 @@ class ShiftsScreen extends StatelessWidget {
       itemCount: controller.shifts.length,
       itemBuilder: (context, index) {
         final shift = controller.shifts[index];
-        return _buildShiftCard(shift);
+        return _buildShiftCard(context, shift);
       },
     );
   }
 
-  Widget _buildShiftCard(ShiftModel shift) {
+  Widget _buildShiftCard(BuildContext context, ShiftModel shift) {
     final isDark = isDarkMode.value;
     final timeTable = shift.timeTable;
     final color = Color(int.parse(timeTable.color.replaceAll('#', '0xFF')));
@@ -368,7 +370,7 @@ class ShiftsScreen extends StatelessWidget {
                     const SizedBox(width: 12),
                     Expanded(
                       child: ElevatedButton.icon(
-                        onPressed: () async {},
+                        onPressed: () => _showPermissionDialog(context, shift),
                         icon: const Icon(Icons.cancel_outlined),
                         label: Text(locale.value.applyPermission),
                         style: ElevatedButton.styleFrom(
@@ -413,6 +415,179 @@ class ShiftsScreen extends StatelessWidget {
           style: boldTextStyle(size: 14),
         ),
       ],
+    );
+  }
+
+  void _showPermissionDialog(BuildContext context, ShiftModel shift) {
+    final permissionType = 'LateIn'.obs;
+    final hours = 0.obs;
+    final minutes = 0.obs;
+
+    Get.dialog(
+      Dialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Container(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Apply Permission',
+                style: boldTextStyle(size: 20),
+              ),
+              const SizedBox(height: 24),
+              Obx(() => DropdownButtonFormField<String>(
+                    value: permissionType.value,
+                    decoration: InputDecoration(
+                      labelText: 'Permission Type',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    items: [
+                      DropdownMenuItem(
+                        value: 'LateIn',
+                        child: Text('Late In'),
+                      ),
+                      DropdownMenuItem(
+                        value: 'EarlyLeave',
+                        child: Text('Early Leave'),
+                      ),
+                    ],
+                    onChanged: (value) {
+                      if (value != null) {
+                        permissionType.value = value;
+                      }
+                    },
+                  )),
+              const SizedBox(height: 10),
+              Row(
+                children: [
+                  Expanded(
+                    child: Obx(() => DropdownButtonFormField<int>(
+                          value: hours.value,
+                          decoration: InputDecoration(
+                            labelText: 'Hours',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                          items: List.generate(
+                            24,
+                            (index) => DropdownMenuItem(
+                              value: index,
+                              child: Text('$index hours'),
+                            ),
+                          ),
+                          onChanged: (value) {
+                            if (value != null) {
+                              hours.value = value;
+                            }
+                          },
+                        )),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Obx(() => DropdownButtonFormField<int>(
+                          value: minutes.value,
+                          decoration: InputDecoration(
+                            labelText: 'Minutes',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                          items: List.generate(
+                            60,
+                            (index) => DropdownMenuItem(
+                              value: index,
+                              child: Text(
+                                '$index minutes',
+                                style: TextStyle(fontSize: 15),
+                              ),
+                            ),
+                          ),
+                          onChanged: (value) {
+                            if (value != null) {
+                              minutes.value = value;
+                            }
+                          },
+                        )),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 24),
+              Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () => Get.back(),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.grey[300],
+                        foregroundColor: Colors.black,
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      child: const Text('Cancel'),
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        final totalMinutes = (hours.value * 60) + minutes.value;
+                        if (totalMinutes == 0) {
+                          toast('Please select a duration');
+                          return;
+                        }
+
+                        try {
+                          final response = await buildHttpResponse(
+                            APIEndPoints.attendancePermissions,
+                            request: {
+                              'shiftId': shift.id,
+                              'date': DateFormat('yyyy-MM-dd')
+                                  .format(DateTime.now()),
+                              'type': permissionType.value,
+                              'duration': totalMinutes,
+                            },
+                            method: HttpMethodType.POST,
+                          );
+
+                          final data = await handleResponse(response);
+
+                          if (data['success'] == true) {
+                            toast('Permission applied successfully');
+                            Get.back();
+                          } else {
+                            toast(data['message'] ??
+                                'Failed to apply permission');
+                          }
+                        } catch (e) {
+                          toast('Error applying permission: $e');
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: appColorPrimary,
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      child: const Text('Apply'),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

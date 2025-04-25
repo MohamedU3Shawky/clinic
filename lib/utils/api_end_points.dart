@@ -129,6 +129,7 @@ class APIEndPoints {
   static const String checkOut = 'attendance';
   static const String isChecked = 'attendance/is-checked';
   static const String allAttendance = 'attendance';
+  static const String attendancePermissions = 'attendance-permissions';
 
   // Schedule endpoints
   static const String getShifts = 'shift';
