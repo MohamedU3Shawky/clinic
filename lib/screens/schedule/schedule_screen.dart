@@ -78,7 +78,7 @@ class ScheduleScreen extends StatelessWidget {
             ),
             ScheduleTypeCard(
               title: 'Attendance Permissions',
-              icon: Assets.iconsIcTimeOutlined,
+              icon: Assets.iconsIcRequest,
               color: Colors.purple,
               onTap: () => Get.to(() => const AttendancePermissionsScreen()),
             ),

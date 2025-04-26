@@ -104,4 +104,92 @@ class ShiftServiceApis {
       return false;
     }
   }
+
+  static Future<bool> checkIn({
+    required String userId,
+    required String shiftId,
+    required double checkInLat,
+    required double checkInLng,
+    String? qrCode,
+  }) async {
+    try {
+      final response = await buildHttpResponse(
+        APIEndPoints.checkIn,
+        request: {
+          'userId': userId,
+          'shiftId': shiftId,
+          'checkInLat': checkInLat,
+          'checkInLng': checkInLng,
+          if (qrCode != null) 'QRCode': qrCode,
+        },
+        method: HttpMethodType.POST,
+      );
+
+      final data = await handleResponse(response);
+
+      if (data['success'] == true) {
+        toast(locale.value.checkInSuccess);
+        return true;
+      } else {
+        toast(data['message'] ?? locale.value.checkInFailed);
+        return false;
+      }
+    } catch (e) {
+      log('${locale.value.checkInError}$e');
+      toast(e.toString());
+      return false;
+    }
+  }
+
+  static Future<bool> checkOut({
+    required String attendanceId,
+    required String userId,
+    required String shiftId,
+    required double checkOutLat,
+    required double checkOutLng,
+    String? qrCode,
+  }) async {
+    try {
+      final response = await buildHttpResponse(
+        '${APIEndPoints.checkOut}/$attendanceId',
+        request: {
+          'userId': userId,
+          'shiftId': shiftId,
+          'checkOutLat': checkOutLat,
+          'checkOutLng': checkOutLng,
+          if (qrCode != null) 'QRCode': qrCode,
+        },
+        method: HttpMethodType.PUT,
+      );
+
+      final data = await handleResponse(response);
+
+      if (data['success'] == true) {
+        toast(locale.value.checkOutSuccess);
+        return true;
+      } else {
+        toast(data['message'] ?? locale.value.checkOutFailed);
+        return false;
+      }
+    } catch (e) {
+      log('${locale.value.checkOutError}$e');
+      toast(e.toString());
+      return false;
+    }
+  }
+
+  static Future<bool> isCheckedIn(String shiftId) async {
+    try {
+      final response = await buildHttpResponse(
+        '${APIEndPoints.isChecked}?shiftId=$shiftId',
+        method: HttpMethodType.GET,
+      );
+
+      final data = await handleResponse(response);
+      return data['data'] == true;
+    } catch (e) {
+      log('${locale.value.checkStatusError}$e');
+      return false;
+    }
+  }
 }

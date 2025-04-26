@@ -26,14 +26,14 @@ class ShiftsScreen extends StatelessWidget {
       appBartitleText: locale.value.shifts,
       appBarVerticalSize: Get.height * 0.12,
       hideAppBar: false,
-      actions: [
-        IconButton(
-          icon: const Icon(Icons.add_circle_outline, color: Colors.white),
-          onPressed: () {
-            // TODO: Navigate to add shift screen
-          },
-        ),
-      ],
+      // actions: [
+      //   IconButton(
+      //     icon: const Icon(Icons.add_circle_outline, color: Colors.white),
+      //     onPressed: () {
+      //       // TODO: Navigate to add shift screen
+      //     },
+      //   ),
+      // ],
       body: Column(
         children: [
           _buildViewToggle(controller),
@@ -232,6 +232,13 @@ class ShiftsScreen extends StatelessWidget {
     final isDark = isDarkMode.value;
     final timeTable = shift.timeTable;
     final color = Color(int.parse(timeTable.color.replaceAll('#', '0xFF')));
+    final controller = Get.find<ShiftsController>();
+
+    // Check attendance status
+    final hasAttendance = shift.attendance.isNotEmpty;
+    final currentAttendance = hasAttendance ? shift.attendance.last : null;
+    final canCheckIn = !hasAttendance || currentAttendance?.checkOutDate != null;
+    final canCheckOut = hasAttendance && currentAttendance?.checkOutDate == null;
 
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
@@ -284,25 +291,25 @@ class ShiftsScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                PopupMenuButton<String>(
-                  icon: Icon(
-                    Icons.more_vert,
-                    color: isDark ? appDarkBodyColor : secondaryTextColor,
-                  ),
-                  onSelected: (value) {
-                    // TODO: Implement shift actions
-                  },
-                  itemBuilder: (context) => [
-                    const PopupMenuItem(
-                      value: 'edit',
-                      child: Text('Edit'),
-                    ),
-                    const PopupMenuItem(
-                      value: 'delete',
-                      child: Text('Delete'),
-                    ),
-                  ],
-                ),
+                // PopupMenuButton<String>(
+                //   icon: Icon(
+                //     Icons.more_vert,
+                //     color: isDark ? appDarkBodyColor : secondaryTextColor,
+                //   ),
+                //   onSelected: (value) {
+                //     // TODO: Implement shift actions
+                //   },
+                //   itemBuilder: (context) => [
+                //     const PopupMenuItem(
+                //       value: 'edit',
+                //       child: Text('Edit'),
+                //     ),
+                //     const PopupMenuItem(
+                //       value: 'delete',
+                //       child: Text('Delete'),
+                //     ),
+                //   ],
+                // ),
               ],
             ),
           ),
@@ -352,38 +359,59 @@ class ShiftsScreen extends StatelessWidget {
                 const SizedBox(height: 8),
                 Row(
                   children: [
-                    Expanded(
-                      child: ElevatedButton.icon(
-                        onPressed: () async {},
-                        icon: const Icon(Icons.check_circle_outline),
-                        label: Text(locale.value.checkIn),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.green,
-                          foregroundColor: Colors.white,
-                          padding: const EdgeInsets.symmetric(vertical: 12),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
+                    if (canCheckIn)
+                      Expanded(
+                        child: ElevatedButton.icon(
+                          onPressed: () async {
+                            controller.showCheckInOutDialog(shift, true);
+                          },
+                          icon: const Icon(Icons.check_circle_outline),
+                          label: Text(locale.value.checkIn),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.green,
+                            foregroundColor: Colors.white,
+                            padding: const EdgeInsets.symmetric(vertical: 12),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: ElevatedButton.icon(
-                        onPressed: () => _showPermissionDialog(context, shift),
-                        icon: const Icon(Icons.cancel_outlined),
-                        label: Text(locale.value.applyPermission),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.red,
-                          foregroundColor: Colors.white,
-                          padding: const EdgeInsets.symmetric(vertical: 12),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
+                    if (canCheckIn && canCheckOut) const SizedBox(width: 12),
+                    if (canCheckOut)
+                      Expanded(
+                        child: ElevatedButton.icon(
+                          onPressed: () {
+                            controller.showCheckInOutDialog(shift, false);
+                          },
+                          icon: const Icon(Icons.cancel_outlined),
+                          label: Text(locale.value.checkout),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.red,
+                            foregroundColor: Colors.white,
+                            padding: const EdgeInsets.symmetric(vertical: 12),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
                           ),
                         ),
                       ),
-                    ),
                   ],
+                ),
+                const SizedBox(height: 8),
+                ElevatedButton.icon(
+                  onPressed: () => _showPermissionDialog(context, shift),
+                  icon: const Icon(Icons.calendar_today),
+                  label: Text(locale.value.applyPermission),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: appColorPrimary,
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    minimumSize: const Size(double.infinity, 48),
+                  ),
                 ),
               ],
             ),
@@ -431,7 +459,7 @@ class ShiftsScreen extends StatelessWidget {
         ),
         child: Container(
           padding: const EdgeInsets.all(24),
-          child: Column(
+          child: SingleChildScrollView(child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -597,7 +625,8 @@ class ShiftsScreen extends StatelessWidget {
                 ],
               ),
             ],
-          ),
+          ),)
+          
         ),
       ),
     );

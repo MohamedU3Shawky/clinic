@@ -12,6 +12,9 @@ class ShiftModel {
   final TimeTableModel timeTable;
   final DateTime createdAt;
   final DateTime updatedAt;
+  final List<AttendanceModel> attendance;
+  final List<AttendancePermissionModel> attendancePermissions;
+  final List<AttendanceOvertimeModel> attendanceOvertime;
 
   ShiftModel({
     required this.id,
@@ -27,7 +30,12 @@ class ShiftModel {
     required this.timeTable,
     required this.createdAt,
     required this.updatedAt,
-  });
+    List<AttendanceModel>? attendance,
+    List<AttendancePermissionModel>? attendancePermissions,
+    List<AttendanceOvertimeModel>? attendanceOvertime,
+  }) : attendance = attendance ?? [],
+       attendancePermissions = attendancePermissions ?? [],
+       attendanceOvertime = attendanceOvertime ?? [];
 
   factory ShiftModel.fromJson(Map<String, dynamic> json) {
     return ShiftModel(
@@ -93,6 +101,18 @@ class ShiftModel {
               createdAt: DateTime.now(),
               updatedAt: DateTime.now(),
             ),
+      attendance: json['attendance'] != null
+          ? List<AttendanceModel>.from(
+              json['attendance'].map((x) => AttendanceModel.fromJson(x)))
+          : [],
+      attendancePermissions: json['attendancePermissions'] != null
+          ? List<AttendancePermissionModel>.from(
+              json['attendancePermissions'].map((x) => AttendancePermissionModel.fromJson(x)))
+          : [],
+      attendanceOvertime: json['attendanceOvertime'] != null
+          ? List<AttendanceOvertimeModel>.from(
+              json['attendanceOvertime'].map((x) => AttendanceOvertimeModel.fromJson(x)))
+          : [],
       createdAt: json['createdAt'] != null
           ? DateTime.parse(json['createdAt'].toString())
           : DateTime.now(),
@@ -115,6 +135,9 @@ class ShiftModel {
       'branch': branch.toJson(),
       'user': user.toJson(),
       'timeTable': timeTable.toJson(),
+      'attendance': attendance.map((x) => x.toJson()).toList(),
+      'attendancePermissions': attendancePermissions.map((x) => x.toJson()).toList(),
+      'attendanceOvertime': attendanceOvertime.map((x) => x.toJson()).toList(),
       'createdAt': createdAt.toIso8601String(),
       'updatedAt': updatedAt.toIso8601String(),
     };
@@ -134,6 +157,9 @@ class ShiftModel {
     TimeTableModel? timeTable,
     DateTime? createdAt,
     DateTime? updatedAt,
+    List<AttendanceModel>? attendance,
+    List<AttendancePermissionModel>? attendancePermissions,
+    List<AttendanceOvertimeModel>? attendanceOvertime,
   }) {
     return ShiftModel(
       id: id ?? this.id,
@@ -149,6 +175,9 @@ class ShiftModel {
       timeTable: timeTable ?? this.timeTable,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
+      attendance: attendance ?? this.attendance,
+      attendancePermissions: attendancePermissions ?? this.attendancePermissions,
+      attendanceOvertime: attendanceOvertime ?? this.attendanceOvertime,
     );
   }
 }
@@ -408,6 +437,150 @@ class TimeTableModel {
       'lateOutOTThreshold': lateOutOTThreshold,
       'breakStartTime': breakStartTime.toIso8601String(),
       'breakEndTime': breakEndTime.toIso8601String(),
+      'createdAt': createdAt.toIso8601String(),
+      'updatedAt': updatedAt.toIso8601String(),
+    };
+  }
+}
+
+class AttendanceModel {
+  final String id;
+  final DateTime? checkInDate;
+  final DateTime? checkOutDate;
+  final UserModel? doneInBy;
+  final UserModel? doneOutBy;
+  final double? checkInLat;
+  final double? checkInLng;
+  final double? checkOutLat;
+  final double? checkOutLng;
+  final bool automatic;
+
+  AttendanceModel({
+    required this.id,
+    this.checkInDate,
+    this.checkOutDate,
+    this.doneInBy,
+    this.doneOutBy,
+    this.checkInLat,
+    this.checkInLng,
+    this.checkOutLat,
+    this.checkOutLng,
+    required this.automatic,
+  });
+
+  factory AttendanceModel.fromJson(Map<String, dynamic> json) {
+    return AttendanceModel(
+      id: json['id']?.toString() ?? '',
+      checkInDate: json['checkInDate'] != null
+          ? DateTime.parse(json['checkInDate'].toString())
+          : null,
+      checkOutDate: json['checkOutDate'] != null
+          ? DateTime.parse(json['checkOutDate'].toString())
+          : null,
+      doneInBy: json['doneInBy'] != null
+          ? UserModel.fromJson(json['doneInBy'] as Map<String, dynamic>)
+          : null,
+      doneOutBy: json['doneOutBy'] != null
+          ? UserModel.fromJson(json['doneOutBy'] as Map<String, dynamic>)
+          : null,
+      checkInLat: json['checkInLat']?.toDouble(),
+      checkInLng: json['checkInLng']?.toDouble(),
+      checkOutLat: json['checkOutLat']?.toDouble(),
+      checkOutLng: json['checkOutLng']?.toDouble(),
+      automatic: json['automatic'] as bool? ?? false,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'checkInDate': checkInDate?.toIso8601String(),
+      'checkOutDate': checkOutDate?.toIso8601String(),
+      'doneInBy': doneInBy?.toJson(),
+      'doneOutBy': doneOutBy?.toJson(),
+      'checkInLat': checkInLat,
+      'checkInLng': checkInLng,
+      'checkOutLat': checkOutLat,
+      'checkOutLng': checkOutLng,
+      'automatic': automatic,
+    };
+  }
+}
+
+class AttendancePermissionModel {
+  final String id;
+  final String type;
+  final int duration;
+  final String? reason;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+
+  AttendancePermissionModel({
+    required this.id,
+    required this.type,
+    required this.duration,
+    this.reason,
+    required this.createdAt,
+    required this.updatedAt,
+  });
+
+  factory AttendancePermissionModel.fromJson(Map<String, dynamic> json) {
+    return AttendancePermissionModel(
+      id: json['id']?.toString() ?? '',
+      type: json['type']?.toString() ?? '',
+      duration: json['duration'] as int? ?? 0,
+      reason: json['reason']?.toString(),
+      createdAt: json['createdAt'] != null
+          ? DateTime.parse(json['createdAt'].toString())
+          : DateTime.now(),
+      updatedAt: json['updatedAt'] != null
+          ? DateTime.parse(json['updatedAt'].toString())
+          : DateTime.now(),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'type': type,
+      'duration': duration,
+      'reason': reason,
+      'createdAt': createdAt.toIso8601String(),
+      'updatedAt': updatedAt.toIso8601String(),
+    };
+  }
+}
+
+class AttendanceOvertimeModel {
+  final String id;
+  final int duration;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+
+  AttendanceOvertimeModel({
+    required this.id,
+    required this.duration,
+    required this.createdAt,
+    required this.updatedAt,
+  });
+
+  factory AttendanceOvertimeModel.fromJson(Map<String, dynamic> json) {
+    return AttendanceOvertimeModel(
+      id: json['id']?.toString() ?? '',
+      duration: json['duration'] as int? ?? 0,
+      createdAt: json['createdAt'] != null
+          ? DateTime.parse(json['createdAt'].toString())
+          : DateTime.now(),
+      updatedAt: json['updatedAt'] != null
+          ? DateTime.parse(json['updatedAt'].toString())
+          : DateTime.now(),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'duration': duration,
       'createdAt': createdAt.toIso8601String(),
       'updatedAt': updatedAt.toIso8601String(),
     };

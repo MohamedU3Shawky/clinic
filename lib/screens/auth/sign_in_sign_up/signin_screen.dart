@@ -60,11 +60,10 @@ class SignInScreen extends StatelessWidget {
                   children: [
                     Image.asset(
                       Assets.assetsAppLogo,
-                      width: 120,
-                      height: 120,
+                      width: 160,
+                      height: 160,
                       fit: BoxFit.contain,
                     ),
-                    16.height,
                     Text(
                       APP_NAME,
                       style: boldTextStyle(color: whiteTextColor, size: 20),

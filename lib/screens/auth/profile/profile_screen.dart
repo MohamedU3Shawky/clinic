@@ -59,151 +59,151 @@ class ProfileScreen extends StatelessWidget {
                   ),
                 ),
                 16.height,
-                SettingItemWidget(
-                  decoration: boxDecorationDefault(color: context.cardColor),
-                  title: locale.value.editProfile,
-                  subTitle: locale.value.personalizeYourProfile,
-                  splashColor: transparentColor,
-                  onTap: () {
-                    if (loginUserData.value.userRole
-                        .contains(EmployeeKeyConst.doctor)) {
-                      final doctorData = Doctor(
-                        id: loginUserData.value.id,
-                        doctorId: loginUserData.value.id,
-                        firstName: loginUserData.value.firstName,
-                        lastName: loginUserData.value.lastName,
-                        email: loginUserData.value.email,
-                        profileImage: loginUserData.value.profileImage,
-                        address: loginUserData.value.address,
-                      );
-                      Get.to(() => AddDoctorForm(isFromEditProfile: true),
-                          arguments: doctorData);
-                    } else {
-                      Get.to(() => EditUserProfileScreen(),
-                          duration: const Duration(milliseconds: 800));
-                    }
-                  },
-                  titleTextStyle: boldTextStyle(size: 14),
-                  leading: commonLeadingWid(
-                          imgPath: Assets.iconsIcEditprofileOutlined,
-                          color: appColorPrimary)
-                      .circularLightPrimaryBg(),
-                  trailing: trailing,
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 15, horizontal: 16),
-                ).paddingTop(16),
-                SettingItemWidget(
-                  decoration: boxDecorationDefault(color: context.cardColor),
-                  title: locale.value.clinics,
-                  subTitle: locale.value.manageClinics,
-                  splashColor: transparentColor,
-                  onTap: () {
-                    Get.to(() => ClinicListScreen());
-                  },
-                  titleTextStyle: boldTextStyle(size: 14),
-                  leading: commonLeadingWid(
-                          imgPath: Assets.iconsIcClinic, color: appColorPrimary)
-                      .circularLightPrimaryBg(),
-                  trailing: trailing,
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 15, horizontal: 16),
-                ).paddingTop(16).visible(loginUserData.value.userRole
-                    .contains(EmployeeKeyConst.vendor)),
-                SettingItemWidget(
-                  decoration: boxDecorationDefault(color: context.cardColor),
-                  title: locale.value.manageSessions,
-                  subTitle: locale.value.changeOrAddYourSessions,
-                  splashColor: transparentColor,
-                  onTap: () {
-                    Get.to(() => AddSessionScreen(),
-                        arguments: DoctorSessionModel(
-                          doctorId: loginUserData.value.id,
-                          clinicId: selectedAppClinic.value.id,
-                          fullName: loginUserData.value.userName,
-                        ));
-                  },
-                  titleTextStyle: boldTextStyle(size: 14),
-                  leading: commonLeadingWid(
-                          imgPath: Assets.iconsIcTimeOutlined,
-                          color: appColorPrimary)
-                      .circularLightPrimaryBg(),
-                  trailing: trailing,
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 15, horizontal: 16),
-                ).paddingTop(16).visible(loginUserData.value.userRole
-                    .contains(EmployeeKeyConst.doctor)),
-                SettingItemWidget(
-                  decoration: boxDecorationDefault(color: context.cardColor),
-                  title: locale.value.doctors,
-                  subTitle: locale.value.manageDoctors,
-                  splashColor: transparentColor,
-                  onTap: () {
-                    Get.to(() => DoctorsListScreen());
-                  },
-                  titleTextStyle: boldTextStyle(size: 14),
-                  leading: commonLeadingWid(
-                          imgPath: Assets.iconsIcDoctor, color: appColorPrimary)
-                      .circularLightPrimaryBg(),
-                  trailing: trailing,
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 15, horizontal: 16),
-                ).paddingTop(16).visible(!loginUserData.value.userRole
-                    .contains(EmployeeKeyConst.doctor)),
-                SettingItemWidget(
-                  decoration: boxDecorationDefault(color: context.cardColor),
-                  title: locale.value.requests,
-                  subTitle:
-                      locale.value.requestForServiceCategoryAndSpecialization,
-                  splashColor: transparentColor,
-                  onTap: () {
-                    Get.to(() => RequestListScreen());
-                  },
-                  titleTextStyle: boldTextStyle(size: 14),
-                  leading: commonLeadingWid(
-                          imgPath: Assets.iconsIcRequest,
-                          color: appColorPrimary)
-                      .circularLightPrimaryBg(),
-                  trailing: trailing,
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 15, horizontal: 16),
-                ).paddingTop(16).visible(loginUserData.value.userRole
-                    .contains(EmployeeKeyConst.vendor)),
-                SettingItemWidget(
-                  decoration: boxDecorationDefault(color: context.cardColor),
-                  title: locale.value.receptionists,
-                  subTitle: locale.value.allReceptionist,
-                  splashColor: transparentColor,
-                  onTap: () {
-                    Get.to(() => ReceptionistListScreen());
-                  },
-                  titleTextStyle: boldTextStyle(size: 14),
-                  leading: commonLeadingWid(
-                          imgPath: Assets.iconsIcReceptionist,
-                          color: appColorPrimary)
-                      .circularLightPrimaryBg(),
-                  trailing: trailing,
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 15, horizontal: 16),
-                ).paddingTop(16).visible(loginUserData.value.userRole
-                    .contains(EmployeeKeyConst.vendor)),
-                SettingItemWidget(
-                  decoration: boxDecorationDefault(color: context.cardColor),
-                  title: locale.value.encounters,
-                  subTitle: locale.value.manageEncouterData,
-                  splashColor: transparentColor,
-                  onTap: () {
-                    Get.to(() => AllEncountersScreen());
-                  },
-                  titleTextStyle: boldTextStyle(size: 14),
-                  leading: commonLeadingWid(
-                          imgPath: Assets.iconsIcEncounter,
-                          color: appColorPrimary)
-                      .circularLightPrimaryBg(),
-                  trailing: trailing,
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 15, horizontal: 16),
-                ).paddingTop(16).visible(!loginUserData.value.userRole
-                    .contains(EmployeeKeyConst.receptionist)),
+                // SettingItemWidget(
+                //   decoration: boxDecorationDefault(color: context.cardColor),
+                //   title: locale.value.editProfile,
+                //   subTitle: locale.value.personalizeYourProfile,
+                //   splashColor: transparentColor,
+                //   onTap: () {
+                //     if (loginUserData.value.userRole
+                //         .contains(EmployeeKeyConst.doctor)) {
+                //       final doctorData = Doctor(
+                //         id: loginUserData.value.id,
+                //         doctorId: loginUserData.value.id,
+                //         firstName: loginUserData.value.firstName,
+                //         lastName: loginUserData.value.lastName,
+                //         email: loginUserData.value.email,
+                //         profileImage: loginUserData.value.profileImage,
+                //         address: loginUserData.value.address,
+                //       );
+                //       Get.to(() => AddDoctorForm(isFromEditProfile: true),
+                //           arguments: doctorData);
+                //     } else {
+                //       Get.to(() => EditUserProfileScreen(),
+                //           duration: const Duration(milliseconds: 800));
+                //     }
+                //   },
+                //   titleTextStyle: boldTextStyle(size: 14),
+                //   leading: commonLeadingWid(
+                //           imgPath: Assets.iconsIcEditprofileOutlined,
+                //           color: appColorPrimary)
+                //       .circularLightPrimaryBg(),
+                //   trailing: trailing,
+                //   padding:
+                //       const EdgeInsets.symmetric(vertical: 15, horizontal: 16),
+                // ).paddingTop(16),
+                // SettingItemWidget(
+                //   decoration: boxDecorationDefault(color: context.cardColor),
+                //   title: locale.value.clinics,
+                //   subTitle: locale.value.manageClinics,
+                //   splashColor: transparentColor,
+                //   onTap: () {
+                //     Get.to(() => ClinicListScreen());
+                //   },
+                //   titleTextStyle: boldTextStyle(size: 14),
+                //   leading: commonLeadingWid(
+                //           imgPath: Assets.iconsIcClinic, color: appColorPrimary)
+                //       .circularLightPrimaryBg(),
+                //   trailing: trailing,
+                //   padding:
+                //       const EdgeInsets.symmetric(vertical: 15, horizontal: 16),
+                // ).paddingTop(16).visible(loginUserData.value.userRole
+                //     .contains(EmployeeKeyConst.vendor)),
+                // SettingItemWidget(
+                //   decoration: boxDecorationDefault(color: context.cardColor),
+                //   title: locale.value.manageSessions,
+                //   subTitle: locale.value.changeOrAddYourSessions,
+                //   splashColor: transparentColor,
+                //   onTap: () {
+                //     Get.to(() => AddSessionScreen(),
+                //         arguments: DoctorSessionModel(
+                //           doctorId: loginUserData.value.id,
+                //           clinicId: selectedAppClinic.value.id,
+                //           fullName: loginUserData.value.userName,
+                //         ));
+                //   },
+                //   titleTextStyle: boldTextStyle(size: 14),
+                //   leading: commonLeadingWid(
+                //           imgPath: Assets.iconsIcTimeOutlined,
+                //           color: appColorPrimary)
+                //       .circularLightPrimaryBg(),
+                //   trailing: trailing,
+                //   padding:
+                //       const EdgeInsets.symmetric(vertical: 15, horizontal: 16),
+                // ).paddingTop(16).visible(loginUserData.value.userRole
+                //     .contains(EmployeeKeyConst.doctor)),
+                // SettingItemWidget(
+                //   decoration: boxDecorationDefault(color: context.cardColor),
+                //   title: locale.value.doctors,
+                //   subTitle: locale.value.manageDoctors,
+                //   splashColor: transparentColor,
+                //   onTap: () {
+                //     Get.to(() => DoctorsListScreen());
+                //   },
+                //   titleTextStyle: boldTextStyle(size: 14),
+                //   leading: commonLeadingWid(
+                //           imgPath: Assets.iconsIcDoctor, color: appColorPrimary)
+                //       .circularLightPrimaryBg(),
+                //   trailing: trailing,
+                //   padding:
+                //       const EdgeInsets.symmetric(vertical: 15, horizontal: 16),
+                // ).paddingTop(16).visible(!loginUserData.value.userRole
+                    // .contains(EmployeeKeyConst.doctor)),
+                // SettingItemWidget(
+                //   decoration: boxDecorationDefault(color: context.cardColor),
+                //   title: locale.value.requests,
+                //   subTitle:
+                //       locale.value.requestForServiceCategoryAndSpecialization,
+                //   splashColor: transparentColor,
+                //   onTap: () {
+                //     Get.to(() => RequestListScreen());
+                //   },
+                //   titleTextStyle: boldTextStyle(size: 14),
+                //   leading: commonLeadingWid(
+                //           imgPath: Assets.iconsIcRequest,
+                //           color: appColorPrimary)
+                //       .circularLightPrimaryBg(),
+                //   trailing: trailing,
+                //   padding:
+                //       const EdgeInsets.symmetric(vertical: 15, horizontal: 16),
+                // ).paddingTop(16).visible(loginUserData.value.userRole
+                //     .contains(EmployeeKeyConst.vendor)),
+                // SettingItemWidget(
+                //   decoration: boxDecorationDefault(color: context.cardColor),
+                //   title: locale.value.receptionists,
+                //   subTitle: locale.value.allReceptionist,
+                //   splashColor: transparentColor,
+                //   onTap: () {
+                //     Get.to(() => ReceptionistListScreen());
+                //   },
+                //   titleTextStyle: boldTextStyle(size: 14),
+                //   leading: commonLeadingWid(
+                //           imgPath: Assets.iconsIcReceptionist,
+                //           color: appColorPrimary)
+                //       .circularLightPrimaryBg(),
+                //   trailing: trailing,
+                //   padding:
+                //       const EdgeInsets.symmetric(vertical: 15, horizontal: 16),
+                // ).paddingTop(16).visible(loginUserData.value.userRole
+                //     .contains(EmployeeKeyConst.vendor)),
+                // SettingItemWidget(
+                //   decoration: boxDecorationDefault(color: context.cardColor),
+                //   title: locale.value.encounters,
+                //   subTitle: locale.value.manageEncouterData,
+                //   splashColor: transparentColor,
+                //   onTap: () {
+                //     Get.to(() => AllEncountersScreen());
+                //   },
+                //   titleTextStyle: boldTextStyle(size: 14),
+                //   leading: commonLeadingWid(
+                //           imgPath: Assets.iconsIcEncounter,
+                //           color: appColorPrimary)
+                //       .circularLightPrimaryBg(),
+                //   trailing: trailing,
+                //   padding:
+                //       const EdgeInsets.symmetric(vertical: 15, horizontal: 16),
+                // ).paddingTop(16).visible(!loginUserData.value.userRole
+                //     .contains(EmployeeKeyConst.receptionist)),
                 SettingItemWidget(
                   title: locale.value.settings,
                   decoration: boxDecorationDefault(color: context.cardColor),

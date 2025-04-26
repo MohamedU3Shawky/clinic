@@ -1310,4 +1310,18 @@ abstract class BaseLanguage {
   String get noHistoryFound;
 
   String get getAttendanceError;
+
+  String? get checkInSuccess => null;
+
+  get checkInFailed => null;
+
+  get checkInError => null;
+
+  String? get checkOutSuccess => null;
+
+  get checkOutFailed => null;
+
+  get checkOutError => null;
+
+  get checkStatusError => null;
 }

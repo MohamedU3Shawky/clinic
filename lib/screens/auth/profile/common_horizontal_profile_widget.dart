@@ -72,25 +72,25 @@ class ProfilePicHorizotalWidget extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Positioned(
-                        bottom: 0,
-                        right: -60,
-                        left: 0,
-                        child: Container(
-                          height: 26,
-                          alignment: Alignment.center,
-                          child: AppButton(
-                            height: 30,
-                            width: 30,
-                            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-                            elevation: 0,
-                            shapeBorder: RoundedRectangleBorder(borderRadius: radius(100)),
-                            color: appColorSecondary,
-                            onTap: onCameraTap,
-                            child: Icon(Icons.edit_outlined,color: Colors.white,size: 16,),
-                          ),
-                        ).visible(!loginUserData.value.isSocialLogin),
-                      )
+                      // Positioned(
+                      //   bottom: 0,
+                      //   right: -60,
+                      //   left: 0,
+                      //   child: Container(
+                      //     height: 26,
+                      //     alignment: Alignment.center,
+                      //     child: AppButton(
+                      //       height: 30,
+                      //       width: 30,
+                      //       padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                      //       elevation: 0,
+                      //       shapeBorder: RoundedRectangleBorder(borderRadius: radius(100)),
+                      //       color: appColorSecondary,
+                      //       onTap: onCameraTap,
+                      //       child: Icon(Icons.edit_outlined,color: Colors.white,size: 16,),
+                      //     ),
+                      //   ).visible(!loginUserData.value.isSocialLogin),
+                      // )
                     ],
                   ),
                 ),

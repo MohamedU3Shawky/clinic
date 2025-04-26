@@ -110,37 +110,37 @@ class SettingScreen extends StatelessWidget {
                 ),
               ),
             ),
-            SettingItemWidget(
-              title: locale.value.changePassword,
-              onTap: () {
-                Get.to(() => ChangePassword());
-              },
-              titleTextStyle: primaryTextStyle(),
-              leading: commonLeadingWid(imgPath: Assets.iconsIcLock, color: appColorPrimary),
-            ).visible(isLoggedIn.value),
-            SettingItemWidget(
-              title: locale.value.deleteAccount,
-              onTap: () {
-                ifNotTester(() async {
-                  if (await isNetworkAvailable()) {
-                    showConfirmDialogCustom(
-                      context,
-                      negativeText: locale.value.cancel,
-                      positiveText: locale.value.delete,
-                      onAccept: (_) {
-                        settingsController.handleDeleteAccountClick();
-                      },
-                      dialogType: DialogType.DELETE,
-                      title: locale.value.deleteAccountConfirmation,
-                    );
-                  } else {
-                    toast(locale.value.yourInternetIsNotWorking);
-                  }
-                });
-              },
-              titleTextStyle: primaryTextStyle(),
-              leading: commonLeadingWid(imgPath: Assets.iconsIcDelete, color: appColorPrimary),
-            ).visible(isLoggedIn.value),
+            // SettingItemWidget(
+            //   title: locale.value.changePassword,
+            //   onTap: () {
+            //     Get.to(() => ChangePassword());
+            //   },
+            //   titleTextStyle: primaryTextStyle(),
+            //   leading: commonLeadingWid(imgPath: Assets.iconsIcLock, color: appColorPrimary),
+            // ).visible(isLoggedIn.value),
+            // SettingItemWidget(
+            //   title: locale.value.deleteAccount,
+            //   onTap: () {
+            //     ifNotTester(() async {
+            //       if (await isNetworkAvailable()) {
+            //         showConfirmDialogCustom(
+            //           context,
+            //           negativeText: locale.value.cancel,
+            //           positiveText: locale.value.delete,
+            //           onAccept: (_) {
+            //             settingsController.handleDeleteAccountClick();
+            //           },
+            //           dialogType: DialogType.DELETE,
+            //           title: locale.value.deleteAccountConfirmation,
+            //         );
+            //       } else {
+            //         toast(locale.value.yourInternetIsNotWorking);
+            //       }
+            //     });
+            //   },
+            //   titleTextStyle: primaryTextStyle(),
+            //   leading: commonLeadingWid(imgPath: Assets.iconsIcDelete, color: appColorPrimary),
+            // ).visible(isLoggedIn.value),
             SettingItemWidget(
               title: locale.value.aboutApp,
               splashColor: transparentColor,

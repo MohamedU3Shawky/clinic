@@ -14,18 +14,24 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppScaffold(
+    return
+    
+    SafeArea(child:  AppScaffold(
       hideAppBar: true,
       scaffoldBackgroundColor: context.cardColor,
-      body: Stack(
+      body:
+      
+      
+       Stack(
         alignment: Alignment.center,
         children: [
           Align(
             alignment: Alignment.center,
             child: Image.asset(
               Assets.assetsAppLogo,
-              height: 150,
-              fit: BoxFit.fitHeight,
+              height: 160,
+              width: 160,
+              fit: BoxFit.contain,
             ),
           ),
           Positioned(
@@ -35,6 +41,8 @@ class SplashScreen extends StatelessWidget {
           ),
         ],
       ),
-    );
+    ));
+    
+    
   }
 }

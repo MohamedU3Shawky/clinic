@@ -1,10 +1,40 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:qr_code_scanner_plus/qr_code_scanner_plus.dart';
 import '../../../models/shift_model.dart';
 import '../../../api/shift_apis.dart';
 import '../../../utils/app_common.dart';
-import '../../../utils/common_base.dart';
+import '../../../utils/colors.dart';
+import '../../../main.dart';
+
+
+class QRScannerWidget extends StatelessWidget {
+  final Function(String) onScan;
+
+  const QRScannerWidget({Key? key, required this.onScan}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
+
+    return SizedBox(
+      height: 200,
+      child: QRView(
+        key: qrKey,
+        onQRViewCreated: (controller) {
+          controller.scannedDataStream.listen((scanData) {
+            if (scanData.code != null) {
+              onScan(scanData.code!);
+            }
+          });
+        },
+      ),
+    );
+  }
+}
 
 class ShiftsController extends GetxController {
   RxBool isLoading = false.obs;
@@ -20,11 +50,19 @@ class ShiftsController extends GetxController {
   // Current month for calendar view
   Rx<DateTime> currentMonth = DateTime.now().obs;
 
+  // Check-in/out related variables
+  RxBool isCheckingIn = false.obs;
+  RxBool isCheckingOut = false.obs;
+  RxString currentAttendanceId = ''.obs;
+  RxBool isLocationPermissionGranted = false.obs;
+  RxBool isLocationServiceEnabled = false.obs;
+
   @override
   void onInit() {
     super.onInit();
     fetchShifts();
     fetchMonthShifts();
+    checkLocationPermission();
   }
 
   void toggleViewMode() {
@@ -290,5 +328,407 @@ class ShiftsController extends GetxController {
     } finally {
       isLoading(false);
     }
+  }
+
+  Future<bool> checkLocationPermission() async {
+    try {
+      // Check if location services are enabled
+      isLocationServiceEnabled.value = await Geolocator.isLocationServiceEnabled();
+      
+      if (!isLocationServiceEnabled.value) {
+        toast('Please enable location services');
+        return false;
+      }
+
+      // Check location permission
+      LocationPermission permission = await Geolocator.checkPermission();
+      
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+      }
+      
+      isLocationPermissionGranted.value = permission == LocationPermission.always || 
+                                         permission == LocationPermission.whileInUse;
+      
+      if (!isLocationPermissionGranted.value) {
+        toast('Location permission is required for check-in/out');
+        return false;
+      }
+
+      return true;
+    } catch (e) {
+      log('checkLocationPermission Error: $e');
+      toast('Error checking location permission');
+      return false;
+    }
+  }
+
+  Future<Position?> getCurrentLocation() async {
+    try {
+      if (!isLocationPermissionGranted.value) {
+        final hasPermission = await checkLocationPermission();
+        if (!hasPermission) return null;
+      }
+
+      return await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+      );
+    } catch (e) {
+      log('getCurrentLocation Error: $e');
+      toast('Error getting current location');
+      return null;
+    }
+  }
+
+  Future<void> handleCheckIn(ShiftModel shift, {String? qrCode}) async {
+    if (isCheckingIn.value) return;
+    
+    isCheckingIn(true);
+    try {
+      final position = await getCurrentLocation();
+      if (position == null) {
+        toast('Could not get current location');
+        return;
+      }
+
+      final success = await ShiftServiceApis.checkIn(
+        userId: loginUserData.value.idString,
+        shiftId: shift.id,
+        checkInLat: position.latitude,
+        checkInLng: position.longitude,
+        qrCode: qrCode,
+      );
+
+      if (success) {
+        // Update UI or fetch shifts again
+        fetchShifts();
+      }
+    } catch (e) {
+      log('handleCheckIn Error: $e');
+      toast('Error checking in');
+    } finally {
+      isCheckingIn(false);
+    }
+  }
+
+  Future<void> handleCheckOut(ShiftModel shift, {String? qrCode}) async {
+    if (isCheckingOut.value) return;
+    
+    isCheckingOut(true);
+    try {
+      final position = await getCurrentLocation();
+      if (position == null) {
+        toast('Could not get current location');
+        return;
+      }
+
+      final success = await ShiftServiceApis.checkOut(
+        attendanceId: currentAttendanceId.value,
+        userId: loginUserData.value.idString,
+        shiftId: shift.id,
+        checkOutLat: position.latitude,
+        checkOutLng: position.longitude,
+        qrCode: qrCode,
+      );
+
+      if (success) {
+        // Update UI or fetch shifts again
+        fetchShifts();
+      }
+    } catch (e) {
+      log('handleCheckOut Error: $e');
+      toast('Error checking out');
+    } finally {
+      isCheckingOut(false);
+    }
+  }
+
+  void showCheckInOutDialog(ShiftModel shift, bool isCheckIn) {
+    final qrCode = ''.obs;
+    final isScanning = false.obs;
+    final isLoading = false.obs;
+
+    Get.dialog(
+      Dialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Container(
+          padding: const EdgeInsets.all(24),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      isCheckIn ? 'Check In' : 'Check Out',
+                      style: boldTextStyle(size: 20),
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.close),
+                      onPressed: () => Get.back(),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 24),
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: appColorPrimary.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Shift Details',
+                        style: boldTextStyle(size: 16),
+                      ),
+                      const SizedBox(height: 8),
+                      _buildInfoRow(
+                        icon: Icons.access_time,
+                        label: 'Time',
+                        value: DateFormat('hh:mm a').format(
+                          isCheckIn ? shift.timeTable.checkInTime : shift.timeTable.checkOutTime,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      _buildInfoRow(
+                        icon: Icons.location_on,
+                        label: 'Branch',
+                        value: shift.branch.name,
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 24),
+                Obx(() => isScanning.value
+                    ? Column(
+                        children: [
+                          Container(
+                            height: 200,
+                            decoration: BoxDecoration(
+                              color: Colors.black,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: QRScannerWidget(
+                              onScan: (code) {
+                                qrCode.value = code;
+                                isScanning.value = false;
+                                Get.back();
+                                if (isCheckIn) {
+                                  handleCheckIn(shift, qrCode: qrCode.value);
+                                } else {
+                                  handleCheckOut(shift, qrCode: qrCode.value);
+                                }
+                              },
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          ElevatedButton(
+                            onPressed: () {
+                              isScanning.value = false;
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.grey[300],
+                              foregroundColor: Colors.black,
+                              padding: const EdgeInsets.symmetric(vertical: 12),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              minimumSize: const Size(double.infinity, 48),
+                            ),
+                            child: const Text('Cancel Scan'),
+                          ),
+                        ],
+                      )
+                    : Column(
+                        children: [
+                          Obx(() => ElevatedButton.icon(
+                                onPressed: isLoading.value
+                                    ? null
+                                    : () async {
+                                        isLoading(true);
+                                        final position = await getCurrentLocation();
+                                        if (position != null) {
+                                          Get.back();
+                                          if (isCheckIn) {
+                                            await handleCheckIn(shift);
+                                          } else {
+                                            await handleCheckOut(shift);
+                                          }
+                                        }
+                                        isLoading(false);
+                                      },
+                                icon: isLoading.value
+                                    ? const SizedBox(
+                                        width: 20,
+                                        height: 20,
+                                        child: CircularProgressIndicator(
+                                          strokeWidth: 2,
+                                          valueColor: AlwaysStoppedAnimation<Color>(
+                                              Colors.white),
+                                        ),
+                                      )
+                                    : const Icon(
+                                        Icons.my_location,
+                                        size: 24,
+                                        color: Colors.white,
+                                      ),
+                                label: Text(
+                                  isLoading.value
+                                      ? 'Getting Location...'
+                                      : 'Use Current Location',
+                                  textAlign: TextAlign.center,
+                                ),
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: appColorPrimary,
+                                  foregroundColor: Colors.white,
+                                  padding: const EdgeInsets.symmetric(vertical: 12),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  minimumSize: const Size(double.infinity, 48),
+                                ),
+                              )),
+                          const SizedBox(height: 16),
+                          ElevatedButton.icon(
+                            onPressed: () {
+                              isScanning.value = true;
+                            },
+                            icon: const Icon(
+                              Icons.qr_code,
+                              size: 24,
+                              color: Colors.white,
+                            ),
+                            label: const Text(
+                              'Scan QR Code',
+                              textAlign: TextAlign.center,
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: appColorPrimary,
+                              foregroundColor: Colors.white,
+                              padding: const EdgeInsets.symmetric(vertical: 12),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              minimumSize: const Size(double.infinity, 48),
+                            ),
+                          ),
+                        ],
+                      )),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildInfoRow({
+    required IconData icon,
+    required String label,
+    required String value,
+  }) {
+    return Row(
+      children: [
+        Icon(
+          icon,
+          size: 16,
+          color: appColorPrimary,
+        ),
+        const SizedBox(width: 8),
+        Text(
+          '$label: ',
+          style: secondaryTextStyle(size: 14),
+        ),
+        Text(
+          value,
+          style: boldTextStyle(size: 14),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildShiftCard(BuildContext context, ShiftModel shift) {
+    final isDark = isDarkMode.value;
+    final timeTable = shift.timeTable;
+    final color = Color(int.parse(timeTable.color.replaceAll('#', '0xFF')));
+    final controller = Get.find<ShiftsController>();
+
+    // Check attendance status
+    final hasAttendance = shift.attendance.isNotEmpty;
+    final currentAttendance = hasAttendance ? shift.attendance.last : null;
+    final canCheckIn = !hasAttendance || currentAttendance?.checkOutDate != null;
+    final canCheckOut = hasAttendance && currentAttendance?.checkOutDate == null;
+
+    return Container(
+      margin: const EdgeInsets.only(bottom: 16),
+      decoration: BoxDecoration(
+        color: isDark ? appBodyColor : white,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: dividerColor),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // ... existing header code ...
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // ... existing shift info rows ...
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    if (canCheckIn)
+                      Expanded(
+                        child: ElevatedButton.icon(
+                          onPressed: () async {
+                            controller.showCheckInOutDialog(shift, true);
+                          },
+                          icon: const Icon(Icons.check_circle_outline),
+                          label: Text(locale.value.checkIn),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.green,
+                            foregroundColor: Colors.white,
+                            padding: const EdgeInsets.symmetric(vertical: 12),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                        ),
+                      ),
+                    if (canCheckIn && canCheckOut) const SizedBox(width: 12),
+                    if (canCheckOut)
+                      Expanded(
+                        child: ElevatedButton.icon(
+                          onPressed: () {
+                            controller.showCheckInOutDialog(shift, false);
+                          },
+                          icon: const Icon(Icons.cancel_outlined),
+                          label: Text(locale.value.checkout),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.red,
+                            foregroundColor: Colors.white,
+                            padding: const EdgeInsets.symmetric(vertical: 12),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
