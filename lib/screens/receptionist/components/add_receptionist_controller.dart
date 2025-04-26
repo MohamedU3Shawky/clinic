@@ -1,12 +1,12 @@
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:kivicare_clinic_admin/api/core_apis.dart';
-import 'package:kivicare_clinic_admin/screens/auth/model/common_model.dart';
-import 'package:kivicare_clinic_admin/screens/clinic/model/clinics_res_model.dart';
-import 'package:kivicare_clinic_admin/screens/receptionist/model/receptionist_res_model.dart';
-import 'package:kivicare_clinic_admin/utils/common_base.dart';
-import 'package:kivicare_clinic_admin/utils/constants.dart';
+import 'package:egphysio_clinic_admin/api/core_apis.dart';
+import 'package:egphysio_clinic_admin/screens/auth/model/common_model.dart';
+import 'package:egphysio_clinic_admin/screens/clinic/model/clinics_res_model.dart';
+import 'package:egphysio_clinic_admin/screens/receptionist/model/receptionist_res_model.dart';
+import 'package:egphysio_clinic_admin/utils/common_base.dart';
+import 'package:egphysio_clinic_admin/utils/constants.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 class AddReceptionistController extends GetxController {

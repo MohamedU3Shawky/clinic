@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:http/http.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:kivicare_clinic_admin/screens/clinic/model/clinics_res_model.dart';
+import 'package:egphysio_clinic_admin/screens/clinic/model/clinics_res_model.dart';
 
 import '../models/base_response_model.dart';
 import '../network/network_utils.dart';

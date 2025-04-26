@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:kivicare_clinic_admin/main.dart';
+import 'package:egphysio_clinic_admin/main.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:kivicare_clinic_admin/screens/doctor/clinic_center/clinic_center_controller.dart';
-import 'package:kivicare_clinic_admin/utils/common_base.dart';
+import 'package:egphysio_clinic_admin/screens/doctor/clinic_center/clinic_center_controller.dart';
+import 'package:egphysio_clinic_admin/utils/common_base.dart';
 
 import '../../../../generated/assets.dart';
 

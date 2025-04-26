@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:kivicare_clinic_admin/main.dart';
+import 'package:egphysio_clinic_admin/main.dart';
 import 'package:nb_utils/nb_utils.dart' hide errorColor;
-import 'package:kivicare_clinic_admin/components/cached_image_widget.dart';
-import 'package:kivicare_clinic_admin/components/app_primary_widget.dart';
-import 'package:kivicare_clinic_admin/utils/colors.dart';
+import 'package:egphysio_clinic_admin/components/cached_image_widget.dart';
+import 'package:egphysio_clinic_admin/components/app_primary_widget.dart';
+import 'package:egphysio_clinic_admin/utils/colors.dart';
 import 'package:flutter/services.dart';
 
 import '../../../generated/assets.dart';

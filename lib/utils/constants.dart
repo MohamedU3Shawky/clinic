@@ -11,7 +11,7 @@ class Constants {
   static const perPageItem = 20;
   static var labelTextSize = 16;
   static var googleMapPrefix = 'https://www.google.com/maps/search/?api=1&query=';
-  static const DEFAULT_EMAIL = 'vendor@kivicare.com';
+  static const DEFAULT_EMAIL = 'vendor@egphysio.com';
   static const DEFAULT_PASS = '12345678';
   static const appLogoSize = 120.0;
   static const DECIMAL_POINT = 2;
@@ -311,13 +311,13 @@ String postStatus({required String status}) {
 }
 //endregion
 
-LoginRoleData vendorLoginRole = LoginRoleData(id: 1, userType: EmployeeKeyConst.vendor, roleName: 'Clinic Admin', icon: Assets.iconsIcVendor, email: "vendor@kivicare.com", password: "12345678");
+LoginRoleData vendorLoginRole = LoginRoleData(id: 1, userType: EmployeeKeyConst.vendor, roleName: 'Clinic Admin', icon: Assets.iconsIcVendor, email: "vendor@egphysio.com", password: "12345678");
 
 //region Login Roles
 RxList<LoginRoleData> loginRoles = [
   vendorLoginRole,
-  LoginRoleData(id: 2, userType: EmployeeKeyConst.doctor, roleName: 'Doctor', icon: Assets.iconsIcDoctor, email: "doctor@kivicare.com", password: "12345678"),
-  LoginRoleData(id: 3, userType: EmployeeKeyConst.receptionist, roleName: 'Receptionist', icon: Assets.iconsIcReceptionist, email: "receptionist@kivicare.com", password: "12345678"),
+  LoginRoleData(id: 2, userType: EmployeeKeyConst.doctor, roleName: 'Doctor', icon: Assets.iconsIcDoctor, email: "doctor@egphysio.com", password: "12345678"),
+  LoginRoleData(id: 3, userType: EmployeeKeyConst.receptionist, roleName: 'Receptionist', icon: Assets.iconsIcReceptionist, email: "receptionist@egphysio.com", password: "12345678"),
 ].obs;
 //endregion
 

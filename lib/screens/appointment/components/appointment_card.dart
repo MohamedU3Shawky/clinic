@@ -5,7 +5,7 @@ import 'package:nb_utils/nb_utils.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest.dart' as tz;
-import 'package:kivicare_clinic_admin/generated/assets.dart';
+import 'package:egphysio_clinic_admin/generated/assets.dart';
 import '../../../../components/cached_image_widget.dart';
 import '../../../../utils/colors.dart';
 import '../../../../utils/common_base.dart';

@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:kivicare_clinic_admin/main.dart';
+import 'package:egphysio_clinic_admin/main.dart';
 import 'package:nb_utils/nb_utils.dart';
 import '../models/leave_model.dart';
 import '../network/network_utils.dart';

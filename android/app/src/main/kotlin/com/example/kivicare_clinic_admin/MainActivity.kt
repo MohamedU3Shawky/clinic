@@ -1,4 +1,4 @@
-package com.example.kivicare_clinic_admin
+package com.example.egphysio_clinic_admin
 
 import io.flutter.embedding.android.FlutterActivity
 

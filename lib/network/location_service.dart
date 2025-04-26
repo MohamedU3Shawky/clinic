@@ -2,7 +2,7 @@
 
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:kivicare_clinic_admin/utils/local_storage.dart';
+import 'package:egphysio_clinic_admin/utils/local_storage.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 import '../main.dart';

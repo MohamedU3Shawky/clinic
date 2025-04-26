@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:kivicare_clinic_admin/api/auth_apis.dart';
-import 'package:kivicare_clinic_admin/screens/auth/model/login_response.dart';
-import 'package:kivicare_clinic_admin/screens/schedule/schedule_controller.dart';
-import 'package:kivicare_clinic_admin/utils/local_storage.dart';
+import 'package:egphysio_clinic_admin/api/auth_apis.dart';
+import 'package:egphysio_clinic_admin/screens/auth/model/login_response.dart';
+import 'package:egphysio_clinic_admin/screens/schedule/schedule_controller.dart';
+import 'package:egphysio_clinic_admin/utils/local_storage.dart';
 import 'package:nb_utils/nb_utils.dart';
 import '../../main.dart';
 import '../../utils/app_common.dart';

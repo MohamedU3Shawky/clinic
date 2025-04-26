@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:signature/signature.dart';
-import 'package:kivicare_clinic_admin/utils/colors.dart';
+import 'package:egphysio_clinic_admin/utils/colors.dart';
 import '../../../api/core_apis.dart';
 import '../../../main.dart';
 import '../../../utils/app_common.dart';

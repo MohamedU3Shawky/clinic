@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:stream_transform/stream_transform.dart';
-import 'package:kivicare_clinic_admin/api/core_apis.dart';
+import 'package:egphysio_clinic_admin/api/core_apis.dart';
 import '../clinic/model/clinics_res_model.dart';
 import 'model/doctor_list_res.dart';
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:kivicare_clinic_admin/screens/clinic/model/clinics_res_model.dart';
+import 'package:egphysio_clinic_admin/screens/clinic/model/clinics_res_model.dart';
 import '../../../../components/cached_image_widget.dart';
 import '../../../../utils/app_common.dart';
 import '../../../../utils/colors.dart';

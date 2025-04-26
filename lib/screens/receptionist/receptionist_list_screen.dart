@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:kivicare_clinic_admin/api/core_apis.dart';
-import 'package:kivicare_clinic_admin/screens/receptionist/model/receptionist_res_model.dart';
-import 'package:kivicare_clinic_admin/utils/colors.dart';
+import 'package:egphysio_clinic_admin/api/core_apis.dart';
+import 'package:egphysio_clinic_admin/screens/receptionist/model/receptionist_res_model.dart';
+import 'package:egphysio_clinic_admin/utils/colors.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:kivicare_clinic_admin/main.dart';
-import 'package:kivicare_clinic_admin/screens/receptionist/components/add_receptionist_component.dart';
+import 'package:egphysio_clinic_admin/main.dart';
+import 'package:egphysio_clinic_admin/screens/receptionist/components/add_receptionist_component.dart';
 import '../../components/app_scaffold.dart';
 import '../../components/loader_widget.dart';
 import '../../utils/empty_error_state_widget.dart';

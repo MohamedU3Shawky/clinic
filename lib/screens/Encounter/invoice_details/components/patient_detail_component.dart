@@ -1,9 +1,9 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:kivicare_clinic_admin/screens/Encounter/invoice_details/model/billing_details_resp.dart';
-import 'package:kivicare_clinic_admin/utils/colors.dart';
-import 'package:kivicare_clinic_admin/utils/common_base.dart';
+import 'package:egphysio_clinic_admin/screens/Encounter/invoice_details/model/billing_details_resp.dart';
+import 'package:egphysio_clinic_admin/utils/colors.dart';
+import 'package:egphysio_clinic_admin/utils/common_base.dart';
 import '../../../../components/cached_image_widget.dart';
 import '../../../../generated/assets.dart';
 import '../../../../utils/app_common.dart';

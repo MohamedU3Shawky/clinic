@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:kivicare_clinic_admin/utils/app_common.dart';
+import 'package:egphysio_clinic_admin/utils/app_common.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:kivicare_clinic_admin/utils/colors.dart';
+import 'package:egphysio_clinic_admin/utils/colors.dart';
 import '../../../components/app_drop_dowm_widget.dart';
 import '../../../generated/assets.dart';
 import '../../../main.dart';

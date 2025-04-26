@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:kivicare_clinic_admin/api/clinic_api.dart';
+import 'package:egphysio_clinic_admin/api/clinic_api.dart';
 import '../../clinic/model/clinics_res_model.dart';
 import '../add_clinic_form/model/clinic_session_response.dart';
 

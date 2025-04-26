@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:kivicare_clinic_admin/screens/Encounter/components/all_encounter_card.dart';
-import 'package:kivicare_clinic_admin/screens/Encounter/medical_Report/medical_reports_screen.dart';
-import 'package:kivicare_clinic_admin/utils/colors.dart';
+import 'package:egphysio_clinic_admin/screens/Encounter/components/all_encounter_card.dart';
+import 'package:egphysio_clinic_admin/screens/Encounter/medical_Report/medical_reports_screen.dart';
+import 'package:egphysio_clinic_admin/utils/colors.dart';
 import '../../components/app_scaffold.dart';
 import '../../components/loader_widget.dart';
 import '../../main.dart';

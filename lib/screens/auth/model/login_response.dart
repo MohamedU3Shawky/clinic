@@ -1,4 +1,4 @@
-import 'package:kivicare_clinic_admin/screens/clinic/model/clinics_res_model.dart';
+import 'package:egphysio_clinic_admin/screens/clinic/model/clinics_res_model.dart';
 
 class UserResponse {
   bool status;

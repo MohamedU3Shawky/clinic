@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:kivicare_clinic_admin/models/attendance.dart';
+import 'package:egphysio_clinic_admin/models/attendance.dart';
 import 'package:nb_utils/nb_utils.dart';
 import '../../../controllers/attendance_controller.dart';
 import '../../../utils/app_common.dart';

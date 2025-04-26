@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "kivicare_clinic_admin" "\0"
+            VALUE "FileDescription", "egphysio_clinic_admin" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "kivicare_clinic_admin" "\0"
+            VALUE "InternalName", "egphysio_clinic_admin" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2025 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "kivicare_clinic_admin.exe" "\0"
-            VALUE "ProductName", "kivicare_clinic_admin" "\0"
+            VALUE "OriginalFilename", "egphysio_clinic_admin.exe" "\0"
+            VALUE "ProductName", "egphysio_clinic_admin" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

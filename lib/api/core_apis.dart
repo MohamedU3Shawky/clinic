@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:kivicare_clinic_admin/screens/Encounter/add_encounter/model/encounter_resp_model.dart';
-import 'package:kivicare_clinic_admin/screens/service/model/service_list_model.dart';
+import 'package:egphysio_clinic_admin/screens/Encounter/add_encounter/model/encounter_resp_model.dart';
+import 'package:egphysio_clinic_admin/screens/service/model/service_list_model.dart';
 import '../models/base_response_model.dart';
 import '../network/network_utils.dart';
 import '../screens/Encounter/add_encounter/model/patient_model.dart';

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:kivicare_clinic_admin/utils/constants.dart';
-import 'package:kivicare_clinic_admin/utils/shared_preferences.dart';
+import 'package:egphysio_clinic_admin/utils/constants.dart';
+import 'package:egphysio_clinic_admin/utils/shared_preferences.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../../../components/app_scaffold.dart';

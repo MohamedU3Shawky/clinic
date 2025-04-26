@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:kivicare_clinic_admin/screens/home/components/timer_component.dart';
-import 'package:kivicare_clinic_admin/screens/home/home_controller.dart';
+import 'package:egphysio_clinic_admin/screens/home/components/timer_component.dart';
+import 'package:egphysio_clinic_admin/screens/home/home_controller.dart';
 import 'package:nb_utils/nb_utils.dart';
 import '../../../main.dart';
 import '../../../utils/colors.dart';

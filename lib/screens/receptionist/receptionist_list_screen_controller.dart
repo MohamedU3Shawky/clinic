@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:kivicare_clinic_admin/screens/clinic/clinic_list_controller.dart';
+import 'package:egphysio_clinic_admin/screens/clinic/clinic_list_controller.dart';
 import '../../api/core_apis.dart';
 import 'model/receptionist_res_model.dart';
 

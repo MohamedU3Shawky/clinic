@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:kivicare_clinic_admin/screens/doctor/model/doctor_list_res.dart';
-import 'package:kivicare_clinic_admin/screens/doctor/doctor_session/add_session/add_session_controller.dart';
-import 'package:kivicare_clinic_admin/screens/doctor/doctor_session/add_session/select_doctor/select_doctor_controller.dart';
-import 'package:kivicare_clinic_admin/utils/colors.dart';
+import 'package:egphysio_clinic_admin/screens/doctor/model/doctor_list_res.dart';
+import 'package:egphysio_clinic_admin/screens/doctor/doctor_session/add_session/add_session_controller.dart';
+import 'package:egphysio_clinic_admin/screens/doctor/doctor_session/add_session/select_doctor/select_doctor_controller.dart';
+import 'package:egphysio_clinic_admin/utils/colors.dart';
 import '../../../../../../components/cached_image_widget.dart';
 
 class SelectDoctorCardComponents extends StatelessWidget {

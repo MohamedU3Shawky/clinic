@@ -3,8 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
-import 'package:kivicare_clinic_admin/utils/constants.dart';
-import 'package:kivicare_clinic_admin/utils/local_storage.dart';
+import 'package:egphysio_clinic_admin/utils/constants.dart';
+import 'package:egphysio_clinic_admin/utils/local_storage.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:nb_utils/nb_utils.dart';
 

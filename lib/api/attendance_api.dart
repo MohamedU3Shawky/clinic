@@ -1,7 +1,7 @@
 import '../models/attendance.dart';
 import 'dart:convert';
 import 'package:http/http.dart';
-import 'package:kivicare_clinic_admin/main.dart';
+import 'package:egphysio_clinic_admin/main.dart';
 import 'package:nb_utils/nb_utils.dart';
 import '../models/shift_model.dart';
 import '../network/network_utils.dart';

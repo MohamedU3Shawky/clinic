@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:kivicare_clinic_admin/screens/Encounter/clinical_details/clinical_details_controller.dart';
-import 'package:kivicare_clinic_admin/utils/colors.dart';
+import 'package:egphysio_clinic_admin/screens/Encounter/clinical_details/clinical_details_controller.dart';
+import 'package:egphysio_clinic_admin/utils/colors.dart';
 import '../../../../main.dart';
 import '../../../../utils/constants.dart';
 import '../../../../utils/view_all_label_component.dart';

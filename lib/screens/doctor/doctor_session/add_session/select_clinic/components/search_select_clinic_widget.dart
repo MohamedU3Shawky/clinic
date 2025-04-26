@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:kivicare_clinic_admin/screens/doctor/doctor_session/add_session/select_doctor/select_doctor_controller.dart';
+import 'package:egphysio_clinic_admin/screens/doctor/doctor_session/add_session/select_doctor/select_doctor_controller.dart';
 
 import '../../../../../../generated/assets.dart';
 import '../../../../../../main.dart';

@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:kivicare_clinic_admin/utils/colors.dart';
+import 'package:egphysio_clinic_admin/utils/colors.dart';
 import 'package:pro_image_editor/pro_image_editor.dart';
 import '../../../api/core_apis.dart';
 import '../../../main.dart';

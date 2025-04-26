@@ -2,9 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:kivicare_clinic_admin/screens/schedule/screens/shifts_screen.dart';
+import 'package:egphysio_clinic_admin/screens/schedule/screens/shifts_screen.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:kivicare_clinic_admin/screens/payout/payout_history.dart';
+import 'package:egphysio_clinic_admin/screens/payout/payout_history.dart';
 import '../../generated/assets.dart';
 import '../../main.dart';
 import '../../utils/app_common.dart';

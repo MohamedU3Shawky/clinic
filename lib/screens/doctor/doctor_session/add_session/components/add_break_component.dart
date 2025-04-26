@@ -2,11 +2,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:kivicare_clinic_admin/main.dart';
+import 'package:egphysio_clinic_admin/main.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:kivicare_clinic_admin/screens/doctor/doctor_session/add_session/components/time_picker_components.dart';
-import 'package:kivicare_clinic_admin/utils/colors.dart';
-import 'package:kivicare_clinic_admin/utils/common_base.dart';
+import 'package:egphysio_clinic_admin/screens/doctor/doctor_session/add_session/components/time_picker_components.dart';
+import 'package:egphysio_clinic_admin/utils/colors.dart';
+import 'package:egphysio_clinic_admin/utils/common_base.dart';
 import '../../../../../components/app_time_dropdown_widget.dart';
 import '../../../../../components/cached_image_widget.dart';
 import '../../../../../generated/assets.dart';

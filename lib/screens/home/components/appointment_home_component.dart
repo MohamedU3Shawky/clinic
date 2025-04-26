@@ -2,7 +2,7 @@ import 'package:expandable_page_view/expandable_page_view.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:kivicare_clinic_admin/screens/appointment/components/appointment_card.dart';
+import 'package:egphysio_clinic_admin/screens/appointment/components/appointment_card.dart';
 import '../../../utils/constants.dart';
 import '../../Encounter/encounter_dashboard/encounter_dashboard.dart';
 import '../../Encounter/model/encounters_list_model.dart';

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:kivicare_clinic_admin/generated/assets.dart';
-import 'package:kivicare_clinic_admin/screens/Encounter/invoice_details/invoice_details_screen.dart';
-import 'package:kivicare_clinic_admin/screens/Encounter/medical_Report/medical_reports_screen.dart';
-import 'package:kivicare_clinic_admin/utils/colors.dart';
-import 'package:kivicare_clinic_admin/utils/common_base.dart';
+import 'package:egphysio_clinic_admin/generated/assets.dart';
+import 'package:egphysio_clinic_admin/screens/Encounter/invoice_details/invoice_details_screen.dart';
+import 'package:egphysio_clinic_admin/screens/Encounter/medical_Report/medical_reports_screen.dart';
+import 'package:egphysio_clinic_admin/utils/colors.dart';
+import 'package:egphysio_clinic_admin/utils/common_base.dart';
 import '../../../../main.dart';
 import '../../../../utils/app_common.dart';
 import '../../body_chart/body_chart_screen.dart';

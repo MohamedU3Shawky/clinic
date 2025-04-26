@@ -1,9 +1,9 @@
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:kivicare_clinic_admin/api/holiday_apis.dart';
-import 'package:kivicare_clinic_admin/models/holiday_model.dart';
-import 'package:kivicare_clinic_admin/utils/app_common.dart';
-import 'package:kivicare_clinic_admin/utils/language.dart';
+import 'package:egphysio_clinic_admin/api/holiday_apis.dart';
+import 'package:egphysio_clinic_admin/models/holiday_model.dart';
+import 'package:egphysio_clinic_admin/utils/app_common.dart';
+import 'package:egphysio_clinic_admin/utils/language.dart';
 
 class HolidaysController extends GetxController {
   final _holidayService = HolidayServiceApis();

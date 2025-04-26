@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:kivicare_clinic_admin/screens/doctor/doctor_session/add_session/add_session_controller.dart';
+import 'package:egphysio_clinic_admin/screens/doctor/doctor_session/add_session/add_session_controller.dart';
 import '../../../../../main.dart';
 import '../../../../../utils/colors.dart';
 import '../select_clinic/select_clinic_screen.dart';

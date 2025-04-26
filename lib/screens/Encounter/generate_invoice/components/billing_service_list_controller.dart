@@ -2,11 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:kivicare_clinic_admin/main.dart';
+import 'package:egphysio_clinic_admin/main.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:stream_transform/stream_transform.dart';
-import 'package:kivicare_clinic_admin/screens/clinic/model/clinics_res_model.dart';
-import 'package:kivicare_clinic_admin/utils/app_common.dart';
+import 'package:egphysio_clinic_admin/screens/clinic/model/clinics_res_model.dart';
+import 'package:egphysio_clinic_admin/utils/app_common.dart';
 import '../../../../api/core_apis.dart';
 import '../../../../utils/constants.dart';
 import '../../../doctor/model/doctor_list_res.dart';

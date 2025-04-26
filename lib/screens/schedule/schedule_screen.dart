@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:kivicare_clinic_admin/screens/schedule/screens/attendance_screen.dart';
-import 'package:kivicare_clinic_admin/screens/schedule/screens/overtime_screen.dart';
+import 'package:egphysio_clinic_admin/screens/schedule/screens/attendance_screen.dart';
+import 'package:egphysio_clinic_admin/screens/schedule/screens/overtime_screen.dart';
 import 'package:nb_utils/nb_utils.dart';
 import '../../main.dart';
 import '../../components/app_scaffold.dart';

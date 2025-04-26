@@ -1,11 +1,11 @@
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:kivicare_clinic_admin/components/bottom_selection_widget.dart';
-import 'package:kivicare_clinic_admin/screens/clinic/add_clinic_form/model/city_list_response.dart';
-import 'package:kivicare_clinic_admin/screens/clinic/add_clinic_form/model/country_list_response.dart';
-import 'package:kivicare_clinic_admin/screens/clinic/add_clinic_form/model/state_list_response.dart';
-import 'package:kivicare_clinic_admin/utils/constants.dart';
+import 'package:egphysio_clinic_admin/components/bottom_selection_widget.dart';
+import 'package:egphysio_clinic_admin/screens/clinic/add_clinic_form/model/city_list_response.dart';
+import 'package:egphysio_clinic_admin/screens/clinic/add_clinic_form/model/country_list_response.dart';
+import 'package:egphysio_clinic_admin/screens/clinic/add_clinic_form/model/state_list_response.dart';
+import 'package:egphysio_clinic_admin/utils/constants.dart';
 import 'package:nb_utils/nb_utils.dart';
 import '../../../../components/loader_widget.dart';
 import '../../../../main.dart';

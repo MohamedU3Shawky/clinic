@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:kivicare_clinic_admin/api/clinic_api.dart';
-import 'package:kivicare_clinic_admin/utils/colors.dart';
+import 'package:egphysio_clinic_admin/api/clinic_api.dart';
+import 'package:egphysio_clinic_admin/utils/colors.dart';
 import '../../main.dart';
 import 'model/clinic_gallery_model.dart';
 

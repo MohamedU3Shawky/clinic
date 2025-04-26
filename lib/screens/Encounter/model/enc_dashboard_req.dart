@@ -1,4 +1,4 @@
-import 'package:kivicare_clinic_admin/screens/Encounter/add_encounter/model/prescription_model.dart';
+import 'package:egphysio_clinic_admin/screens/Encounter/add_encounter/model/prescription_model.dart';
 import 'problems_observations_model.dart';
 
 class EncounterDashboardReq {

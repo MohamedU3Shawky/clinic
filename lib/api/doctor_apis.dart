@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:kivicare_clinic_admin/screens/doctor/model/commission_list_model.dart';
+import 'package:egphysio_clinic_admin/screens/doctor/model/commission_list_model.dart';
 import 'package:http/http.dart' as http;
 import '../models/base_response_model.dart';
 import '../network/network_utils.dart';

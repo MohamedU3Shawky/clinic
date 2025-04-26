@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:kivicare_clinic_admin/screens/clinic/add_clinic_form/model/clinic_session_response.dart';
-import 'package:kivicare_clinic_admin/utils/colors.dart';
-import 'package:kivicare_clinic_admin/utils/common_base.dart';
+import 'package:egphysio_clinic_admin/screens/clinic/add_clinic_form/model/clinic_session_response.dart';
+import 'package:egphysio_clinic_admin/utils/colors.dart';
+import 'package:egphysio_clinic_admin/utils/common_base.dart';
 
 import '../../../../components/app_time_dropdown_widget.dart';
 import '../../../../main.dart';

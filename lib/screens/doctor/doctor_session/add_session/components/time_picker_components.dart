@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:kivicare_clinic_admin/screens/doctor/doctor_session/add_session/components/custom_time_picker.dart';
-import 'package:kivicare_clinic_admin/utils/colors.dart';
+import 'package:egphysio_clinic_admin/screens/doctor/doctor_session/add_session/components/custom_time_picker.dart';
+import 'package:egphysio_clinic_admin/utils/colors.dart';
 
 import '../../../../../main.dart';
 

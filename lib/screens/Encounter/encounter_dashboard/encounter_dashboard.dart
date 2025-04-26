@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:kivicare_clinic_admin/screens/Encounter/encounter_dashboard/components/doctor_card_component.dart';
-import 'package:kivicare_clinic_admin/screens/Encounter/encounter_dashboard/encounter_dashboard_controller.dart';
+import 'package:egphysio_clinic_admin/screens/Encounter/encounter_dashboard/components/doctor_card_component.dart';
+import 'package:egphysio_clinic_admin/screens/Encounter/encounter_dashboard/encounter_dashboard_controller.dart';
 import '../../../components/app_scaffold.dart';
 import '../../../main.dart';
 import '../model/encounters_list_model.dart';

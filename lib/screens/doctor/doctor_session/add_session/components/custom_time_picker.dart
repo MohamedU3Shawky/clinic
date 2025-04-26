@@ -2,7 +2,7 @@ library time_picker_spinner;
 
 import 'package:flutter/material.dart';
 import 'dart:math';
-import 'package:kivicare_clinic_admin/utils/colors.dart';
+import 'package:egphysio_clinic_admin/utils/colors.dart';
 
 class ItemScrollPhysics extends ScrollPhysics {
   /// Creates physics for snapping to item.

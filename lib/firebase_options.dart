@@ -53,16 +53,16 @@ class DefaultFirebaseOptions {
     apiKey: 'AIzaSyA1234567890abcdefghijklmnopqrstuv',
     appId: '1:123456789012:android:1234567890abcdef',
     messagingSenderId: '123456789012',
-    projectId: 'kivicare-clinic-admin',
-    storageBucket: 'kivicare-clinic-admin.appspot.com',
+    projectId: 'egphysio-clinic-admin',
+    storageBucket: 'egphysio-clinic-admin.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyA1234567890abcdefghijklmnopqrstuv',
     appId: '1:123456789012:ios:1234567890abcdef',
     messagingSenderId: '123456789012',
-    projectId: 'kivicare-clinic-admin',
-    storageBucket: 'kivicare-clinic-admin.appspot.com',
-    iosBundleId: 'com.example.kivicare-clinic-admin',
+    projectId: 'egphysio-clinic-admin',
+    storageBucket: 'egphysio-clinic-admin.appspot.com',
+    iosBundleId: 'com.example.egphysio-clinic-admin',
   );
 }

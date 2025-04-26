@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:kivicare_clinic_admin/screens/doctor/doctor_session/add_session/components/doctor_name_component.dart';
-import 'package:kivicare_clinic_admin/utils/common_base.dart';
+import 'package:egphysio_clinic_admin/screens/doctor/doctor_session/add_session/components/doctor_name_component.dart';
+import 'package:egphysio_clinic_admin/utils/common_base.dart';
 import '../../../../../components/app_scaffold.dart';
 import 'package:get/get.dart';
 import '../../../../main.dart';

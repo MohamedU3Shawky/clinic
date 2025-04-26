@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:kivicare_clinic_admin/api/core_apis.dart';
-import 'package:kivicare_clinic_admin/screens/doctor/model/review_model.dart';
+import 'package:egphysio_clinic_admin/api/core_apis.dart';
+import 'package:egphysio_clinic_admin/screens/doctor/model/review_model.dart';
 
 import '../model/doctor_list_res.dart';
 

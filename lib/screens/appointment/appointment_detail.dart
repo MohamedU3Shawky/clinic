@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:timezone/timezone.dart' as tz;
-import 'package:kivicare_clinic_admin/screens/appointment/components/clinic_info_card_widget.dart';
+import 'package:egphysio_clinic_admin/screens/appointment/components/clinic_info_card_widget.dart';
 import '../../../components/app_scaffold.dart';
 import '../../../utils/common_base.dart';
 import '../../components/cached_image_widget.dart';

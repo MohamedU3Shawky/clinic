@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:kivicare_clinic_admin/utils/app_common.dart';
+import 'package:egphysio_clinic_admin/utils/app_common.dart';
 import '../../api/core_apis.dart';
 import 'model/request_type_model.dart';
 import 'model/service_request_model.dart';

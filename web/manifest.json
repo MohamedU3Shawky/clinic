@@ -1,6 +1,6 @@
 {
-    "name": "kivicare_clinic_admin",
-    "short_name": "kivicare_clinic_admin",
+    "name": "egphysio_clinic_admin",
+    "short_name": "egphysio_clinic_admin",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

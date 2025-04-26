@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kivicare_clinic_admin/generated/assets.dart';
+import 'package:egphysio_clinic_admin/generated/assets.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_animate/flutter_animate.dart';

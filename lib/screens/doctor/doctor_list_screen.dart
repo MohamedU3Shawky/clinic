@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:kivicare_clinic_admin/api/doctor_apis.dart';
-import 'package:kivicare_clinic_admin/screens/doctor/components/doctor_card.dart';
-import 'package:kivicare_clinic_admin/screens/doctor/components/search_doctor_widget.dart';
+import 'package:egphysio_clinic_admin/api/doctor_apis.dart';
+import 'package:egphysio_clinic_admin/screens/doctor/components/doctor_card.dart';
+import 'package:egphysio_clinic_admin/screens/doctor/components/search_doctor_widget.dart';
 import '../../../components/app_scaffold.dart';
 import 'package:get/get.dart';
 import '../../components/loader_widget.dart';

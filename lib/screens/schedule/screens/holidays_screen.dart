@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:kivicare_clinic_admin/components/app_scaffold.dart';
-import 'package:kivicare_clinic_admin/controllers/holidays_controller.dart';
-import 'package:kivicare_clinic_admin/main.dart';
-import 'package:kivicare_clinic_admin/models/holiday_model.dart';
-import 'package:kivicare_clinic_admin/utils/app_common.dart';
-import 'package:kivicare_clinic_admin/utils/colors.dart';
+import 'package:egphysio_clinic_admin/components/app_scaffold.dart';
+import 'package:egphysio_clinic_admin/controllers/holidays_controller.dart';
+import 'package:egphysio_clinic_admin/main.dart';
+import 'package:egphysio_clinic_admin/models/holiday_model.dart';
+import 'package:egphysio_clinic_admin/utils/app_common.dart';
+import 'package:egphysio_clinic_admin/utils/colors.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 class HolidaysScreen extends StatelessWidget {

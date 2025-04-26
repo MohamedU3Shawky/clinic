@@ -2,7 +2,7 @@
 import 'dart:developer';
 
 import 'package:get/get.dart';
-import 'package:kivicare_clinic_admin/api/core_apis.dart';
+import 'package:egphysio_clinic_admin/api/core_apis.dart';
 import 'model/doctor_list_res.dart';
 
 class DoctorDetailController extends GetxController {

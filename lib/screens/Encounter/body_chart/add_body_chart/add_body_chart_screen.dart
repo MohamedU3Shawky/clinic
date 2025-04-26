@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:kivicare_clinic_admin/components/cached_image_widget.dart';
-import 'package:kivicare_clinic_admin/generated/assets.dart';
-import 'package:kivicare_clinic_admin/utils/common_base.dart';
+import 'package:egphysio_clinic_admin/components/cached_image_widget.dart';
+import 'package:egphysio_clinic_admin/generated/assets.dart';
+import 'package:egphysio_clinic_admin/utils/common_base.dart';
 import '../../../../components/app_primary_widget.dart';
 import '../../../../components/app_scaffold.dart';
 import '../../../../components/view_img_widget.dart';
