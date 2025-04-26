@@ -258,14 +258,14 @@ class CoreServiceApis {
   }
 
   static Future<RxList<AppointmentData>> getAppointmentList({
-    int page = 1,
+    required DateTime from,
+    required DateTime to,
     String search = '',
     int? patientId,
     int? serviceId,
     int? doctorId,
     int? clinicId,
     String? filterByStatus,
-    int perPage = Constants.perPageItem,
     required List<AppointmentData> appointments,
     Function(bool)? lastPageCallBack,
   }) async {
@@ -275,11 +275,15 @@ class CoreServiceApis {
     String cId = clinicId != null && !clinicId.isNegative ? '&clinic_id=$clinicId' : '';
     String searchBooking = search.isNotEmpty ? '&search=$search' : '';
     String statusFilter = filterByStatus != null && filterByStatus.isNotEmpty ? '&status=$filterByStatus' : '';
-    final bookingRes = AppointmentListRes.fromJson(await handleResponse(await buildHttpResponse("${APIEndPoints.getAppointments}?page=$page&per_page=$perPage$pId$sId$dId$cId$statusFilter$searchBooking", method: HttpMethodType.GET)));
-    if (page == 1) appointments.clear();
+    
+    final bookingRes = AppointmentListRes.fromJson(await handleResponse(await buildHttpResponse(
+      "${APIEndPoints.getAppointments}?from=${from.toIso8601String()}&to=${to.toIso8601String()}$pId$sId$dId$cId$statusFilter$searchBooking",
+      method: HttpMethodType.GET)));
+      
+    appointments.clear();
     appointments.addAll(bookingRes.data.data ?? []);
 
-    lastPageCallBack?.call((bookingRes.data.data ?? []).length != perPage);
+    lastPageCallBack?.call((bookingRes.data.data ?? []).isEmpty);
 
     return appointments.obs;
   }
@@ -287,18 +291,18 @@ class CoreServiceApis {
   // static Future<AppointmentData> getAppointmentDetail({required int appointmentId}) async {
   //   return AppointmentData.fromJson(await handleResponse(await buildHttpResponse("${APIEndPoints.getAppointmentDetail}?appointment_id=$appointmentId", method: HttpMethodType.GET)));
   // }
-  static Future<AppointmentData> getAppointmentDetail({
-    int? appointmentId,
-    String notifyId = "",
-    required AppointmentData appointMentDet,
-  }) async {
-    String appointment = appointmentId != null ? 'appointment_id=$appointmentId' : '';
-    String notificationId = appointMentDet.notificationId?.trim().isNotEmpty == true ? '&notification_id=${appointMentDet.notificationId}' : '';
-    final res = AppointmentDetailsResp.fromJson(await handleResponse(await buildHttpResponse("${APIEndPoints.getAppointmentDetail}?$appointment$notificationId", method: HttpMethodType.GET)));
-    appointMentDet = res.data;
-    return appointMentDet;
-    // return AppointmentData.fromJson(await handleResponse(await buildHttpResponse("${APIEndPoints.getAppointmentDetail}?appointment_id=$appointmentId", method: HttpMethodType.GET)));
-  }
+  // static Future<AppointmentData> getAppointmentDetail({
+  //   int? appointmentId,
+  //   String notifyId = "",
+  //   required AppointmentData appointMentDet,
+  // }) async {
+  //   String appointment = appointmentId != null ? 'appointment_id=$appointmentId' : '';
+  //   String notificationId = appointMentDet.notificationId?.trim().isNotEmpty == true ? '&notification_id=${appointMentDet.notificationId}' : '';
+  //   final res = AppointmentDetailsResp.fromJson(await handleResponse(await buildHttpResponse("${APIEndPoints.getAppointmentDetail}?$appointment$notificationId", method: HttpMethodType.GET)));
+  //   appointMentDet = res.data;
+  //   return appointMentDet;
+  //   // return AppointmentData.fromJson(await handleResponse(await buildHttpResponse("${APIEndPoints.getAppointmentDetail}?appointment_id=$appointmentId", method: HttpMethodType.GET)));
+  // }
 
   static Future<BaseResponseModel> updateBooking({required Map request}) async {
     return BaseResponseModel.fromJson(await handleResponse(await buildHttpResponse(APIEndPoints.bookingUpdate, request: request, method: HttpMethodType.POST)));

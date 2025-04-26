@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import '../generated/assets.dart';
 import '../screens/auth/model/common_model.dart';
 import '../screens/auth/model/login_roles_model.dart';
+import 'package:flutter/material.dart';
 
 //region DateFormats
 class Constants {
@@ -333,3 +334,63 @@ class NotificationConst {
   static const forgetEmailPassword = 'forget_email_password';
 }
 //endregion
+
+class StatusBadge extends StatelessWidget {
+  final String status;
+  const StatusBadge({super.key, required this.status});
+
+  @override
+  Widget build(BuildContext context) {
+    Color bgColor;
+    IconData icon;
+    String label;
+
+    switch (status.toLowerCase()) {
+      case 'pending':
+        bgColor = Colors.amber;
+        icon = Icons.access_time;
+        label = 'Pending';
+        break;
+      case 'confirmed':
+        bgColor = Colors.green;
+        icon = Icons.calendar_today;
+        label = 'Confirmed';
+        break;
+      case 'cancelled':
+        bgColor = Colors.red;
+        icon = Icons.close;
+        label = 'Cancelled';
+        break;
+      case 'checked in':
+        bgColor = Colors.blue;
+        icon = Icons.person;
+        label = 'Checked In';
+        break;
+      case 'checked out':
+        bgColor = Colors.grey;
+        icon = Icons.person;
+        label = 'Checked Out';
+        break;
+      default:
+        bgColor = Colors.grey;
+        icon = Icons.info;
+        label = status;
+    }
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      decoration: BoxDecoration(
+        color: bgColor,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, color: Colors.white, size: 18),
+          const SizedBox(width: 6),
+          Text(label, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+        ],
+      ),
+    );
+  }
+}

@@ -1,7 +1,5 @@
 // ignore_for_file: depend_on_referenced_packages
-
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
@@ -38,6 +36,11 @@ class AppointmentsController extends GetxController {
 
   Rx<PatientArgumentModel> patientDetailArgument = PatientArgumentModel(patientModel: PatientModel()).obs;
 
+  RxString viewMode = 'daily'.obs;
+  Rx<DateTime> selectedDate = DateTime.now().obs;
+  Rx<DateTime> weekStartDate = DateTime.now().obs;
+  Rx<DateTime> weekEndDate = DateTime.now().obs;
+
   @override
   void onInit() {
     if (Get.arguments is PatientArgumentModel) {
@@ -48,6 +51,11 @@ class AppointmentsController extends GetxController {
     searchStream.stream.debounce(const Duration(seconds: 1)).listen((s) {
       getAppointmentList();
     });
+    // Set initial week range
+    DateTime now = DateTime.now();
+    int weekday = now.weekday;
+    weekStartDate.value = now.subtract(Duration(days: weekday - 1));
+    weekEndDate.value = now.add(Duration(days: 7 - weekday));
     getAppointmentList(showloader: false);
     super.onInit();
   }
@@ -61,16 +69,34 @@ class AppointmentsController extends GetxController {
       serviceId: selectedServiceData.value.id,
       patientId: selectedPatient.value.id,
       doctorId: selectedDoctor.value.id,
+      from: viewMode.value == 'daily' ? selectedDate.value : weekStartDate.value,
+      to: viewMode.value == 'daily' ? selectedDate.value : weekEndDate.value,
       clinicId: loginUserData.value.userRole.contains(EmployeeKeyConst.doctor) ? selectedAppClinic.value.id : null,
-      page: page.value,
       search: searchCont.text.trim(),
       appointments: appointments,
       lastPageCallBack: (p0) {
         isLastPage(p0);
       },
-    )).then((value) {}).catchError((e) {
+    )).then((value) {
+      // Filter appointments based on selected date or week
+      if (viewMode.value == 'daily') {
+        appointments.value = appointments.where((appointment) {
+          final appointmentDate = DateTime.parse(appointment.appointmentDate);
+          return appointmentDate.year == selectedDate.value.year &&
+                 appointmentDate.month == selectedDate.value.month &&
+                 appointmentDate.day == selectedDate.value.day;
+        }).toList();
+      } else {
+        appointments.value = appointments.where((appointment) {
+          final appointmentDate = DateTime.parse(appointment.appointmentDate);
+          return appointmentDate.isAfter(weekStartDate.value.subtract(const Duration(days: 1))) && 
+                 appointmentDate.isBefore(weekEndDate.value.add(const Duration(days: 1)));
+        }).toList();
+      }
+    }).catchError((e) {
       log('getAppointments E: $e');
-    }).whenComplete(() => isLoading(false));
+    }).whenComplete(() =>
+     isLoading(false));
   }
 
   updateStatus({required String status, required int id, required bool isBack, required BuildContext context, required bool isCheckOut, EncounterElement? encountDetails, Function(BuildContext)? onCallBack}) {
@@ -107,6 +133,34 @@ class AppointmentsController extends GetxController {
         }
       },
     );
+  }
+
+  void toggleViewMode() {
+    if (viewMode.value == 'daily') {
+      // Switching to weekly: set weekStartDate and weekEndDate to the current week
+      DateTime now = DateTime.now();
+      int weekday = now.weekday;
+      DateTime startOfWeek = now.subtract(Duration(days: weekday - 1));
+      DateTime endOfWeek = now.add(Duration(days: 7 - weekday));
+      weekStartDate.value = startOfWeek;
+      weekEndDate.value = endOfWeek;
+      viewMode.value = 'weekly';
+      getAppointmentList();
+    } else {
+      viewMode.value = 'daily';
+      getAppointmentList();
+    }
+  }
+
+  void setSelectedDate(DateTime date) {
+    selectedDate.value = date;
+    getAppointmentList();
+  }
+
+  void setWeekDates(DateTime start, DateTime end) {
+    weekStartDate.value = start;
+    weekEndDate.value = end;
+    getAppointmentList();
   }
 
   @override

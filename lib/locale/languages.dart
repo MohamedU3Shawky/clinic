@@ -1224,10 +1224,6 @@ abstract class BaseLanguage {
   String get requestCancelled;
   String get requestApproved;
   String get requestRejected;
-  String get failedToSubmitRequest;
-  String get failedToCancelRequest;
-  String get failedToApproveRequest;
-  String get failedToRejectRequest;
 
   String get close;
   String get failedToFetchPermissions;
@@ -1255,6 +1251,63 @@ abstract class BaseLanguage {
   String get noAttendanceFoundDesc ;
 
   String get failedToFetchAttendance;
+  
+  String get attendancePermissions;
+  String get manageAttendancePermissions;
+  String get permissionType;
+  String get permissionDuration;
+  String get permissionStatus;
+  String get permissionDetails;
+  String get permissionHistory;
+  String get noPermissionsFound;
+  String get permissionAddedSuccessfully;
+  String get permissionUpdatedSuccessfully;
+  String get permissionDeletedSuccessfully;
+  String get failedToAddPermission;
+  String get failedToUpdatePermission;
+  String get failedToDeletePermission;
+  String get permissionApproved;
+  String get permissionRejected;
+  String get permissionPending;
+  String get lateIn;
+  String get earlyLeave;
+  String get totalPermissions;
+  String get approvedPermissions;
+  String get pendingPermissions;
+  String get rejectedPermissions;
+  String get permissionReason;
+  String get reviewDate;
+  String get reviewComment;
+  String get submitPermission;
+  String get cancelPermission;
+  String get approvePermission;
+  String get rejectPermission;
+  String get permissionSubmitted;
+  String get permissionCancelled;
+  String get failedToSubmitPermission;
+  String get failedToCancelPermission;
+  String get failedToApprovePermission;
+  String get failedToRejectPermission;
+  String get permissionSettings;
+  String get permissionPolicies;
+  String get addPermissionPolicy;
+  String get editPermissionPolicy;
+  String get deletePermissionPolicy;
+  String get maxDuration;
+  String get minDuration;
+  String get allowedTypes;
+  String get approvalRequired;
+  String get autoApprove;
+  String get permissionBalance;
+  String get usedPermissions;
+  String get remainingPermissions;
+  String get defaultDuration;
+  String get permissionRequests;
+  String get failedToSubmitRequest;
+  String get failedToCancelRequest;
+  String get failedToApproveRequest;
+  String get failedToRejectRequest;
+  String get noHistoryFound;
 
   String get getAttendanceError;
 }

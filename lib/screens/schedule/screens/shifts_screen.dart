@@ -12,7 +12,7 @@ import '../../../utils/app_common.dart';
 import '../../../utils/colors.dart';
 import '../../../utils/api_end_points.dart';
 import '../../../network/network_utils.dart';
-import 'shifts_controller.dart';
+import '../../../controllers/shifts_controller.dart';
 
 class ShiftsScreen extends StatelessWidget {
   const ShiftsScreen({Key? key}) : super(key: key);
@@ -422,6 +422,7 @@ class ShiftsScreen extends StatelessWidget {
     final permissionType = 'LateIn'.obs;
     final hours = 0.obs;
     final minutes = 0.obs;
+    final reasonController = TextEditingController();
 
     Get.dialog(
       Dialog(
@@ -518,6 +519,17 @@ class ShiftsScreen extends StatelessWidget {
                   ),
                 ],
               ),
+              const SizedBox(height: 10),
+              TextField(
+                controller: reasonController,
+                decoration: InputDecoration(
+                  labelText: 'Reason (optional)',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                maxLines: 2,
+              ),
               const SizedBox(height: 24),
               Row(
                 children: [
@@ -550,10 +562,10 @@ class ShiftsScreen extends StatelessWidget {
                             APIEndPoints.attendancePermissions,
                             request: {
                               'shiftId': shift.id,
-                              'date': DateFormat('yyyy-MM-dd')
-                                  .format(DateTime.now()),
                               'type': permissionType.value,
-                              'duration': totalMinutes,
+                              'duration': hours.value,
+                              if (reasonController.text.trim().isNotEmpty)
+                                'reason': reasonController.text.trim(),
                             },
                             method: HttpMethodType.POST,
                           );

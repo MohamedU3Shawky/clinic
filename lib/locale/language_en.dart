@@ -2094,5 +2094,62 @@ class LanguageEn extends BaseLanguage {
 
   @override
   String get failedToFetchAttendance =>
-      'Failed to fetch attendance data'; // 'Failed to fetch attendance data'
+      'Failed to fetch attendance data';
+      
+        @override
+        // TODO: implement attendancePermissions
+        String get attendancePermissions => "Attendace Permessions"; // 'Failed to fetch attendance data'
+
+  
+  String get manageAttendancePermissions => 'Manage Attendance Permissions';
+  String get permissionType => 'Permission Type';
+  String get permissionDuration => 'Permission Duration';
+  String get permissionStatus => 'Permission Status';
+  String get permissionDetails => 'Permission Details';
+  String get permissionHistory => 'Permission History';
+  String get noPermissionsFound => 'No Permissions Found';
+  String get permissionAddedSuccessfully => 'Permission Added Successfully';
+  String get permissionUpdatedSuccessfully => 'Permission Updated Successfully';
+  String get permissionDeletedSuccessfully => 'Permission Deleted Successfully';
+  String get failedToAddPermission => 'Failed to Add Permission';
+  String get failedToUpdatePermission => 'Failed to Update Permission';
+  String get failedToDeletePermission => 'Failed to Delete Permission';
+  String get permissionApproved => 'Permission Approved';
+  String get permissionRejected => 'Permission Rejected';
+  String get permissionPending => 'Permission Pending';
+  String get lateIn => 'Late In';
+  String get earlyLeave => 'Early Leave';
+  String get totalPermissions => 'Total Permissions';
+  String get approvedPermissions => 'Approved Permissions';
+  String get pendingPermissions => 'Pending Permissions';
+  String get rejectedPermissions => 'Rejected Permissions';
+  String get permissionReason => 'Permission Reason';
+  String get reviewDate => 'Review Date';
+  String get reviewComment => 'Review Comment';
+  String get submitPermission => 'Submit Permission';
+  String get cancelPermission => 'Cancel Permission';
+  String get approvePermission => 'Approve Permission';
+  String get rejectPermission => 'Reject Permission';
+  String get permissionSubmitted => 'Permission Submitted';
+  String get permissionCancelled => 'Permission Cancelled';
+  String get failedToSubmitPermission => 'Failed to Submit Permission';
+  String get failedToCancelPermission => 'Failed to Cancel Permission';
+  String get failedToApprovePermission => 'Failed to Approve Permission';
+  String get failedToRejectPermission => 'Failed to Reject Permission';
+  String get permissionSettings => 'Permission Settings';
+  String get permissionPolicies => 'Permission Policies';
+  String get addPermissionPolicy => 'Add Permission Policy';
+  String get editPermissionPolicy => 'Edit Permission Policy';
+  String get deletePermissionPolicy => 'Delete Permission Policy';
+  String get maxDuration => 'Maximum Duration';
+  String get minDuration => 'Minimum Duration';
+  String get allowedTypes => 'Allowed Types';
+  String get approvalRequired => 'Approval Required';
+  String get autoApprove => 'Auto Approve';
+  String get permissionBalance => 'Permission Balance';
+  String get usedPermissions => 'Used Permissions';
+  String get remainingPermissions => 'Remaining Permissions';
+  String get defaultDuration => 'Default Duration';
+  String get permissionRequests => 'Permission Requests';
+  String get noHistoryFound => 'No History Found';
 }

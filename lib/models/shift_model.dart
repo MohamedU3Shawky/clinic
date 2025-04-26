@@ -334,45 +334,47 @@ class TimeTableModel {
   });
 
   factory TimeTableModel.fromJson(Map<String, dynamic> json) {
+    // Helper function to parse time string to DateTime
+    DateTime parseTimeString(String? timeStr) {
+      if (timeStr == null) return DateTime.now();
+      try {
+        // Try parsing as ISO8601 first
+        return DateTime.parse(timeStr);
+      } catch (e) {
+        // If that fails, try parsing as HH:mm
+        final parts = timeStr.split(':');
+        if (parts.length == 2) {
+          final now = DateTime.now();
+          return DateTime(now.year, now.month, now.day, 
+            int.parse(parts[0]), int.parse(parts[1]));
+        }
+        return DateTime.now();
+      }
+    }
+
     return TimeTableModel(
       id: json['id']?.toString() ?? '',
       name: json['name']?.toString() ?? '',
-      checkInTime: json['checkInTime'] != null
-          ? DateTime.parse(json['checkInTime'].toString())
-          : DateTime.now(),
-      checkOutTime: json['checkOutTime'] != null
-          ? DateTime.parse(json['checkOutTime'].toString())
-          : DateTime.now(),
-      punchFrom: json['punchFrom'] != null
-          ? DateTime.parse(json['punchFrom'].toString())
-          : DateTime.now(),
-      punchTo: json['punchTo'] != null
-          ? DateTime.parse(json['punchTo'].toString())
-          : DateTime.now(),
+      checkInTime: parseTimeString(json['checkInTime']?.toString()),
+      checkOutTime: parseTimeString(json['checkOutTime']?.toString()),
+      punchFrom: parseTimeString(json['punchFrom']?.toString()),
+      punchTo: parseTimeString(json['punchTo']?.toString()),
       allowLateIn: json['allowLateIn'] as bool? ?? false,
       allowEarlyOut: json['allowEarlyOut'] as bool? ?? false,
-      countAbsenceWithoutCheckIn:
-          json['countAbsenceWithoutCheckIn'] as bool? ?? false,
-      countAbsenceWithoutCheckOut:
-          json['countAbsenceWithoutCheckOut'] as bool? ?? false,
-      useFirstCheckInLastOutOnly:
-          json['useFirstCheckInLastOutOnly'] as bool? ?? false,
+      countAbsenceWithoutCheckIn: json['countAbsenceWithoutCheckIn'] as bool? ?? false,
+      countAbsenceWithoutCheckOut: json['countAbsenceWithoutCheckOut'] as bool? ?? false,
+      useFirstCheckInLastOutOnly: json['useFirstCheckInLastOutOnly'] as bool? ?? false,
       enableOT: json['enableOT'] as bool? ?? false,
       isBreakPaid: json['isBreakPaid'] as bool? ?? false,
       color: json['color']?.toString() ?? '',
       lateInThreshold: json['lateInThreshold'] as int? ?? 0,
       lateInAbsenceAfterMinutes: json['lateInAbsenceAfterMinutes'] as int? ?? 0,
       earlyOutThreshold: json['earlyOutThreshold'] as int? ?? 0,
-      earlyOutAbsenceAfterMinutes:
-          json['earlyOutAbsenceAfterMinutes'] as int? ?? 0,
+      earlyOutAbsenceAfterMinutes: json['earlyOutAbsenceAfterMinutes'] as int? ?? 0,
       earlyInOTThreshold: json['earlyInOTThreshold'] as int? ?? 0,
       lateOutOTThreshold: json['lateOutOTThreshold'] as int? ?? 0,
-      breakStartTime: json['breakStartTime'] != null
-          ? DateTime.parse(json['breakStartTime'].toString())
-          : DateTime.now(),
-      breakEndTime: json['breakEndTime'] != null
-          ? DateTime.parse(json['breakEndTime'].toString())
-          : DateTime.now(),
+      breakStartTime: parseTimeString(json['breakStartTime']?.toString()),
+      breakEndTime: parseTimeString(json['breakEndTime']?.toString()),
       createdAt: json['createdAt'] != null
           ? DateTime.parse(json['createdAt'].toString())
           : DateTime.now(),

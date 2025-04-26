@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kivicare_clinic_admin/screens/schedule/screens/attendance_screen.dart';
+import 'package:kivicare_clinic_admin/screens/schedule/screens/overtime_screen.dart';
 import 'package:nb_utils/nb_utils.dart';
 import '../../main.dart';
 import '../../components/app_scaffold.dart';
@@ -12,7 +13,7 @@ import 'schedule_controller.dart';
 import 'components/schedule_type_card.dart';
 import 'screens/leaves_screen.dart';
 import 'screens/holidays_screen.dart';
-import 'screens/overtime_screen.dart';
+import 'screens/attendance_permissions_screen.dart';
 
 class ScheduleScreen extends StatelessWidget {
   const ScheduleScreen({Key? key}) : super(key: key);
@@ -55,7 +56,7 @@ class ScheduleScreen extends StatelessWidget {
           physics: const NeverScrollableScrollPhysics(),
           mainAxisSpacing: 16,
           crossAxisSpacing: 16,
-          childAspectRatio: 1.5,
+          childAspectRatio: 1.2,
           children: [
             ScheduleTypeCard(
               title: locale.value.leaves,
@@ -76,6 +77,12 @@ class ScheduleScreen extends StatelessWidget {
               onTap: () => Get.to(() => const AttendanceScreen()),
             ),
             ScheduleTypeCard(
+              title: 'Attendance Permissions',
+              icon: Assets.iconsIcTimeOutlined,
+              color: Colors.purple,
+              onTap: () => Get.to(() => const AttendancePermissionsScreen()),
+            ),
+             ScheduleTypeCard(
               title: locale.value.overtime,
               icon: Assets.iconsIcTimeOutlined,
               color: Colors.purple,
@@ -144,43 +151,51 @@ class ScheduleScreen extends StatelessWidget {
               return Container(
                 margin: const EdgeInsets.only(bottom: 12),
                 decoration: boxDecorationDefault(
-                  color: isDarkMode.value ? appBodyColor : white,
+                  color: isDarkMode.value ? cardDarkColor : white,
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: dividerColor),
+                  border: Border.all(color: isDarkMode.value ? dividerDarkColor : dividerColor),
+                  boxShadow: isDarkMode.value ? null : defaultBoxShadow(),
                 ),
                 child: ListTile(
                   leading: Container(
                     padding: const EdgeInsets.all(8),
                     decoration: boxDecorationDefault(
-                      color: appColorPrimary.withOpacity(0.1),
+                      color: appColorPrimary.withOpacity(isDarkMode.value ? 0.2 : 0.1),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: CachedImageWidget(
                       url: Assets.iconsIcClock,
                       height: 24,
                       width: 24,
-                      color: appColorPrimary,
+                      color: isDarkMode.value ? Colors.white70 : appColorPrimary,
                     ),
                   ),
                   title: Text(
                     schedule.title,
-                    style: boldTextStyle(size: 16),
+                    style: boldTextStyle(
+                      size: 16,
+                      color: isDarkMode.value ? Colors.white : textPrimaryColor,
+                    ),
                   ),
                   subtitle: Text(
                     '${schedule.startTime.toString().substring(0, 10)} - ${schedule.endTime.toString().substring(0, 10)}',
-                    style: secondaryTextStyle(size: 14),
+                    style: secondaryTextStyle(
+                      size: 14,
+                      color: isDarkMode.value ? Colors.white70 : textSecondaryColor,
+                    ),
                   ),
                   trailing: Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     decoration: boxDecorationDefault(
-                      color: _getStatusColor(schedule.status).withOpacity(0.1),
+                      color: _getStatusColor(schedule.status).withOpacity(isDarkMode.value ? 0.2 : 0.1),
                       borderRadius: BorderRadius.circular(4),
                     ),
                     child: Text(
                       schedule.status,
                       style: boldTextStyle(
-                          size: 12, color: _getStatusColor(schedule.status)),
+                        size: 12,
+                        color: _getStatusColor(schedule.status),
+                      ),
                     ),
                   ),
                   onTap: () {

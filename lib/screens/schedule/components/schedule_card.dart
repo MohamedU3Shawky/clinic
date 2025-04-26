@@ -22,9 +22,13 @@ class ScheduleCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: boxDecorationDefault(
-        color: isDarkMode.value ? appBodyColor : white,
+        color: isDarkMode.value ? cardDarkColor : white,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: dividerColor),
+        border: Border.all(
+          color: isDarkMode.value ? Colors.grey.withOpacity(0.2) : dividerColor,
+          width: isDarkMode.value ? 0.5 : 1,
+        ),
+        boxShadow: isDarkMode.value ? null : defaultBoxShadow(),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -34,14 +38,16 @@ class ScheduleCard extends StatelessWidget {
               Container(
                 padding: EdgeInsets.all(8),
                 decoration: boxDecorationDefault(
-                  color: appColorPrimary.withOpacity(0.1),
+                  color: isDarkMode.value 
+                    ? appColorPrimary.withOpacity(0.15)
+                    : appColorPrimary.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: CachedImageWidget(
                   url: Assets.iconsIcClock,
                   height: 24,
                   width: 24,
-                  color: appColorPrimary,
+                  color: isDarkMode.value ? Colors.white : appColorPrimary,
                 ),
               ),
               12.width,
@@ -51,12 +57,18 @@ class ScheduleCard extends StatelessWidget {
                   children: [
                     Text(
                       schedule.title ?? '',
-                      style: boldTextStyle(size: 16),
+                      style: boldTextStyle(
+                        size: 16,
+                        color: isDarkMode.value ? Colors.white : textPrimaryColor,
+                      ),
                     ),
                     4.height,
                     Text(
                       schedule.description ?? '',
-                      style: secondaryTextStyle(size: 14),
+                      style: secondaryTextStyle(
+                        size: 14,
+                        color: isDarkMode.value ? Colors.white.withOpacity(0.8) : textSecondaryColor,
+                      ),
                     ),
                   ],
                 ),
@@ -66,7 +78,7 @@ class ScheduleCard extends StatelessWidget {
                   url: Assets.iconsIcEdit,
                   height: 20,
                   width: 20,
-                  color: appColorPrimary,
+                  color: isDarkMode.value ? Colors.white.withOpacity(0.8) : appColorPrimary,
                 ),
                 onPressed: onEdit,
               ),
@@ -77,7 +89,7 @@ class ScheduleCard extends StatelessWidget {
             padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
             decoration: boxDecorationDefault(
               color: isDarkMode.value
-                  ? appBodyColor.withOpacity(0.5)
+                  ? Colors.grey.withOpacity(0.08)
                   : appColorPrimary.withOpacity(0.05),
               borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(12),
@@ -88,8 +100,7 @@ class ScheduleCard extends StatelessWidget {
               children: [
                 _buildInfoItem(
                   icon: Assets.iconsIcTimeOutlined,
-                  text:
-                      '${schedule.startTime ?? ''} - ${schedule.endTime ?? ''}',
+                  text: '${schedule.startTime ?? ''} - ${schedule.endTime ?? ''}',
                 ),
                 16.width,
                 _buildInfoItem(
@@ -111,12 +122,15 @@ class ScheduleCard extends StatelessWidget {
           url: icon,
           height: 16,
           width: 16,
-          color: appColorPrimary,
+          color: isDarkMode.value ? Colors.white.withOpacity(0.7) : appColorPrimary,
         ),
         8.width,
         Text(
           text,
-          style: secondaryTextStyle(size: 12),
+          style: secondaryTextStyle(
+            size: 12,
+            color: isDarkMode.value ? Colors.white.withOpacity(0.7) : textSecondaryColor,
+          ),
         ),
       ],
     );

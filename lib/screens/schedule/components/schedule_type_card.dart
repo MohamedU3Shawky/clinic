@@ -47,7 +47,7 @@ class ScheduleTypeCard extends StatelessWidget {
             12.height,
             Text(
               title,
-              style: boldTextStyle(size: 16),
+              style: boldTextStyle(size: 15),
               textAlign: TextAlign.center,
             ),
           ],

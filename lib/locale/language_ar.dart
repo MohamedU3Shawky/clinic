@@ -2082,5 +2082,116 @@ class LanguageAr extends BaseLanguage {
 
   @override
   String get failedToFetchAttendance =>
-      'فشل تحميل بيانات الحضور'; // 'Failed to fetch attendance data'
+      'فشل تحميل بيانات الحضور';
+  
+  @override
+  String get attendancePermissions => 'صلاحيات الحضور';
+  @override
+  String get manageAttendancePermissions => 'إدارة صلاحيات الحضور';
+  @override
+  String get permissionType => 'نوع الصلاحية';
+  @override
+  String get permissionDuration => 'مدة الصلاحية';
+  @override
+  String get permissionStatus => 'حالة الصلاحية';
+  @override
+  String get permissionDetails => 'تفاصيل الصلاحية';
+  @override
+  String get permissionHistory => 'سجل الصلاحيات';
+  @override
+  String get noPermissionsFound => 'لم يتم العثور على صلاحيات';
+  @override
+  String get permissionAddedSuccessfully => 'تم إضافة الصلاحية بنجاح';
+  @override
+  String get permissionUpdatedSuccessfully => 'تم تحديث الصلاحية بنجاح';
+  @override
+  String get permissionDeletedSuccessfully => 'تم حذف الصلاحية بنجاح';
+  @override
+  String get failedToAddPermission => 'فشل إضافة الصلاحية';
+  @override
+  String get failedToUpdatePermission => 'فشل تحديث الصلاحية';
+  @override
+  String get failedToDeletePermission => 'فشل حذف الصلاحية';
+  @override
+  String get permissionApproved => 'تمت الموافقة على الصلاحية';
+  @override
+  String get permissionRejected => 'تم رفض الصلاحية';
+  @override
+  String get permissionPending => 'صلاحية معلقة';
+  @override
+  String get lateIn => 'تأخير';
+  @override
+  String get earlyLeave => 'مغادرة مبكرة';
+  @override
+  String get totalPermissions => 'إجمالي الصلاحيات';
+  @override
+  String get approvedPermissions => 'الصلاحيات الموافق عليها';
+  @override
+  String get pendingPermissions => 'الصلاحيات المعلقة';
+  @override
+  String get rejectedPermissions => 'الصلاحيات المرفوضة';
+  @override
+  String get permissionReason => 'سبب الصلاحية';
+  @override
+  String get reviewDate => 'تاريخ المراجعة';
+  @override
+  String get reviewComment => 'تعليق المراجعة';
+  @override
+  String get submitPermission => 'إرسال الصلاحية';
+  @override
+  String get cancelPermission => 'إلغاء الصلاحية';
+  @override
+  String get approvePermission => 'الموافقة على الصلاحية';
+  @override
+  String get rejectPermission => 'رفض الصلاحية';
+  @override
+  String get permissionSubmitted => 'تم إرسال الصلاحية';
+  @override
+  String get permissionCancelled => 'تم إلغاء الصلاحية';
+  @override
+  String get permissionSettings => 'إعدادات الصلاحيات';
+  @override
+  String get permissionPolicies => 'سياسات الصلاحيات';
+  @override
+  String get addPermissionPolicy => 'إضافة سياسة صلاحيات';
+  @override
+  String get editPermissionPolicy => 'تعديل سياسة صلاحيات';
+  @override
+  String get deletePermissionPolicy => 'حذف سياسة صلاحيات';
+  @override
+  String get maxDuration => 'المدة القصوى';
+  @override
+  String get minDuration => 'المدة الدنيا';
+  @override
+  String get allowedTypes => 'الأنواع المسموح بها';
+  @override
+  String get approvalRequired => 'تتطلب الموافقة';
+  @override
+  String get autoApprove => 'موافقة تلقائية';
+  @override
+  String get permissionBalance => 'رصيد الصلاحيات';
+  @override
+  String get usedPermissions => 'الصلاحيات المستخدمة';
+  @override
+  String get remainingPermissions => 'الصلاحيات المتبقية';
+  @override
+  String get defaultDuration => 'المدة الافتراضية';
+  @override
+  String get permissionRequests => 'طلبات الصلاحيات';
+  @override
+
+  @override
+  String get noHistoryFound => 'لم يتم العثور على سجل';
+  
+  @override
+  String get failedToApprovePermission => 'فشل الموافقة على الصلاحية';
+  
+  @override
+  String get failedToCancelPermission => 'فشل إلغاء الصلاحية';
+  
+  @override
+  String get failedToRejectPermission => 'فشل رفض الصلاحية';
+  
+  @override
+  String get failedToSubmitPermission => 'فشل إرسال الصلاحية';
 }

@@ -119,7 +119,7 @@ class InvoiceDetailsController extends GetxController {
 
     try {
       AppointmentDetailController appointment = Get.put(AppointmentDetailController());
-      appointment.init(showLoader: false);
+    //  appointment.init(showLoader: false);
     } catch (e) {
       log('AppointmentDetailController appointment = Get.put(AppointmentDetailController()) E: $e');
     }
