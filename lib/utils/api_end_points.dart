@@ -8,7 +8,7 @@ class APIEndPoints {
   static const String logout = 'logout';
   static const String changePassword = 'auth/change-password';
   static const String forgotPassword = 'auth/forgot-password';
-  static const String userDetail = 'user-detail';
+  static const String userDetail = 'user/me';
   static const String updateProfile = 'update-profile';
   static const String deleteUserAccount = 'delete-account';
   static const String getNotification = 'notification-list';

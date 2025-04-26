@@ -15,7 +15,7 @@ class ProfileController extends GetxController {
   }
 
   void init() {
-    getAboutPageData();
+    // getAboutPageData();
   }
 
   handleLogout() async {
@@ -34,17 +34,17 @@ class ProfileController extends GetxController {
   }
 
   ///Get About Pages
-  getAboutPageData({bool isFromSwipeRefresh = false}) {
-    if (!isFromSwipeRefresh) {
-      isLoading(true);
-    }
-    isLoading(true);
-    AuthServiceApis.getAboutPageData().then((value) {
-      isLoading(false);
-      aboutPages(value.data);
-    }).onError((error, stackTrace) {
-      isLoading(false);
-      toast(error.toString());
-    });
-  }
+  // getAboutPageData({bool isFromSwipeRefresh = false}) {
+  //   if (!isFromSwipeRefresh) {
+  //     isLoading(true);
+  //   }
+  //   isLoading(true);
+  //   AuthServiceApis.getAboutPageData().then((value) {
+  //     isLoading(false);
+  //     aboutPages(value.data);
+  //   }).onError((error, stackTrace) {
+  //     isLoading(false);
+  //     toast(error.toString());
+  //   });
+  // }
 }

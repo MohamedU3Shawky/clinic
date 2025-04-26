@@ -120,19 +120,20 @@ class DashboardScreen extends StatelessWidget {
       } else if (index == 3) {
         AuthServiceApis.viewProfile().then((data) {
           loginUserData(UserData(
-            id: loginUserData.value.id,
-            firstName: data.userData.firstName,
-            lastName: data.userData.lastName,
-            userName: "${data.userData.firstName} ${data.userData.lastName}",
-            mobile: data.userData.mobile,
-            email: data.userData.email,
+            idString: loginUserData.value.idString,
+            firstName: loginUserData.value.firstName,
+            lastName: loginUserData.value.lastName,
+            userName:
+                "${loginUserData.value.firstName} ${loginUserData.value.lastName}",
+            mobile: loginUserData.value.mobile,
+            email: loginUserData.value.email,
             userRole: loginUserData.value.userRole,
-            gender: data.userData.gender,
-            address: data.userData.address,
+            gender: loginUserData.value.gender,
+            address: loginUserData.value.address,
             apiToken: loginUserData.value.apiToken,
-            profileImage: data.userData.profileImage,
+            profileImage: loginUserData.value.profileImage,
             loginType: loginUserData.value.loginType,
-            selectedClinic: selectedAppClinic.value,
+            // selectedClinic: selectedAppClinic.value,
           ));
           setValueToLocal(
               SharedPreferenceConst.USER_DATA, loginUserData.toJson());

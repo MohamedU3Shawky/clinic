@@ -200,18 +200,17 @@ class AuthServiceApis {
             request: {}, method: HttpMethodType.POST)));
   }
 
-  static Future<ConfigurationResponse> getAppConfigurations() async {
-    return ConfigurationResponse.fromJson(await handleResponse(
-        await buildHttpResponse(
-            '${APIEndPoints.appConfiguration}?is_authenticated=${(getValueFromLocal(SharedPreferenceConst.IS_LOGGED_IN) == true).getIntBool()}',
-            request: {},
-            method: HttpMethodType.GET)));
-  }
+  // static Future<ConfigurationResponse> getAppConfigurations() async {
+  //   return ConfigurationResponse.fromJson(await handleResponse(
+  //       await buildHttpResponse(
+  //           '${APIEndPoints.appConfiguration}?is_authenticated=${(getValueFromLocal(SharedPreferenceConst.IS_LOGGED_IN) == true).getIntBool()}',
+  //           request: {},
+  //           method: HttpMethodType.GET)));
+  // }
 
   static Future<UserResponse> viewProfile({int? id}) async {
     var res = UserResponse.fromJson(await handleResponse(
-        await buildHttpResponse(
-            '${APIEndPoints.userDetail}?id=${id ?? loginUserData.value.id}',
+        await buildHttpResponse('${APIEndPoints.userDetail}',
             method: HttpMethodType.GET)));
     return res;
   }
@@ -275,11 +274,11 @@ class AuthServiceApis {
     }
   }
 
-  static Future<AboutPageRes> getAboutPageData() async {
-    return AboutPageRes.fromJson(await handleResponse(await buildHttpResponse(
-        APIEndPoints.aboutPages,
-        method: HttpMethodType.GET)));
-  }
+  // static Future<AboutPageRes> getAboutPageData() async {
+  //   return AboutPageRes.fromJson(await handleResponse(await buildHttpResponse(
+  //       APIEndPoints.aboutPages,
+  //       method: HttpMethodType.GET)));
+  // }
 
   static Future<List<String>> getUserPermissions() async {
     try {

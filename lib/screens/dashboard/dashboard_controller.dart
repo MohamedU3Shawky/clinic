@@ -81,17 +81,17 @@ class DashboardController extends GetxController {
 
   @override
   void onInit() {
-    if (!isLoggedIn.value) {
-      ProfileController().getAboutPageData();
-    }
+    // if (!isLoggedIn.value) {
+    //   ProfileController().getAboutPageData();
+    // }
     // PushNotificationService().registerFCMandTopics();
-    getAppConfigurations(isFromDashboard: true).then((value) {
-      Future.delayed(const Duration(seconds: 2), () {
-        if (Get.context != null) {
-          showForceUpdateDialog(Get.context!);
-        }
-      });
-    });
+    // getAppConfigurations(isFromDashboard: true).then((value) {
+    //   Future.delayed(const Duration(seconds: 2), () {
+    //     if (Get.context != null) {
+    //       showForceUpdateDialog(Get.context!);
+    //     }
+    //   });
+    // });
     super.onInit();
   }
 
@@ -166,16 +166,16 @@ class DashboardController extends GetxController {
 }
 
 ///Get ChooseService List
-Future<void> getAppConfigurations({bool isFromDashboard = false}) async {
-  await AuthServiceApis.getAppConfigurations().then((value) async {
-    appConfigs(value);
+// Future<void> getAppConfigurations({bool isFromDashboard = false}) async {
+//   await AuthServiceApis.getAppConfigurations().then((value) async {
+//     appConfigs(value);
 
-    /// Place ChatGPT Key Here
-    chatGPTAPIkey = value.chatgptKey;
-  }).onError((error, stackTrace) {
-    toast(error.toString());
-  });
-}
+//     /// Place ChatGPT Key Here
+//     chatGPTAPIkey = value.chatgptKey;
+//   }).onError((error, stackTrace) {
+//     toast(error.toString());
+//   });
+// }
 
 changebottomIndex(index) {
   DashboardController dCont = Get.find();
