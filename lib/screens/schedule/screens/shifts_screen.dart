@@ -43,7 +43,45 @@ class ShiftsScreen extends StatelessWidget {
               if (controller.isLoading.value) {
                 return const Center(child: CircularProgressIndicator());
               }
-              return _buildShiftsList(context, controller);
+              return RefreshIndicator(
+                onRefresh: () async {
+                  if (controller.viewMode.value == 'daily') {
+                    await controller.fetchShifts();
+                  } else {
+                    await controller.fetchShifts();
+                  }
+                },
+                child: controller.shifts.isEmpty
+                    ? SingleChildScrollView(
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        child: Container(
+                          height: Get.height * 0.6,
+                          alignment: Alignment.center,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.event_busy,
+                                size: 64,
+                                color: Colors.grey[400],
+                              ),
+                              const SizedBox(height: 16),
+                              Text(
+                                'No shifts found',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.grey[600],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                    : SingleChildScrollView(
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        child: _buildShiftsList(context, controller),
+                      ),
+              );
             }),
           ),
         ],
@@ -190,30 +228,9 @@ class ShiftsScreen extends StatelessWidget {
   }
 
   Widget _buildShiftsList(BuildContext context, ShiftsController controller) {
-    if (controller.shifts.isEmpty) {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.event_busy,
-              size: 64,
-              color: Colors.grey[400],
-            ),
-            const SizedBox(height: 16),
-            Text(
-              'No shifts found',
-              style: TextStyle(
-                fontSize: 18,
-                color: Colors.grey[600],
-              ),
-            ),
-          ],
-        ),
-      );
-    }
-
     return ListView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
       padding: const EdgeInsets.only(
         left: 16,
         right: 16,
@@ -237,8 +254,10 @@ class ShiftsScreen extends StatelessWidget {
     // Check attendance status
     final hasAttendance = shift.attendance.isNotEmpty;
     final currentAttendance = hasAttendance ? shift.attendance.last : null;
-    final canCheckIn = !hasAttendance || currentAttendance?.checkOutDate != null;
-    final canCheckOut = hasAttendance && currentAttendance?.checkOutDate == null;
+    final canCheckIn =
+        !hasAttendance || currentAttendance?.checkOutDate != null;
+    final canCheckOut =
+        hasAttendance && currentAttendance?.checkOutDate == null;
 
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
@@ -458,176 +477,177 @@ class ShiftsScreen extends StatelessWidget {
           borderRadius: BorderRadius.circular(16),
         ),
         child: Container(
-          padding: const EdgeInsets.all(24),
-          child: SingleChildScrollView(child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Apply Permission',
-                style: boldTextStyle(size: 20),
-              ),
-              const SizedBox(height: 24),
-              Obx(() => DropdownButtonFormField<String>(
-                    value: permissionType.value,
+            padding: const EdgeInsets.all(24),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Apply Permission',
+                    style: boldTextStyle(size: 20),
+                  ),
+                  const SizedBox(height: 24),
+                  Obx(() => DropdownButtonFormField<String>(
+                        value: permissionType.value,
+                        decoration: InputDecoration(
+                          labelText: 'Permission Type',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        items: [
+                          DropdownMenuItem(
+                            value: 'LateIn',
+                            child: Text('Late In'),
+                          ),
+                          DropdownMenuItem(
+                            value: 'EarlyLeave',
+                            child: Text('Early Leave'),
+                          ),
+                        ],
+                        onChanged: (value) {
+                          if (value != null) {
+                            permissionType.value = value;
+                          }
+                        },
+                      )),
+                  const SizedBox(height: 10),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Obx(() => DropdownButtonFormField<int>(
+                              value: hours.value,
+                              decoration: InputDecoration(
+                                labelText: 'Hours',
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                              ),
+                              items: List.generate(
+                                24,
+                                (index) => DropdownMenuItem(
+                                  value: index,
+                                  child: Text('$index hours'),
+                                ),
+                              ),
+                              onChanged: (value) {
+                                if (value != null) {
+                                  hours.value = value;
+                                }
+                              },
+                            )),
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: Obx(() => DropdownButtonFormField<int>(
+                              value: minutes.value,
+                              decoration: InputDecoration(
+                                labelText: 'Minutes',
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                              ),
+                              items: List.generate(
+                                60,
+                                (index) => DropdownMenuItem(
+                                  value: index,
+                                  child: Text(
+                                    '$index minutes',
+                                    style: TextStyle(fontSize: 15),
+                                  ),
+                                ),
+                              ),
+                              onChanged: (value) {
+                                if (value != null) {
+                                  minutes.value = value;
+                                }
+                              },
+                            )),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  TextField(
+                    controller: reasonController,
                     decoration: InputDecoration(
-                      labelText: 'Permission Type',
+                      labelText: 'Reason (optional)',
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
-                    items: [
-                      DropdownMenuItem(
-                        value: 'LateIn',
-                        child: Text('Late In'),
+                    maxLines: 2,
+                  ),
+                  const SizedBox(height: 24),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed: () => Get.back(),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.grey[300],
+                            foregroundColor: Colors.black,
+                            padding: const EdgeInsets.symmetric(vertical: 12),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                          child: const Text('Cancel'),
+                        ),
                       ),
-                      DropdownMenuItem(
-                        value: 'EarlyLeave',
-                        child: Text('Early Leave'),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed: () async {
+                            final totalMinutes =
+                                (hours.value * 60) + minutes.value;
+                            if (totalMinutes == 0) {
+                              toast('Please select a duration');
+                              return;
+                            }
+
+                            try {
+                              final response = await buildHttpResponse(
+                                APIEndPoints.attendancePermissions,
+                                request: {
+                                  'shiftId': shift.id,
+                                  'type': permissionType.value,
+                                  'duration': hours.value,
+                                  if (reasonController.text.trim().isNotEmpty)
+                                    'reason': reasonController.text.trim(),
+                                },
+                                method: HttpMethodType.POST,
+                              );
+
+                              final data = await handleResponse(response);
+
+                              if (data['success'] == true) {
+                                toast('Permission applied successfully');
+                                Get.back();
+                              } else {
+                                toast(data['message'] ??
+                                    'Failed to apply permission');
+                              }
+                            } catch (e) {
+                              toast('Error applying permission: $e');
+                            }
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: appColorPrimary,
+                            foregroundColor: Colors.white,
+                            padding: const EdgeInsets.symmetric(vertical: 12),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                          child: const Text('Apply'),
+                        ),
                       ),
                     ],
-                    onChanged: (value) {
-                      if (value != null) {
-                        permissionType.value = value;
-                      }
-                    },
-                  )),
-              const SizedBox(height: 10),
-              Row(
-                children: [
-                  Expanded(
-                    child: Obx(() => DropdownButtonFormField<int>(
-                          value: hours.value,
-                          decoration: InputDecoration(
-                            labelText: 'Hours',
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                          ),
-                          items: List.generate(
-                            24,
-                            (index) => DropdownMenuItem(
-                              value: index,
-                              child: Text('$index hours'),
-                            ),
-                          ),
-                          onChanged: (value) {
-                            if (value != null) {
-                              hours.value = value;
-                            }
-                          },
-                        )),
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: Obx(() => DropdownButtonFormField<int>(
-                          value: minutes.value,
-                          decoration: InputDecoration(
-                            labelText: 'Minutes',
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                          ),
-                          items: List.generate(
-                            60,
-                            (index) => DropdownMenuItem(
-                              value: index,
-                              child: Text(
-                                '$index minutes',
-                                style: TextStyle(fontSize: 15),
-                              ),
-                            ),
-                          ),
-                          onChanged: (value) {
-                            if (value != null) {
-                              minutes.value = value;
-                            }
-                          },
-                        )),
                   ),
                 ],
               ),
-              const SizedBox(height: 10),
-              TextField(
-                controller: reasonController,
-                decoration: InputDecoration(
-                  labelText: 'Reason (optional)',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                maxLines: 2,
-              ),
-              const SizedBox(height: 24),
-              Row(
-                children: [
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () => Get.back(),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.grey[300],
-                        foregroundColor: Colors.black,
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                      child: const Text('Cancel'),
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () async {
-                        final totalMinutes = (hours.value * 60) + minutes.value;
-                        if (totalMinutes == 0) {
-                          toast('Please select a duration');
-                          return;
-                        }
-
-                        try {
-                          final response = await buildHttpResponse(
-                            APIEndPoints.attendancePermissions,
-                            request: {
-                              'shiftId': shift.id,
-                              'type': permissionType.value,
-                              'duration': hours.value,
-                              if (reasonController.text.trim().isNotEmpty)
-                                'reason': reasonController.text.trim(),
-                            },
-                            method: HttpMethodType.POST,
-                          );
-
-                          final data = await handleResponse(response);
-
-                          if (data['success'] == true) {
-                            toast('Permission applied successfully');
-                            Get.back();
-                          } else {
-                            toast(data['message'] ??
-                                'Failed to apply permission');
-                          }
-                        } catch (e) {
-                          toast('Error applying permission: $e');
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: appColorPrimary,
-                        foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                      child: const Text('Apply'),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),)
-          
-        ),
+            )),
       ),
     );
   }

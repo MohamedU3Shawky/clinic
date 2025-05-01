@@ -10,7 +10,6 @@ import '../../../utils/app_common.dart';
 import '../../../utils/colors.dart';
 import '../../../main.dart';
 
-
 class QRScannerWidget extends StatelessWidget {
   final Function(String) onScan;
 
@@ -333,8 +332,9 @@ class ShiftsController extends GetxController {
   Future<bool> checkLocationPermission() async {
     try {
       // Check if location services are enabled
-      isLocationServiceEnabled.value = await Geolocator.isLocationServiceEnabled();
-      
+      isLocationServiceEnabled.value =
+          await Geolocator.isLocationServiceEnabled();
+
       if (!isLocationServiceEnabled.value) {
         toast('Please enable location services');
         return false;
@@ -342,14 +342,15 @@ class ShiftsController extends GetxController {
 
       // Check location permission
       LocationPermission permission = await Geolocator.checkPermission();
-      
+
       if (permission == LocationPermission.denied) {
         permission = await Geolocator.requestPermission();
       }
-      
-      isLocationPermissionGranted.value = permission == LocationPermission.always || 
-                                         permission == LocationPermission.whileInUse;
-      
+
+      isLocationPermissionGranted.value =
+          permission == LocationPermission.always ||
+              permission == LocationPermission.whileInUse;
+
       if (!isLocationPermissionGranted.value) {
         toast('Location permission is required for check-in/out');
         return false;
@@ -382,7 +383,7 @@ class ShiftsController extends GetxController {
 
   Future<void> handleCheckIn(ShiftModel shift, {String? qrCode}) async {
     if (isCheckingIn.value) return;
-    
+
     isCheckingIn(true);
     try {
       final position = await getCurrentLocation();
@@ -413,7 +414,7 @@ class ShiftsController extends GetxController {
 
   Future<void> handleCheckOut(ShiftModel shift, {String? qrCode}) async {
     if (isCheckingOut.value) return;
-    
+
     isCheckingOut(true);
     try {
       final position = await getCurrentLocation();
@@ -492,7 +493,9 @@ class ShiftsController extends GetxController {
                         icon: Icons.access_time,
                         label: 'Time',
                         value: DateFormat('hh:mm a').format(
-                          isCheckIn ? shift.timeTable.checkInTime : shift.timeTable.checkOutTime,
+                          isCheckIn
+                              ? shift.timeTable.checkInTime
+                              : shift.timeTable.checkOutTime,
                         ),
                       ),
                       const SizedBox(height: 8),
@@ -552,7 +555,8 @@ class ShiftsController extends GetxController {
                                     ? null
                                     : () async {
                                         isLoading(true);
-                                        final position = await getCurrentLocation();
+                                        final position =
+                                            await getCurrentLocation();
                                         if (position != null) {
                                           Get.back();
                                           if (isCheckIn) {
@@ -569,8 +573,9 @@ class ShiftsController extends GetxController {
                                         height: 20,
                                         child: CircularProgressIndicator(
                                           strokeWidth: 2,
-                                          valueColor: AlwaysStoppedAnimation<Color>(
-                                              Colors.white),
+                                          valueColor:
+                                              AlwaysStoppedAnimation<Color>(
+                                                  Colors.white),
                                         ),
                                       )
                                     : const Icon(
@@ -587,7 +592,8 @@ class ShiftsController extends GetxController {
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: appColorPrimary,
                                   foregroundColor: Colors.white,
-                                  padding: const EdgeInsets.symmetric(vertical: 12),
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 12),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(12),
                                   ),
@@ -662,8 +668,10 @@ class ShiftsController extends GetxController {
     // Check attendance status
     final hasAttendance = shift.attendance.isNotEmpty;
     final currentAttendance = hasAttendance ? shift.attendance.last : null;
-    final canCheckIn = !hasAttendance || currentAttendance?.checkOutDate != null;
-    final canCheckOut = hasAttendance && currentAttendance?.checkOutDate == null;
+    final canCheckIn =
+        !hasAttendance || currentAttendance?.checkOutDate != null;
+    final canCheckOut =
+        hasAttendance && currentAttendance?.checkOutDate == null;
 
     return Container(
       margin: const EdgeInsets.only(bottom: 16),

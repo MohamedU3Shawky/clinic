@@ -21,48 +21,50 @@ class AttendancePermissionsScreen extends StatelessWidget {
     return AppScaffoldNew(
       appBartitleText: 'Attendance Permissions',
       appBarVerticalSize: Get.height * 0.12,
-      
-      
-
       body: Obx(() {
         if (controller.isLoading.value) {
           return const Center(child: CircularProgressIndicator());
         }
 
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Attendance Permissions",
-                    style: boldTextStyle(size: 24),
-                  ),
-                  8.height,
-                  Text(
-                    "Manage attendance permissions",
-                    style: secondaryTextStyle(size: 16),
-                  ),
-                  24.height,
-                  _buildPermissionStats(controller),
-                  16.height,
-                   Text(
-          "All Permissions",
-          style: boldTextStyle(size: 18),
-        ),
-                ],
+        return RefreshIndicator(
+          onRefresh: () async {
+            await controller.fetchAttendancePermissions();
+          },
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Attendance Permissions",
+                      style: boldTextStyle(size: 24),
+                    ),
+                    8.height,
+                    Text(
+                      "Manage attendance permissions",
+                      style: secondaryTextStyle(size: 16),
+                    ),
+                    24.height,
+                    _buildPermissionStats(controller),
+                    16.height,
+                    Text(
+                      "All Permissions",
+                      style: boldTextStyle(size: 18),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            Expanded(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: _buildPermissionList(controller),
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: _buildPermissionList(controller),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         );
       }),
     );
@@ -74,7 +76,8 @@ class AttendancePermissionsScreen extends StatelessWidget {
       decoration: boxDecorationDefault(
         color: isDarkMode.value ? cardDarkColor : white,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: isDarkMode.value ? dividerDarkColor : dividerColor),
+        border: Border.all(
+            color: isDarkMode.value ? dividerDarkColor : dividerColor),
         boxShadow: isDarkMode.value ? null : defaultBoxShadow(),
       ),
       child: Row(
@@ -156,14 +159,18 @@ class AttendancePermissionsScreen extends StatelessWidget {
                 Icon(
                   Icons.timer,
                   size: 64,
-                  color: isDarkMode.value ? Colors.grey.shade600 : Colors.grey[400],
+                  color: isDarkMode.value
+                      ? Colors.grey.shade600
+                      : Colors.grey[400],
                 ),
                 const SizedBox(height: 16),
                 Text(
                   'No permissions found',
                   style: TextStyle(
                     fontSize: 18,
-                    color: isDarkMode.value ? Colors.grey.shade400 : Colors.grey[600],
+                    color: isDarkMode.value
+                        ? Colors.grey.shade400
+                        : Colors.grey[600],
                   ),
                 ),
               ],
@@ -181,7 +188,9 @@ class AttendancePermissionsScreen extends StatelessWidget {
                 decoration: boxDecorationDefault(
                   color: isDarkMode.value ? cardDarkColor : white,
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: isDarkMode.value ? dividerDarkColor : dividerColor),
+                  border: Border.all(
+                      color:
+                          isDarkMode.value ? dividerDarkColor : dividerColor),
                   boxShadow: isDarkMode.value ? null : defaultBoxShadow(),
                 ),
                 child: Padding(
@@ -194,7 +203,8 @@ class AttendancePermissionsScreen extends StatelessWidget {
                           Container(
                             padding: const EdgeInsets.all(8),
                             decoration: boxDecorationDefault(
-                              color: _getTypeColor(permission.type).withOpacity(isDarkMode.value ? 0.2 : 0.1),
+                              color: _getTypeColor(permission.type)
+                                  .withOpacity(isDarkMode.value ? 0.2 : 0.1),
                               borderRadius: BorderRadius.circular(8),
                             ),
                             child: CachedImageWidget(
@@ -212,7 +222,9 @@ class AttendancePermissionsScreen extends StatelessWidget {
                                 permission.user.name,
                                 style: boldTextStyle(
                                   size: 16,
-                                  color: isDarkMode.value ? Colors.white : textPrimaryColor,
+                                  color: isDarkMode.value
+                                      ? Colors.white
+                                      : textPrimaryColor,
                                 ),
                               ),
                               4.height,
@@ -220,15 +232,20 @@ class AttendancePermissionsScreen extends StatelessWidget {
                                 '${permission.type} - ${permission.duration} hours',
                                 style: secondaryTextStyle(
                                   size: 14,
-                                  color: isDarkMode.value ? Colors.white70 : textSecondaryColor,
+                                  color: isDarkMode.value
+                                      ? Colors.white70
+                                      : textSecondaryColor,
                                 ),
                               ),
                               4.height,
                               Text(
-                                DateFormat('MMM d, yyyy').format(permission.shift.startDate),
+                                DateFormat('MMM d, yyyy')
+                                    .format(permission.shift.startDate),
                                 style: secondaryTextStyle(
                                   size: 12,
-                                  color: isDarkMode.value ? Colors.white60 : textSecondaryColor,
+                                  color: isDarkMode.value
+                                      ? Colors.white60
+                                      : textSecondaryColor,
                                 ),
                               ),
                             ],
@@ -239,9 +256,11 @@ class AttendancePermissionsScreen extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 4),
                             decoration: boxDecorationDefault(
-                              color: _getStatusColor(permission.status).withOpacity(isDarkMode.value ? 0.2 : 0.1),
+                              color: _getStatusColor(permission.status)
+                                  .withOpacity(isDarkMode.value ? 0.2 : 0.1),
                               borderRadius: BorderRadius.circular(4),
                             ),
                             child: Text(
@@ -256,7 +275,9 @@ class AttendancePermissionsScreen extends StatelessWidget {
                           IconButton(
                             icon: Icon(
                               Icons.visibility,
-                              color: isDarkMode.value ? Colors.white70 : appColorPrimary,
+                              color: isDarkMode.value
+                                  ? Colors.white70
+                                  : appColorPrimary,
                               size: 20,
                             ),
                             onPressed: () => _showPermissionDetails(permission),
@@ -299,7 +320,8 @@ class AttendancePermissionsScreen extends StatelessWidget {
                   IconButton(
                     icon: Icon(
                       Icons.close,
-                      color: isDarkMode.value ? Colors.white70 : textPrimaryColor,
+                      color:
+                          isDarkMode.value ? Colors.white70 : textPrimaryColor,
                     ),
                     onPressed: () => Get.back(),
                   ),
@@ -396,7 +418,8 @@ class AttendancePermissionsScreen extends StatelessWidget {
                   label,
                   style: secondaryTextStyle(
                     size: 12,
-                    color: isDarkMode.value ? Colors.white70 : textSecondaryColor,
+                    color:
+                        isDarkMode.value ? Colors.white70 : textSecondaryColor,
                   ),
                 ),
                 const SizedBox(height: 4),
@@ -438,4 +461,4 @@ class AttendancePermissionsScreen extends StatelessWidget {
         return Colors.grey;
     }
   }
-} 
+}

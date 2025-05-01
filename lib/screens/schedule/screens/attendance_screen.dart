@@ -275,8 +275,10 @@ class AttendanceScreen extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        // Only show dialog if there's a shift and it's not a holiday
-        if (day.shift != null && day.holiday == null) {
+        // Only show dialog if there's a shift with actual data and it's not a holiday
+        if (day.shift != null &&
+            day.shift!.id.isNotEmpty &&
+            day.holiday == null) {
           _showShiftDetailsDialog(day, controller);
         } else if (day.attendance != null && day.attendance!.isNotEmpty) {
           _showAttendanceDetailsDialog(day, controller);
@@ -511,12 +513,24 @@ class AttendanceScreen extends StatelessWidget {
                 '${controller.formatDate(shift.startDate)} - ${controller.formatDate(shift.endDate)}',
                 Icons.calendar_today,
               ),
-              if (currentDay != null) ...[
+              _buildDetailRow(
+                'Shift Time',
+                '${controller.formatTime(shift.startDate)} - ${controller.formatTime(shift.endDate)}',
+                Icons.access_time,
+              ),
+              if (shift.recurrenceRule.isNotEmpty)
                 _buildDetailRow(
-                  'Shift Time',
-                  '${controller.formatTime(currentDay.startDate)} - ${controller.formatTime(currentDay.endDate)}',
-                  Icons.access_time,
+                  'Recurrence',
+                  shift.recurrenceRule,
+                  Icons.repeat,
                 ),
+              if (shift.weekDays.isNotEmpty)
+                _buildDetailRow(
+                  'Week Days',
+                  shift.weekDays.join(', '),
+                  Icons.calendar_view_week,
+                ),
+              if (currentDay != null) ...[
                 _buildDetailRow(
                   'Punch Window',
                   '${controller.formatTime(currentDay.punchFrom)} - ${controller.formatTime(currentDay.punchTo)}',

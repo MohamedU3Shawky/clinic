@@ -26,40 +26,45 @@ class OvertimeScreen extends StatelessWidget {
           return const Center(child: CircularProgressIndicator());
         }
 
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Overtime",
-                    style: boldTextStyle(size: 24),
-                  ),
-                  8.height,
-                  Text(
-                    "Manage overtime requests",
-                    style: secondaryTextStyle(size: 16),
-                  ),
-                  24.height,
-                  _buildOvertimeStats(controller),
-                  16.height,
-                  Text(
-                    "All Overtime",
-                    style: boldTextStyle(size: 18),
-                  ),
-                ],
+        return RefreshIndicator(
+          onRefresh: () async {
+            await controller.fetchOvertime();
+          },
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Overtime",
+                      style: boldTextStyle(size: 24),
+                    ),
+                    8.height,
+                    Text(
+                      "Manage overtime requests",
+                      style: secondaryTextStyle(size: 16),
+                    ),
+                    24.height,
+                    _buildOvertimeStats(controller),
+                    16.height,
+                    Text(
+                      "All Overtime",
+                      style: boldTextStyle(size: 18),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            Expanded(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: _buildOvertimeList(controller),
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: _buildOvertimeList(controller),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         );
       }),
     );
@@ -71,7 +76,8 @@ class OvertimeScreen extends StatelessWidget {
       decoration: boxDecorationDefault(
         color: isDarkMode.value ? cardDarkColor : white,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: isDarkMode.value ? dividerDarkColor : dividerColor),
+        border: Border.all(
+            color: isDarkMode.value ? dividerDarkColor : dividerColor),
         boxShadow: isDarkMode.value ? null : defaultBoxShadow(),
       ),
       child: Row(
@@ -153,14 +159,18 @@ class OvertimeScreen extends StatelessWidget {
                 Icon(
                   Icons.timer,
                   size: 64,
-                  color: isDarkMode.value ? Colors.grey.shade600 : Colors.grey[400],
+                  color: isDarkMode.value
+                      ? Colors.grey.shade600
+                      : Colors.grey[400],
                 ),
                 const SizedBox(height: 16),
                 Text(
                   'No overtime found',
                   style: TextStyle(
                     fontSize: 18,
-                    color: isDarkMode.value ? Colors.grey.shade400 : Colors.grey[600],
+                    color: isDarkMode.value
+                        ? Colors.grey.shade400
+                        : Colors.grey[600],
                   ),
                 ),
               ],
@@ -178,67 +188,69 @@ class OvertimeScreen extends StatelessWidget {
                 decoration: boxDecorationDefault(
                   color: isDarkMode.value ? cardDarkColor : white,
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: isDarkMode.value ? dividerDarkColor : dividerColor),
+                  border: Border.all(
+                      color:
+                          isDarkMode.value ? dividerDarkColor : dividerColor),
                   boxShadow: isDarkMode.value ? null : defaultBoxShadow(),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  padding: const EdgeInsets.all(12),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Container(
-                            padding: const EdgeInsets.all(8),
-                            decoration: boxDecorationDefault(
-                              color: _getTypeColor(overtime.type).withOpacity(isDarkMode.value ? 0.2 : 0.1),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: CachedImageWidget(
-                              url: Assets.iconsIcTimeOutlined,
-                              height: 24,
-                              width: 24,
-                              color: _getTypeColor(overtime.type),
-                            ),
-                          ),
-                          12.width,
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                          Row(
                             children: [
-                              Text(
-                                '${overtime.from} - ${overtime.to}',
-                                style: boldTextStyle(
-                                  size: 16,
-                                  color: isDarkMode.value ? Colors.white : textPrimaryColor,
+                              Container(
+                                padding: const EdgeInsets.all(8),
+                                decoration: boxDecorationDefault(
+                                  color: _getTypeColor(overtime.type)
+                                      .withOpacity(
+                                          isDarkMode.value ? 0.2 : 0.1),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: CachedImageWidget(
+                                  url: Assets.iconsIcTimeOutlined,
+                                  height: 20,
+                                  width: 20,
+                                  color: _getTypeColor(overtime.type),
                                 ),
                               ),
-                              4.height,
-                              Text(
-                                'Type: ${overtime.type}',
-                                style: secondaryTextStyle(
-                                  size: 14,
-                                  color: isDarkMode.value ? Colors.white70 : textSecondaryColor,
-                                ),
-                              ),
-                              4.height,
-                              Text(
-                                'Shift: ${overtime.shift}',
-                                style: secondaryTextStyle(
-                                  size: 12,
-                                  color: isDarkMode.value ? Colors.white60 : textSecondaryColor,
-                                ),
+                              8.width,
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    overtime.type,
+                                    style: boldTextStyle(
+                                      size: 14,
+                                      color: isDarkMode.value
+                                          ? Colors.white
+                                          : textPrimaryColor,
+                                    ),
+                                  ),
+                                  2.height,
+                                  Text(
+                                    overtime.shift.timeTable.name,
+                                    style: secondaryTextStyle(
+                                      size: 12,
+                                      color: isDarkMode.value
+                                          ? Colors.white70
+                                          : textSecondaryColor,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
                           Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 4),
                             decoration: boxDecorationDefault(
-                              color: _getStatusColor(overtime.status).withOpacity(isDarkMode.value ? 0.2 : 0.1),
+                              color: _getStatusColor(overtime.status)
+                                  .withOpacity(isDarkMode.value ? 0.2 : 0.1),
                               borderRadius: BorderRadius.circular(4),
                             ),
                             child: Text(
@@ -249,11 +261,102 @@ class OvertimeScreen extends StatelessWidget {
                               ),
                             ),
                           ),
-                          8.width,
+                        ],
+                      ),
+                      8.height,
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.access_time,
+                            size: 16,
+                            color: isDarkMode.value
+                                ? Colors.white70
+                                : textSecondaryColor,
+                          ),
+                          4.width,
+                          Text(
+                            '${DateFormat('MMM dd, hh:mm a').format(DateTime.parse(overtime.from))} - ${DateFormat('hh:mm a').format(DateTime.parse(overtime.to))}',
+                            style: secondaryTextStyle(
+                              size: 12,
+                              color: isDarkMode.value
+                                  ? Colors.white70
+                                  : textSecondaryColor,
+                            ),
+                          ),
+                        ],
+                      ),
+                      if (overtime.reason != null &&
+                          overtime.reason!.isNotEmpty) ...[
+                        8.height,
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Icon(
+                              Icons.note,
+                              size: 16,
+                              color: isDarkMode.value
+                                  ? Colors.white70
+                                  : textSecondaryColor,
+                            ),
+                            4.width,
+                            Expanded(
+                              child: Text(
+                                overtime.reason!,
+                                style: secondaryTextStyle(
+                                  size: 12,
+                                  color: isDarkMode.value
+                                      ? Colors.white70
+                                      : textSecondaryColor,
+                                ),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                      8.height,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Container(
+                                height: 24,
+                                width: 24,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    color: isDarkMode.value
+                                        ? Colors.white24
+                                        : Colors.grey.shade300,
+                                  ),
+                                ),
+                                child: CachedImageWidget(
+                                  url: overtime.user.avatar ?? '',
+                                  height: 24,
+                                  width: 24,
+                                  fit: BoxFit.cover,
+                                ).cornerRadiusWithClipRRect(12),
+                              ),
+                              8.width,
+                              Text(
+                                overtime.user.name,
+                                style: secondaryTextStyle(
+                                  size: 12,
+                                  color: isDarkMode.value
+                                      ? Colors.white70
+                                      : textSecondaryColor,
+                                ),
+                              ),
+                            ],
+                          ),
                           IconButton(
                             icon: Icon(
                               Icons.visibility,
-                              color: isDarkMode.value ? Colors.white70 : appColorPrimary,
+                              color: isDarkMode.value
+                                  ? Colors.white70
+                                  : appColorPrimary,
                               size: 20,
                             ),
                             onPressed: () => _showOvertimeDetails(overtime),
@@ -296,7 +399,8 @@ class OvertimeScreen extends StatelessWidget {
                   IconButton(
                     icon: Icon(
                       Icons.close,
-                      color: isDarkMode.value ? Colors.white70 : textPrimaryColor,
+                      color:
+                          isDarkMode.value ? Colors.white70 : textPrimaryColor,
                     ),
                     onPressed: () => Get.back(),
                   ),
@@ -305,7 +409,7 @@ class OvertimeScreen extends StatelessWidget {
               const SizedBox(height: 16),
               _buildDetailRow(
                 'Time',
-                '${overtime.from} - ${overtime.to}',
+                '${DateFormat('EEEE, MMMM d, y').format(DateTime.parse(overtime.from))}\n${DateFormat('hh:mm a').format(DateTime.parse(overtime.from))} - ${DateFormat('hh:mm a').format(DateTime.parse(overtime.to))}',
                 Icons.access_time,
               ),
               _buildDetailRow(
@@ -315,7 +419,7 @@ class OvertimeScreen extends StatelessWidget {
               ),
               _buildDetailRow(
                 'Shift',
-                overtime.shift,
+                overtime.shift.timeTable.name,
                 Icons.calendar_today,
               ),
               _buildDetailRow(
@@ -341,7 +445,7 @@ class OvertimeScreen extends StatelessWidget {
                 const SizedBox(height: 8),
                 _buildDetailRow(
                   'Name',
-                  overtime.reviewedBy!,
+                  overtime.reviewedBy?.name ?? 'N/A',
                   Icons.person,
                 ),
               ],
@@ -384,7 +488,8 @@ class OvertimeScreen extends StatelessWidget {
                   label,
                   style: secondaryTextStyle(
                     size: 12,
-                    color: isDarkMode.value ? Colors.white70 : textSecondaryColor,
+                    color:
+                        isDarkMode.value ? Colors.white70 : textSecondaryColor,
                   ),
                 ),
                 const SizedBox(height: 4),

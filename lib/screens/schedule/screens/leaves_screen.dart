@@ -61,7 +61,12 @@ class LeavesScreen extends StatelessWidget {
                 );
               }
 
-              return _buildLeavesList(controller);
+              return RefreshIndicator(
+                onRefresh: () async {
+                  await controller.fetchLeaves();
+                },
+                child: _buildLeavesList(controller),
+              );
             }),
           ),
         ],

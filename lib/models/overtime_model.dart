@@ -4,10 +4,13 @@ class OvertimeModel {
   final String to;
   final String type;
   final String? reason;
-  final String shift;
   final String status;
-  final String? reviewedBy;
+  final User? reviewedBy;
   final String? reviewedAt;
+  final String? createdAt;
+  final String? updatedAt;
+  final Shift shift;
+  final User user;
 
   OvertimeModel({
     required this.id,
@@ -15,23 +18,93 @@ class OvertimeModel {
     required this.to,
     required this.type,
     this.reason,
-    required this.shift,
     required this.status,
     this.reviewedBy,
     this.reviewedAt,
+    this.createdAt,
+    this.updatedAt,
+    required this.shift,
+    required this.user,
   });
 
   factory OvertimeModel.fromJson(Map<String, dynamic> json) {
     return OvertimeModel(
-      id: json['id'] as String,
-      from: json['from'] as String,
-      to: json['to'] as String,
-      type: json['type'] as String,
-      reason: json['reason'] as String?,
-      shift: json['shift'] as String,
-      status: json['status'] as String,
-      reviewedBy: json['reviewed_by'] as String?,
-      reviewedAt: json['reviewed_at'] as String?,
+      id: json['id']?.toString() ?? '',
+      from: json['from']?.toString() ?? '',
+      to: json['to']?.toString() ?? '',
+      type: json['type']?.toString() ?? '',
+      reason: json['reason']?.toString(),
+      status: json['status']?.toString() ?? '',
+      reviewedBy:
+          json['reviewedBy'] != null ? User.fromJson(json['reviewedBy']) : null,
+      reviewedAt: json['reviewedAt']?.toString(),
+      createdAt: json['createdAt']?.toString(),
+      updatedAt: json['updatedAt']?.toString(),
+      shift: Shift.fromJson(json['shift'] ?? {}),
+      user: User.fromJson(json['user'] ?? {}),
     );
   }
-} 
+}
+
+class User {
+  final String id;
+  final String name;
+  final String email;
+  final String? avatar;
+
+  User({
+    required this.id,
+    required this.name,
+    required this.email,
+    this.avatar,
+  });
+
+  factory User.fromJson(Map<String, dynamic> json) {
+    return User(
+      id: json['id']?.toString() ?? '',
+      name: json['name']?.toString() ?? '',
+      email: json['email']?.toString() ?? '',
+      avatar: json['avatar']?.toString(),
+    );
+  }
+}
+
+class Shift {
+  final String id;
+  final String startDate;
+  final String endDate;
+  final TimeTable timeTable;
+
+  Shift({
+    required this.id,
+    required this.startDate,
+    required this.endDate,
+    required this.timeTable,
+  });
+
+  factory Shift.fromJson(Map<String, dynamic> json) {
+    return Shift(
+      id: json['id']?.toString() ?? '',
+      startDate: json['startDate']?.toString() ?? '',
+      endDate: json['endDate']?.toString() ?? '',
+      timeTable: TimeTable.fromJson(json['timeTable'] ?? {}),
+    );
+  }
+}
+
+class TimeTable {
+  final String id;
+  final String name;
+
+  TimeTable({
+    required this.id,
+    required this.name,
+  });
+
+  factory TimeTable.fromJson(Map<String, dynamic> json) {
+    return TimeTable(
+      id: json['id']?.toString() ?? '',
+      name: json['name']?.toString() ?? '',
+    );
+  }
+}

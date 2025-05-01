@@ -18,10 +18,9 @@ class OvertimeApi {
       final data = await handleResponse(response);
 
       if (data['success'] == true) {
-        final List<dynamic> overtimeJson = data['data']['data'];
-        final overtime = overtimeJson
-            .map((json) => OvertimeModel.fromJson(json))
-            .toList();
+        final List<dynamic> overtimeJson = data['data']['data'] ?? [];
+        final overtime =
+            overtimeJson.map((json) => OvertimeModel.fromJson(json)).toList();
 
         return {
           'overtime': overtime,
@@ -52,4 +51,4 @@ class OvertimeApi {
       };
     }
   }
-} 
+}

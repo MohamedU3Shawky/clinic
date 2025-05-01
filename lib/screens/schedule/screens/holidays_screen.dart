@@ -28,7 +28,7 @@ class HolidaysScreen extends StatelessWidget {
           // Only this part will rebuild when the month changes
           Expanded(
             child: Obx(() {
-        if (controller.isLoading.value) {
+              if (controller.isLoading.value) {
                 return const Center(
                   child: CircularProgressIndicator(
                     valueColor: AlwaysStoppedAnimation<Color>(appColorPrimary),
@@ -39,7 +39,7 @@ class HolidaysScreen extends StatelessWidget {
               return _buildHolidayList(controller);
             }),
           ),
-          ],
+        ],
       ),
     );
   }
@@ -105,7 +105,7 @@ class HolidaysScreen extends StatelessWidget {
                         size: 16,
                         color:
                             isDarkMode.value ? Colors.white : appColorPrimary,
-                  ),
+                      ),
                     )),
               ],
             ),
@@ -135,8 +135,8 @@ class HolidaysScreen extends StatelessWidget {
     required bool isDark,
   }) {
     return Container(
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
         color: isDark
             ? Colors.grey.withOpacity(0.2)
             : appColorPrimary.withOpacity(0.1),
@@ -243,11 +243,11 @@ class HolidaysScreen extends StatelessWidget {
                     color: scheduleHolidaysColor,
                     size: 18,
                   ),
-          ),
-          const SizedBox(width: 12),
+                ),
+                const SizedBox(width: 12),
 
                 // Holiday name and date range
-          Expanded(
+                Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
@@ -334,13 +334,13 @@ class HolidaysScreen extends StatelessWidget {
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
+            children: [
+              Text(
                 label,
                 style: secondaryTextStyle(
                   size: 12,
                   color: isDark ? Colors.grey[400] : textSecondaryColor,
-                  ),
+                ),
               ),
               const SizedBox(height: 2),
               Text(
@@ -362,9 +362,9 @@ class HolidaysScreen extends StatelessWidget {
   Widget _buildEmptyState(HolidaysController controller) {
     return Center(
       child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
             Container(
               width: 150,
               height: 150,
@@ -409,13 +409,13 @@ class HolidaysScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 24),
-              Text(
-                locale.value.noHolidaysDescription,
-                style: secondaryTextStyle(),
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ),
+            Text(
+              locale.value.noHolidaysDescription,
+              style: secondaryTextStyle(),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
       ),
     );
   }
