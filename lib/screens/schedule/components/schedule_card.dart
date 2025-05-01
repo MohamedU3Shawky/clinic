@@ -22,13 +22,21 @@ class ScheduleCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: boxDecorationDefault(
-        color: isDarkMode.value ? cardDarkColor : white,
-        borderRadius: BorderRadius.circular(12),
+        color: isDarkMode.value ? cardBackgroundBlackDark : white,
+        borderRadius: BorderRadius.circular(18),
         border: Border.all(
           color: isDarkMode.value ? Colors.grey.withOpacity(0.2) : dividerColor,
-          width: isDarkMode.value ? 0.5 : 1,
+          width: 1.5,
         ),
-        boxShadow: isDarkMode.value ? null : defaultBoxShadow(),
+        boxShadow: isDarkMode.value
+            ? null
+            : [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.05),
+                  blurRadius: 12,
+                  offset: const Offset(0, 4),
+                ),
+              ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -38,16 +46,16 @@ class ScheduleCard extends StatelessWidget {
               Container(
                 padding: EdgeInsets.all(8),
                 decoration: boxDecorationDefault(
-                  color: isDarkMode.value 
-                    ? appColorPrimary.withOpacity(0.15)
-                    : appColorPrimary.withOpacity(0.1),
+                  color: isDarkMode.value
+                      ? Colors.grey.withOpacity(0.1)
+                      : appColorPrimary.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: CachedImageWidget(
                   url: Assets.iconsIcClock,
                   height: 24,
                   width: 24,
-                  color: isDarkMode.value ? Colors.white : appColorPrimary,
+                  color: appColorPrimary,
                 ),
               ),
               12.width,
@@ -59,7 +67,8 @@ class ScheduleCard extends StatelessWidget {
                       schedule.title ?? '',
                       style: boldTextStyle(
                         size: 16,
-                        color: isDarkMode.value ? Colors.white : textPrimaryColor,
+                        color:
+                            isDarkMode.value ? Colors.white : textPrimaryColor,
                       ),
                     ),
                     4.height,
@@ -67,7 +76,9 @@ class ScheduleCard extends StatelessWidget {
                       schedule.description ?? '',
                       style: secondaryTextStyle(
                         size: 14,
-                        color: isDarkMode.value ? Colors.white.withOpacity(0.8) : textSecondaryColor,
+                        color: isDarkMode.value
+                            ? Colors.grey[400]
+                            : textSecondaryColor,
                       ),
                     ),
                   ],
@@ -78,7 +89,7 @@ class ScheduleCard extends StatelessWidget {
                   url: Assets.iconsIcEdit,
                   height: 20,
                   width: 20,
-                  color: isDarkMode.value ? Colors.white.withOpacity(0.8) : appColorPrimary,
+                  color: appColorPrimary,
                 ),
                 onPressed: onEdit,
               ),
@@ -89,18 +100,19 @@ class ScheduleCard extends StatelessWidget {
             padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
             decoration: boxDecorationDefault(
               color: isDarkMode.value
-                  ? Colors.grey.withOpacity(0.08)
+                  ? Colors.grey.withOpacity(0.1)
                   : appColorPrimary.withOpacity(0.05),
               borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(12),
-                bottomRight: Radius.circular(12),
+                bottomLeft: Radius.circular(18),
+                bottomRight: Radius.circular(18),
               ),
             ),
             child: Row(
               children: [
                 _buildInfoItem(
                   icon: Assets.iconsIcTimeOutlined,
-                  text: '${schedule.startTime ?? ''} - ${schedule.endTime ?? ''}',
+                  text:
+                      '${schedule.startTime ?? ''} - ${schedule.endTime ?? ''}',
                 ),
                 16.width,
                 _buildInfoItem(
@@ -122,14 +134,14 @@ class ScheduleCard extends StatelessWidget {
           url: icon,
           height: 16,
           width: 16,
-          color: isDarkMode.value ? Colors.white.withOpacity(0.7) : appColorPrimary,
+          color: appColorPrimary,
         ),
         8.width,
         Text(
           text,
           style: secondaryTextStyle(
             size: 12,
-            color: isDarkMode.value ? Colors.white.withOpacity(0.7) : textSecondaryColor,
+            color: isDarkMode.value ? Colors.grey[400] : textSecondaryColor,
           ),
         ),
       ],

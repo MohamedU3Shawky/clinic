@@ -24,9 +24,22 @@ class ScheduleTypeCard extends StatelessWidget {
       onTap: onTap,
       child: Container(
         decoration: boxDecorationDefault(
-          color: isDarkMode.value ? appBodyColor : white,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: dividerColor),
+          color: isDarkMode.value ? cardBackgroundBlackDark : white,
+          borderRadius: BorderRadius.circular(18),
+          border: Border.all(
+            color:
+                isDarkMode.value ? Colors.grey.withOpacity(0.2) : dividerColor,
+            width: 1.5,
+          ),
+          boxShadow: isDarkMode.value
+              ? null
+              : [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.05),
+                    blurRadius: 12,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -34,7 +47,9 @@ class ScheduleTypeCard extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(12),
               decoration: boxDecorationDefault(
-                color: color.withOpacity(0.1),
+                color: isDarkMode.value
+                    ? Colors.grey.withOpacity(0.1)
+                    : color.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: CachedImageWidget(
@@ -47,7 +62,10 @@ class ScheduleTypeCard extends StatelessWidget {
             12.height,
             Text(
               title,
-              style: boldTextStyle(size: 15),
+              style: boldTextStyle(
+                size: 15,
+                color: isDarkMode.value ? Colors.white : textPrimaryColor,
+              ),
               textAlign: TextAlign.center,
             ),
           ],
@@ -55,4 +73,4 @@ class ScheduleTypeCard extends StatelessWidget {
       ),
     );
   }
-} 
+}

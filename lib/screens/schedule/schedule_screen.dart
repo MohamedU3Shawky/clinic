@@ -77,15 +77,15 @@ class ScheduleScreen extends StatelessWidget {
               onTap: () => Get.to(() => const AttendanceScreen()),
             ),
             ScheduleTypeCard(
-              title: 'Attendance Permissions',
+              title: locale.value.attendancePermissions,
               icon: Assets.iconsIcRequest,
               color: Colors.purple,
               onTap: () => Get.to(() => const AttendancePermissionsScreen()),
             ),
-             ScheduleTypeCard(
+            ScheduleTypeCard(
               title: locale.value.overtime,
               icon: Assets.iconsIcTimeOutlined,
-              color: Colors.purple,
+              color: Colors.red,
               onTap: () => Get.to(() => OvertimeScreen()),
             ),
           ],
@@ -153,21 +153,25 @@ class ScheduleScreen extends StatelessWidget {
                 decoration: boxDecorationDefault(
                   color: isDarkMode.value ? cardDarkColor : white,
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: isDarkMode.value ? dividerDarkColor : dividerColor),
+                  border: Border.all(
+                      color:
+                          isDarkMode.value ? dividerDarkColor : dividerColor),
                   boxShadow: isDarkMode.value ? null : defaultBoxShadow(),
                 ),
                 child: ListTile(
                   leading: Container(
                     padding: const EdgeInsets.all(8),
                     decoration: boxDecorationDefault(
-                      color: appColorPrimary.withOpacity(isDarkMode.value ? 0.2 : 0.1),
+                      color: appColorPrimary
+                          .withOpacity(isDarkMode.value ? 0.2 : 0.1),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: CachedImageWidget(
                       url: Assets.iconsIcClock,
                       height: 24,
                       width: 24,
-                      color: isDarkMode.value ? Colors.white70 : appColorPrimary,
+                      color:
+                          isDarkMode.value ? Colors.white70 : appColorPrimary,
                     ),
                   ),
                   title: Text(
@@ -181,13 +185,17 @@ class ScheduleScreen extends StatelessWidget {
                     '${schedule.startTime.toString().substring(0, 10)} - ${schedule.endTime.toString().substring(0, 10)}',
                     style: secondaryTextStyle(
                       size: 14,
-                      color: isDarkMode.value ? Colors.white70 : textSecondaryColor,
+                      color: isDarkMode.value
+                          ? Colors.white70
+                          : textSecondaryColor,
                     ),
                   ),
                   trailing: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     decoration: boxDecorationDefault(
-                      color: _getStatusColor(schedule.status).withOpacity(isDarkMode.value ? 0.2 : 0.1),
+                      color: _getStatusColor(schedule.status)
+                          .withOpacity(isDarkMode.value ? 0.2 : 0.1),
                       borderRadius: BorderRadius.circular(4),
                     ),
                     child: Text(

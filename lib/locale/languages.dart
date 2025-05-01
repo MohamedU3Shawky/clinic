@@ -1208,22 +1208,6 @@ abstract class BaseLanguage {
   String get pendingRequests;
   String get approvedRequests;
   String get rejectedRequests;
-  String get requestStatus;
-  String get requestDate;
-  String get approvedBy;
-  String get approvalDate;
-  String get comments;
-  String get attachments;
-  String get addAttachment;
-  String get removeAttachment;
-  String get submitRequest;
-  String get cancelRequest;
-  String get approveRequest;
-  String get rejectRequest;
-  String get requestSubmitted;
-  String get requestCancelled;
-  String get requestApproved;
-  String get requestRejected;
 
   String get close;
   String get failedToFetchPermissions;
@@ -1244,14 +1228,14 @@ abstract class BaseLanguage {
 
   String get applyPermission;
 
-  String get attendance ;
+  String get attendance;
 
-  String get noAttendanceFound ;
+  String get noAttendanceFound;
 
-  String get noAttendanceFoundDesc ;
+  String get noAttendanceFoundDesc;
 
   String get failedToFetchAttendance;
-  
+
   String get attendancePermissions;
   String get manageAttendancePermissions;
   String get permissionType;
@@ -1308,20 +1292,62 @@ abstract class BaseLanguage {
   String get failedToApproveRequest;
   String get failedToRejectRequest;
   String get noHistoryFound;
-
   String get getAttendanceError;
+  String get checkInSuccess;
+  String get checkInFailed;
+  String get checkInError;
+  String get checkOutSuccess;
+  String get checkOutFailed;
+  String get checkOutError;
+  String get checkStatusError;
+  String get noShiftsFound;
+  String get noShiftsAvailable;
+  String get employee;
+  String get period;
+  String get checkOut;
+  String get recurrence;
+  String get daily;
+  String get weekly;
 
-  String? get checkInSuccess => null;
+  // Overtime screen strings
+  String get overtimeTitle;
+  String get overtimeSubtitle;
+  String get allOvertime;
+  String get noOvertimeFound;
+  String get overtimeDetails;
+  String get overtimeTime;
+  String get overtimeType => 'نوع العمل الإضافي'; // Overtime Type
+  String get overtimeShift;
+  String get overtimeStatus;
+  String get overtimeReason;
+  String get overtimeReviewedBy;
+  String get overtimeName;
+  String get overtimeReviewedAt;
+  String get overtimeTotal;
+  String get overtimeApproved;
+  String get overtimePending;
+  String get overtimeRegular;
+  String get overtimeHoliday;
 
-  get checkInFailed => null;
+  // Attendance Permissions screen strings
+  String get attendancePermissionsTitle;
+  String get attendancePermissionsSubtitle;
+  String get allPermissions;
+  String get permissionTime;
+  String get permissionShift;
+  String get permissionReviewedBy;
+  String get permissionName;
+  String get permissionReviewedAt;
+  String get permissionTotal;
+  String get permissionLateIn;
+  String get permissionEarlyLeave;
 
-  get checkInError => null;
+  // Common strings
+  String get time;
 
-  String? get checkOutSuccess => null;
+  String get approveRequest;
 
-  get checkOutFailed => null;
+  String get rejectRequest;
 
-  get checkOutError => null;
-
-  get checkStatusError => null;
+  String get minutes;
 }

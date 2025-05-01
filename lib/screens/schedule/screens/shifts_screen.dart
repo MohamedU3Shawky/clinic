@@ -1,7 +1,8 @@
+import 'package:egphysio_clinic_admin/utils/empty_error_state_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:nb_utils/nb_utils.dart';
+import 'package:nb_utils/nb_utils.dart' as nb;
 import 'package:table_calendar/table_calendar.dart';
 import '../../../components/app_scaffold.dart';
 import '../../../components/cached_image_widget.dart';
@@ -55,25 +56,12 @@ class ShiftsScreen extends StatelessWidget {
                     ? SingleChildScrollView(
                         physics: const AlwaysScrollableScrollPhysics(),
                         child: Container(
-                          height: Get.height * 0.6,
+                          height: Get.height * 0.4,
                           alignment: Alignment.center,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.event_busy,
-                                size: 64,
-                                color: Colors.grey[400],
-                              ),
-                              const SizedBox(height: 16),
-                              Text(
-                                'No shifts found',
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  color: Colors.grey[600],
-                                ),
-                              ),
-                            ],
+                          child: nb.NoDataWidget(
+                            title: locale.value.noShiftsFound,
+                            imageWidget: const EmptyStateWidget(),
+                            subTitle: locale.value.noShiftsAvailable,
                           ),
                         ),
                       )
@@ -93,7 +81,7 @@ class ShiftsScreen extends StatelessWidget {
     return Obx(() => Container(
           margin: const EdgeInsets.only(top: 16, left: 16, right: 16),
           decoration: BoxDecoration(
-            color: isDarkMode.value ? appBodyColor : white,
+            color: isDarkMode.value ? appBodyColor : nb.white,
             borderRadius: BorderRadius.circular(12),
             border: Border.all(color: dividerColor),
           ),
@@ -209,7 +197,7 @@ class ShiftsScreen extends StatelessWidget {
             ),
             Text(
               '${DateFormat('MMM d').format(controller.weekStartDate.value)} - ${DateFormat('MMM d, yyyy').format(controller.weekEndDate.value)}',
-              style: boldTextStyle(size: 16),
+              style: nb.boldTextStyle(size: 16),
             ),
             IconButton(
               icon: const Icon(Icons.chevron_right),
@@ -262,9 +250,20 @@ class ShiftsScreen extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       decoration: BoxDecoration(
-        color: isDark ? appBodyColor : white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: dividerColor),
+        color: isDark ? cardBackgroundBlackDark : Colors.white,
+        borderRadius: BorderRadius.circular(18),
+        boxShadow: [
+          if (!isDark)
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              blurRadius: 12,
+              offset: const Offset(0, 4),
+            ),
+        ],
+        border: Border.all(
+          color: isDark ? Colors.grey.withOpacity(0.2) : dividerColor,
+          width: 1.5,
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -272,10 +271,12 @@ class ShiftsScreen extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: color.withOpacity(0.1),
+              color: isDark
+                  ? Colors.grey.withOpacity(0.1)
+                  : color.withOpacity(0.1),
               borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(12),
-                topRight: Radius.circular(12),
+                topLeft: Radius.circular(18),
+                topRight: Radius.circular(18),
               ),
             ),
             child: Row(
@@ -283,14 +284,16 @@ class ShiftsScreen extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: color.withOpacity(0.2),
+                    color: isDark
+                        ? Colors.grey.withOpacity(0.2)
+                        : color.withOpacity(0.2),
                     shape: BoxShape.circle,
                   ),
                   child: CachedImageWidget(
                     url: Assets.iconsIcClock,
                     height: 24,
                     width: 24,
-                    color: color,
+                    color: isDark ? Colors.white : color,
                   ),
                 ),
                 const SizedBox(width: 12),
@@ -300,35 +303,22 @@ class ShiftsScreen extends StatelessWidget {
                     children: [
                       Text(
                         timeTable.name,
-                        style: boldTextStyle(size: 16),
+                        style: nb.boldTextStyle(
+                          size: 16,
+                          color: isDark ? Colors.white : primaryTextColor,
+                        ),
                       ),
                       const SizedBox(height: 4),
                       Text(
                         shift.branch.name,
-                        style: secondaryTextStyle(size: 14),
+                        style: nb.secondaryTextStyle(
+                          size: 14,
+                          color: isDark ? Colors.grey[400] : secondaryTextColor,
+                        ),
                       ),
                     ],
                   ),
                 ),
-                // PopupMenuButton<String>(
-                //   icon: Icon(
-                //     Icons.more_vert,
-                //     color: isDark ? appDarkBodyColor : secondaryTextColor,
-                //   ),
-                //   onSelected: (value) {
-                //     // TODO: Implement shift actions
-                //   },
-                //   itemBuilder: (context) => [
-                //     const PopupMenuItem(
-                //       value: 'edit',
-                //       child: Text('Edit'),
-                //     ),
-                //     const PopupMenuItem(
-                //       value: 'delete',
-                //       child: Text('Delete'),
-                //     ),
-                //   ],
-                // ),
               ],
             ),
           ),
@@ -339,43 +329,42 @@ class ShiftsScreen extends StatelessWidget {
               children: [
                 _buildShiftInfoRow(
                   icon: Icons.person,
-                  label: 'Employee',
+                  label: locale.value.employee,
                   value: shift.user.name,
                 ),
                 const SizedBox(height: 8),
                 _buildShiftInfoRow(
                   icon: Icons.access_time,
-                  label: 'Check In',
+                  label: locale.value.checkIn,
                   value: DateFormat('hh:mm a').format(timeTable.checkInTime),
                 ),
                 const SizedBox(height: 8),
                 _buildShiftInfoRow(
                   icon: Icons.access_time,
-                  label: 'Check Out',
+                  label: locale.value.checkout,
                   value: DateFormat('hh:mm a').format(timeTable.checkOutTime),
                 ),
                 const SizedBox(height: 8),
                 _buildShiftInfoRow(
                   icon: Icons.calendar_today,
-                  label: 'Recurrence',
+                  label: locale.value.recurrence,
                   value: shift.recurrenceRule,
                 ),
                 if (shift.weekDays.isNotEmpty) ...[
                   const SizedBox(height: 8),
                   _buildShiftInfoRow(
                     icon: Icons.date_range,
-                    label: 'Days',
+                    label: locale.value.days,
                     value: shift.weekDays.join(', '),
                   ),
                 ],
                 const SizedBox(height: 8),
                 _buildShiftInfoRow(
                   icon: Icons.date_range,
-                  label: 'Period',
+                  label: locale.value.period,
                   value:
                       '${DateFormat('MMM d').format(shift.startDate)} - ${DateFormat('MMM d, yyyy').format(shift.endDate ?? shift.startDate)}',
                 ),
-                const SizedBox(height: 8),
                 Row(
                   children: [
                     if (canCheckIn)
@@ -450,16 +439,22 @@ class ShiftsScreen extends StatelessWidget {
         Icon(
           icon,
           size: 16,
-          color: appColorPrimary,
+          color: isDarkMode.value ? Colors.white : appColorPrimary,
         ),
         const SizedBox(width: 8),
         Text(
           '$label: ',
-          style: secondaryTextStyle(size: 14),
+          style: nb.secondaryTextStyle(
+            size: 14,
+            color: isDarkMode.value ? Colors.grey[400] : secondaryTextColor,
+          ),
         ),
         Text(
           value,
-          style: boldTextStyle(size: 14),
+          style: nb.boldTextStyle(
+            size: 14,
+            color: isDarkMode.value ? Colors.white : primaryTextColor,
+          ),
         ),
       ],
     );
@@ -485,7 +480,7 @@ class ShiftsScreen extends StatelessWidget {
                 children: [
                   Text(
                     'Apply Permission',
-                    style: boldTextStyle(size: 20),
+                    style: nb.boldTextStyle(size: 20),
                   ),
                   const SizedBox(height: 24),
                   Obx(() => DropdownButtonFormField<String>(
@@ -602,7 +597,7 @@ class ShiftsScreen extends StatelessWidget {
                             final totalMinutes =
                                 (hours.value * 60) + minutes.value;
                             if (totalMinutes == 0) {
-                              toast('Please select a duration');
+                              nb.toast('Please select a duration');
                               return;
                             }
 
@@ -616,20 +611,20 @@ class ShiftsScreen extends StatelessWidget {
                                   if (reasonController.text.trim().isNotEmpty)
                                     'reason': reasonController.text.trim(),
                                 },
-                                method: HttpMethodType.POST,
+                                method: nb.HttpMethodType.POST,
                               );
 
                               final data = await handleResponse(response);
 
                               if (data['success'] == true) {
-                                toast('Permission applied successfully');
+                                nb.toast('Permission applied successfully');
                                 Get.back();
                               } else {
-                                toast(data['message'] ??
+                                nb.toast(data['message'] ??
                                     'Failed to apply permission');
                               }
                             } catch (e) {
-                              toast('Error applying permission: $e');
+                              nb.toast('Error applying permission: $e');
                             }
                           },
                           style: ElevatedButton.styleFrom(

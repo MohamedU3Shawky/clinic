@@ -700,77 +700,86 @@ class LeavesScreen extends StatelessWidget {
   }
 
   Widget _buildEmptyState(LeavesController controller) {
-    return Center(
+    return RefreshIndicator(
+      onRefresh: () async => controller.fetchLeaves(),
+      backgroundColor: isDarkMode.value ? scaffoldDarkColor : Colors.white,
+      color: appColorPrimary,
       child: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              width: 150,
-              height: 150,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    appColorPrimary.withOpacity(0.2),
-                    appColorPrimary.withOpacity(0.4),
-                  ],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-                shape: BoxShape.circle,
-              ),
-              child: Icon(
-                Icons
-                    .beach_access, // Alternative: Icons.event_busy, Icons.work_off
-                size: 80,
-                color: appColorPrimary,
-              ),
-            ),
-            const SizedBox(height: 24),
-
-            // Title with subtle animation
-            TweenAnimationBuilder(
-              tween: Tween<double>(begin: 0, end: 1),
-              duration: const Duration(milliseconds: 500),
-              builder: (context, value, child) {
-                return Opacity(
-                  opacity: value,
-                  child: Transform.translate(
-                    offset: Offset(0, 10 * (1 - value)),
-                    child: child,
+        physics: const AlwaysScrollableScrollPhysics(),
+        child: SizedBox(
+          height: Get.height * 0.5,
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  width: 150,
+                  height: 150,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        appColorPrimary.withOpacity(0.2),
+                        appColorPrimary.withOpacity(0.4),
+                      ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                    shape: BoxShape.circle,
                   ),
-                );
-              },
-              child: Text(
-                locale.value.noLeavesFound,
-                style: boldTextStyle(
-                  size: 18,
-                  color: isDarkMode.value ? Colors.white : textPrimaryColor,
+                  child: Icon(
+                    Icons.beach_access,
+                    size: 80,
+                    color: appColorPrimary,
+                  ),
                 ),
-              ),
-            ),
-            const SizedBox(height: 24),
-            ElevatedButton.icon(
-              onPressed: () => _showAddLeaveDialog(Get.context!, controller),
-              icon: const Icon(
-                Icons.add,
-                color: Colors.white,
-              ),
-              label: Text(
-                locale.value.requestLeave,
-                style: boldTextStyle(color: Colors.white),
-              ),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: appColorPrimary,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+                const SizedBox(height: 24),
+
+                // Title with subtle animation
+                TweenAnimationBuilder(
+                  tween: Tween<double>(begin: 0, end: 1),
+                  duration: const Duration(milliseconds: 500),
+                  builder: (context, value, child) {
+                    return Opacity(
+                      opacity: value,
+                      child: Transform.translate(
+                        offset: Offset(0, 10 * (1 - value)),
+                        child: child,
+                      ),
+                    );
+                  },
+                  child: Text(
+                    locale.value.noLeavesFound,
+                    style: boldTextStyle(
+                      size: 18,
+                      color: isDarkMode.value ? Colors.white : textPrimaryColor,
+                    ),
+                  ),
                 ),
-                elevation: 2,
-              ),
+                const SizedBox(height: 24),
+                ElevatedButton.icon(
+                  onPressed: () =>
+                      _showAddLeaveDialog(Get.context!, controller),
+                  icon: const Icon(
+                    Icons.add,
+                    color: Colors.white,
+                  ),
+                  label: Text(
+                    locale.value.requestLeave,
+                    style: boldTextStyle(color: Colors.white),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: appColorPrimary,
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 24, vertical: 14),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    elevation: 2,
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

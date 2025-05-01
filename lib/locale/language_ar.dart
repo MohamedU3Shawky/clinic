@@ -2081,9 +2081,8 @@ class LanguageAr extends BaseLanguage {
       'خطأ في جلب بيانات الحضور'; // 'Attendance Data Error'
 
   @override
-  String get failedToFetchAttendance =>
-      'فشل تحميل بيانات الحضور';
-  
+  String get failedToFetchAttendance => 'فشل تحميل بيانات الحضور';
+
   @override
   String get attendancePermissions => 'صلاحيات الحضور';
   @override
@@ -2179,19 +2178,147 @@ class LanguageAr extends BaseLanguage {
   @override
   String get permissionRequests => 'طلبات الصلاحيات';
   @override
-
   @override
   String get noHistoryFound => 'لم يتم العثور على سجل';
-  
+
   @override
   String get failedToApprovePermission => 'فشل الموافقة على الصلاحية';
-  
+
   @override
   String get failedToCancelPermission => 'فشل إلغاء الصلاحية';
-  
+
   @override
   String get failedToRejectPermission => 'فشل رفض الصلاحية';
-  
+
   @override
   String get failedToSubmitPermission => 'فشل إرسال الصلاحية';
+
+  @override
+  String get checkInError => 'خطأ في تسجيل الحضور';
+
+  @override
+  String get checkInFailed => 'فشل تسجيل الحضور';
+
+  @override
+  String get checkInSuccess => 'تم تسجيل الحضور بنجاح';
+
+  @override
+  String get checkOutError => 'خطأ في تسجيل المغادرة';
+
+  @override
+  String get checkOutFailed => 'فشل تسجيل المغادرة';
+
+  @override
+  String get checkOutSuccess => 'تم تسجيل المغادرة بنجاح';
+
+  @override
+  String get checkStatusError => 'خطأ في التحقق من الحالة';
+
+  @override
+  String get noShiftsFound => 'لم يتم العثور على نوبات عمل';
+
+  @override
+  String get noShiftsAvailable => 'لا توجد نوبات عمل متاحة حالياً';
+
+  @override
+  String get employee => 'الموظف';
+
+  @override
+  String get period => 'الفترة';
+
+  @override
+  String get checkOut => 'تسجيل المغادرة'; // Check-out
+
+  @override
+  String get daily => 'يومي'; // Daily
+
+  @override
+  String get recurrence => 'تكرار'; // Recurrence
+
+  @override
+  String get weekly => 'أسبوعي'; // Weekly
+
+  // Overtime screen strings
+  @override
+  String get overtimeTitle => 'العمل الإضافي';
+
+  @override
+  String get overtimeSubtitle => 'إدارة طلبات العمل الإضافي';
+
+  @override
+  String get allOvertime => 'كل العمل الإضافي';
+
+  @override
+  String get noOvertimeFound => 'لم يتم العثور على طلبات عمل إضافي';
+
+  @override
+  String get overtimeApproved =>
+      'تم الموافقة على العمل الإضافي'; // Overtime Approved
+
+  @override
+  String get overtimeDetails => 'تفاصيل العمل الإضافي'; // Overtime Details
+
+  @override
+  String get overtimeHoliday => 'عمل إضافي في عطلة'; // Holiday Overtime
+
+  @override
+  String get overtimeName => 'اسم العمل الإضافي'; // Overtime Name
+
+  @override
+  String get overtimePending => 'عمل إضافي قيد الانتظار'; // Overtime Pending
+
+  @override
+  String get overtimeReason => 'سبب العمل الإضافي'; // Overtime Reason
+
+  @override
+  String get overtimeRegular => 'عمل إضافي عادي'; // Regular Overtime
+
+  @override
+  String get overtimeReviewedAt => 'تمت المراجعة في'; // Reviewed At
+
+  @override
+  String get overtimeReviewedBy => 'تمت المراجعة بواسطة'; // Reviewed By
+
+  @override
+  String get overtimeShift => 'وردية العمل الإضافي'; // Overtime Shift
+
+  @override
+  String get overtimeStatus => 'حالة العمل الإضافي'; // Overtime Status
+
+  @override
+  String get overtimeTime => 'وقت العمل الإضافي'; // Overtime Time
+
+  @override
+  String get overtimeTotal => 'إجمالي العمل الإضافي'; // Total Overtime
+
+  @override
+  String get overtimeType => 'نوع العمل الإضافي'; // Overtime Type
+
+  @override
+  String get allPermissions => 'جميع التصاريح';
+  @override
+  String get attendancePermissionsSubtitle => 'عرض وإدارة تصاريح الحضور';
+  @override
+  String get attendancePermissionsTitle => 'تصاريح الحضور';
+  @override
+  String get permissionEarlyLeave => 'تصريح مغادرة مبكرة';
+  @override
+  String get permissionLateIn => 'تصريح تأخير حضور';
+  @override
+  String get permissionName => 'اسم التصريح';
+  @override
+  String get permissionReviewedAt => 'تمت المراجعة في';
+  @override
+  String get permissionReviewedBy => 'تمت المراجعة بواسطة';
+  @override
+  String get permissionShift => 'وردية التصريح';
+  @override
+  String get permissionTime => 'وقت التصريح';
+  @override
+  String get permissionTotal => 'إجمالي التصاريح';
+  @override
+  String get time => 'الوقت';
+
+  @override
+  String get minutes => 'دقائق';
 }

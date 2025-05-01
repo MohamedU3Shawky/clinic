@@ -30,40 +30,72 @@ class OvertimeScreen extends StatelessWidget {
           onRefresh: () async {
             await controller.fetchOvertime();
           },
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Overtime",
-                      style: boldTextStyle(size: 24),
-                    ),
-                    8.height,
-                    Text(
-                      "Manage overtime requests",
-                      style: secondaryTextStyle(size: 16),
-                    ),
-                    24.height,
-                    _buildOvertimeStats(controller),
-                    16.height,
-                    Text(
-                      "All Overtime",
-                      style: boldTextStyle(size: 18),
-                    ),
-                  ],
+          backgroundColor: isDarkMode.value ? scaffoldDarkColor : Colors.white,
+          color: appColorPrimary,
+          child: SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        locale.value.overtimeTitle,
+                        style: boldTextStyle(size: 24),
+                      ),
+                      8.height,
+                      Text(
+                        locale.value.overtimeSubtitle,
+                        style: secondaryTextStyle(size: 16),
+                      ),
+                      24.height,
+                      _buildOvertimeStats(controller),
+                      16.height,
+                      Text(
+                        locale.value.allOvertime,
+                        style: boldTextStyle(size: 18),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              Expanded(
-                child: SingleChildScrollView(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: _buildOvertimeList(controller),
-                ),
-              ),
-            ],
+                if (controller.overtime.isEmpty)
+                  SizedBox(
+                    height: Get.height * 0.7,
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.timer,
+                            size: 64,
+                            color: isDarkMode.value
+                                ? Colors.grey.shade600
+                                : Colors.grey[400],
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            locale.value.noOvertimeFound,
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: isDarkMode.value
+                                  ? Colors.grey.shade400
+                                  : Colors.grey[600],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ).paddingSymmetric(vertical: 32)
+                else
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: _buildOvertimeList(controller),
+                  ),
+              ],
+            ),
           ),
         );
       }),
@@ -165,7 +197,7 @@ class OvertimeScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  'No overtime found',
+                  locale.value.noOvertimeFound,
                   style: TextStyle(
                     fontSize: 18,
                     color: isDarkMode.value
@@ -390,7 +422,7 @@ class OvertimeScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Overtime Details',
+                    locale.value.overtimeDetails,
                     style: boldTextStyle(
                       size: 18,
                       color: isDarkMode.value ? Colors.white : textPrimaryColor,
@@ -408,35 +440,35 @@ class OvertimeScreen extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               _buildDetailRow(
-                'Time',
-                '${DateFormat('EEEE, MMMM d, y').format(DateTime.parse(overtime.from))}\n${DateFormat('hh:mm a').format(DateTime.parse(overtime.from))} - ${DateFormat('hh:mm a').format(DateTime.parse(overtime.to))}',
+                locale.value.overtimeTime,
+                '${DateFormat('hh:mm a').format(DateTime.parse(overtime.from))} - ${DateFormat('hh:mm a').format(DateTime.parse(overtime.to))}',
                 Icons.access_time,
               ),
               _buildDetailRow(
-                'Type',
+                locale.value.overtimeType,
                 overtime.type,
                 Icons.timer,
               ),
               _buildDetailRow(
-                'Shift',
+                locale.value.overtimeShift,
                 overtime.shift.timeTable.name,
                 Icons.calendar_today,
               ),
               _buildDetailRow(
-                'Status',
+                locale.value.overtimeStatus,
                 overtime.status,
                 Icons.info,
               ),
               if (overtime.reason != null && overtime.reason!.isNotEmpty)
                 _buildDetailRow(
-                  'Reason',
+                  locale.value.overtimeReason,
                   overtime.reason!,
                   Icons.note,
                 ),
               if (overtime.reviewedBy != null) ...[
                 const SizedBox(height: 8),
                 Text(
-                  'Reviewed By',
+                  locale.value.overtimeReviewedBy,
                   style: boldTextStyle(
                     size: 14,
                     color: isDarkMode.value ? Colors.white : textPrimaryColor,
@@ -444,15 +476,16 @@ class OvertimeScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 _buildDetailRow(
-                  'Name',
+                  locale.value.overtimeName,
                   overtime.reviewedBy?.name ?? 'N/A',
                   Icons.person,
                 ),
               ],
               if (overtime.reviewedAt != null)
                 _buildDetailRow(
-                  'Reviewed At',
-                  overtime.reviewedAt!,
+                  locale.value.overtimeReviewedAt,
+                  DateFormat('EEEE, MMMM d, y')
+                      .format(DateTime.parse(overtime.reviewedAt!)),
                   Icons.access_time,
                 ),
             ],

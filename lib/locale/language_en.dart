@@ -2093,63 +2093,227 @@ class LanguageEn extends BaseLanguage {
       'Attendance Data Error'; // 'Attendance Data Error'
 
   @override
-  String get failedToFetchAttendance =>
-      'Failed to fetch attendance data';
-      
-        @override
-        // TODO: implement attendancePermissions
-        String get attendancePermissions => "Attendace Permessions"; // 'Failed to fetch attendance data'
+  String get failedToFetchAttendance => 'Failed to fetch attendance data';
 
-  
+  @override
+  String get attendancePermissions =>
+      "Attendace Permessions"; // 'Failed to fetch attendance data'
+  @override
   String get manageAttendancePermissions => 'Manage Attendance Permissions';
+  @override
   String get permissionType => 'Permission Type';
+  @override
   String get permissionDuration => 'Permission Duration';
+  @override
   String get permissionStatus => 'Permission Status';
+  @override
   String get permissionDetails => 'Permission Details';
+  @override
   String get permissionHistory => 'Permission History';
+  @override
   String get noPermissionsFound => 'No Permissions Found';
+  @override
   String get permissionAddedSuccessfully => 'Permission Added Successfully';
+  @override
   String get permissionUpdatedSuccessfully => 'Permission Updated Successfully';
+  @override
   String get permissionDeletedSuccessfully => 'Permission Deleted Successfully';
+  @override
   String get failedToAddPermission => 'Failed to Add Permission';
+  @override
   String get failedToUpdatePermission => 'Failed to Update Permission';
+  @override
   String get failedToDeletePermission => 'Failed to Delete Permission';
+  @override
   String get permissionApproved => 'Permission Approved';
+  @override
   String get permissionRejected => 'Permission Rejected';
+  @override
   String get permissionPending => 'Permission Pending';
+  @override
   String get lateIn => 'Late In';
+  @override
   String get earlyLeave => 'Early Leave';
+  @override
   String get totalPermissions => 'Total Permissions';
+  @override
   String get approvedPermissions => 'Approved Permissions';
+  @override
   String get pendingPermissions => 'Pending Permissions';
+  @override
   String get rejectedPermissions => 'Rejected Permissions';
+  @override
   String get permissionReason => 'Permission Reason';
+  @override
   String get reviewDate => 'Review Date';
+  @override
   String get reviewComment => 'Review Comment';
+  @override
   String get submitPermission => 'Submit Permission';
+  @override
   String get cancelPermission => 'Cancel Permission';
+  @override
   String get approvePermission => 'Approve Permission';
+  @override
   String get rejectPermission => 'Reject Permission';
+  @override
   String get permissionSubmitted => 'Permission Submitted';
+  @override
   String get permissionCancelled => 'Permission Cancelled';
+  @override
   String get failedToSubmitPermission => 'Failed to Submit Permission';
+  @override
   String get failedToCancelPermission => 'Failed to Cancel Permission';
+  @override
   String get failedToApprovePermission => 'Failed to Approve Permission';
+  @override
   String get failedToRejectPermission => 'Failed to Reject Permission';
+  @override
   String get permissionSettings => 'Permission Settings';
+  @override
   String get permissionPolicies => 'Permission Policies';
+  @override
   String get addPermissionPolicy => 'Add Permission Policy';
+  @override
   String get editPermissionPolicy => 'Edit Permission Policy';
+  @override
   String get deletePermissionPolicy => 'Delete Permission Policy';
+  @override
   String get maxDuration => 'Maximum Duration';
+  @override
   String get minDuration => 'Minimum Duration';
+  @override
   String get allowedTypes => 'Allowed Types';
+  @override
   String get approvalRequired => 'Approval Required';
+  @override
   String get autoApprove => 'Auto Approve';
+  @override
   String get permissionBalance => 'Permission Balance';
+  @override
   String get usedPermissions => 'Used Permissions';
+  @override
   String get remainingPermissions => 'Remaining Permissions';
+  @override
   String get defaultDuration => 'Default Duration';
+  @override
   String get permissionRequests => 'Permission Requests';
+  @override
   String get noHistoryFound => 'No History Found';
+
+  @override
+  String get checkInError => 'Check-in Error';
+  @override
+  String get checkInFailed => 'Check-in Failed';
+  @override
+  String get checkInSuccess => 'Check-in Successful';
+  @override
+  String get checkOutError => 'Check-out Error';
+  @override
+  String get checkOutFailed => 'Check-out Failed';
+  @override
+  String get checkOutSuccess => 'Check-out Successful';
+  @override
+  String get checkStatusError => 'Status Check Error';
+
+  @override
+  String get noShiftsFound => 'No shifts found';
+  @override
+  String get noShiftsAvailable => 'There are currently no shifts available';
+  @override
+  String get daily => 'Daily';
+  @override
+  String get weekly => 'Weekly';
+  @override
+  String get employee => 'Employee';
+  @override
+  String get checkOut => 'Check Out';
+  @override
+  String get recurrence => 'Recurrence';
+  @override
+  String get period => 'Period';
+
+  // Overtime screen strings
+  @override
+  String get overtimeTitle => 'Overtime';
+
+  @override
+  String get overtimeSubtitle => 'Manage your overtime requests';
+
+  @override
+  String get allOvertime => 'All Overtime';
+
+  @override
+  String get noOvertimeFound => 'No overtime requests found';
+
+  @override
+  String get overtimeDetails => 'Overtime Details';
+
+  @override
+  String get overtimeTime => 'Time';
+
+  @override
+  String get overtimeType => 'Type';
+
+  @override
+  String get overtimeShift => 'Shift';
+
+  @override
+  String get overtimeStatus => 'Status';
+
+  @override
+  String get overtimeReason => 'Reason';
+
+  @override
+  String get overtimeReviewedBy => 'Reviewed By';
+
+  @override
+  String get overtimeName => 'Name';
+
+  @override
+  String get overtimeReviewedAt => 'Reviewed At';
+
+  @override
+  String get overtimeTotal => 'Total';
+
+  @override
+  String get overtimeApproved => 'Approved';
+
+  @override
+  String get overtimePending => 'Pending';
+
+  @override
+  String get overtimeRegular => 'Regular';
+
+  @override
+  String get overtimeHoliday => 'Holiday';
+
+  @override
+  String get allPermissions => 'All Permissions';
+  @override
+  String get attendancePermissionsSubtitle =>
+      'View and manage attendance permissions';
+  @override
+  String get attendancePermissionsTitle => 'Attendance Permissions';
+  @override
+  String get permissionEarlyLeave => 'Early Leave Permission';
+  @override
+  String get permissionLateIn => 'Late In Permission';
+  @override
+  String get permissionName => 'Permission Name';
+  @override
+  String get permissionReviewedAt => 'Reviewed At';
+  @override
+  String get permissionReviewedBy => 'Reviewed By';
+  @override
+  String get permissionShift => 'Permission Shift';
+  @override
+  String get permissionTime => 'Permission Time';
+  @override
+  String get permissionTotal => 'Total Permissions';
+  @override
+  String get time => 'Time';
+
+  @override
+  String get minutes => 'minutes';
 }

@@ -360,61 +360,73 @@ class HolidaysScreen extends StatelessWidget {
   }
 
   Widget _buildEmptyState(HolidaysController controller) {
-    return Center(
+    return RefreshIndicator(
+      onRefresh: () async => controller.fetchHolidaysForMonth(),
+      backgroundColor: isDarkMode.value ? scaffoldDarkColor : Colors.white,
+      color: appColorPrimary,
       child: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              width: 150,
-              height: 150,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    appColorPrimary.withOpacity(0.2),
-                    appColorPrimary.withOpacity(0.4),
-                  ],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-                shape: BoxShape.circle,
-              ),
-              child: Icon(
-                Icons.event_busy,
-                size: 80,
-                color: appColorPrimary,
-              ),
-            ),
-            const SizedBox(height: 24),
-
-            // Title with subtle animation
-            TweenAnimationBuilder(
-              tween: Tween<double>(begin: 0, end: 1),
-              duration: const Duration(milliseconds: 500),
-              builder: (context, value, child) {
-                return Opacity(
-                  opacity: value,
-                  child: Transform.translate(
-                    offset: Offset(0, 10 * (1 - value)),
-                    child: child,
+        physics: const AlwaysScrollableScrollPhysics(),
+        child: SizedBox(
+          height: Get.height * 0.7,
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  width: 150,
+                  height: 150,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        appColorPrimary.withOpacity(0.2),
+                        appColorPrimary.withOpacity(0.4),
+                      ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                    shape: BoxShape.circle,
                   ),
-                );
-              },
-              child: Text(
-                locale.value.noHolidaysFound,
-                style: boldTextStyle(
-                  size: 18,
-                  color: isDarkMode.value ? Colors.white : textPrimaryColor,
+                  child: Icon(
+                    Icons.event_busy,
+                    size: 80,
+                    color: appColorPrimary,
+                  ),
                 ),
-              ),
+                const SizedBox(height: 24),
+
+                // Title with subtle animation
+                TweenAnimationBuilder(
+                  tween: Tween<double>(begin: 0, end: 1),
+                  duration: const Duration(milliseconds: 500),
+                  builder: (context, value, child) {
+                    return Opacity(
+                      opacity: value,
+                      child: Transform.translate(
+                        offset: Offset(0, 10 * (1 - value)),
+                        child: child,
+                      ),
+                    );
+                  },
+                  child: Text(
+                    locale.value.noHolidaysFound,
+                    style: boldTextStyle(
+                      size: 18,
+                      color: isDarkMode.value ? Colors.white : textPrimaryColor,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 24),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: Text(
+                    locale.value.noHolidaysDescription,
+                    style: secondaryTextStyle(),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(height: 24),
-            Text(
-              locale.value.noHolidaysDescription,
-              style: secondaryTextStyle(),
-              textAlign: TextAlign.center,
-            ),
-          ],
+          ),
         ),
       ),
     );

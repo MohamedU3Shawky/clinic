@@ -30,40 +30,72 @@ class AttendancePermissionsScreen extends StatelessWidget {
           onRefresh: () async {
             await controller.fetchAttendancePermissions();
           },
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Attendance Permissions",
-                      style: boldTextStyle(size: 24),
-                    ),
-                    8.height,
-                    Text(
-                      "Manage attendance permissions",
-                      style: secondaryTextStyle(size: 16),
-                    ),
-                    24.height,
-                    _buildPermissionStats(controller),
-                    16.height,
-                    Text(
-                      "All Permissions",
-                      style: boldTextStyle(size: 18),
-                    ),
-                  ],
+          backgroundColor: isDarkMode.value ? scaffoldDarkColor : Colors.white,
+          color: appColorPrimary,
+          child: SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Attendance Permissions",
+                        style: boldTextStyle(size: 24),
+                      ),
+                      8.height,
+                      Text(
+                        "Manage attendance permissions",
+                        style: secondaryTextStyle(size: 16),
+                      ),
+                      24.height,
+                      _buildPermissionStats(controller),
+                      16.height,
+                      Text(
+                        locale.value.allPermissions,
+                        style: boldTextStyle(size: 18),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              Expanded(
-                child: SingleChildScrollView(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: _buildPermissionList(controller),
-                ),
-              ),
-            ],
+                if (controller.permissions.isEmpty)
+                  SizedBox(
+                    height: Get.height * 0.7,
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.timer,
+                            size: 64,
+                            color: isDarkMode.value
+                                ? Colors.grey.shade600
+                                : Colors.grey[400],
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            locale.value.noPermissionsFound,
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: isDarkMode.value
+                                  ? Colors.grey.shade400
+                                  : Colors.grey[600],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ).paddingSymmetric(vertical: 32)
+                else
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: _buildPermissionList(controller),
+                  ),
+              ],
+            ),
           ),
         );
       }),
@@ -84,19 +116,19 @@ class AttendancePermissionsScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           _buildStatItem(
-            title: 'Total',
+            title: locale.value.total,
             value: controller.totalCount.value.toString(),
             icon: Assets.iconsIcTimeOutlined,
             color: isDarkMode.value ? Colors.purple.shade300 : Colors.purple,
           ),
           _buildStatItem(
-            title: 'Approved',
+            title: locale.value.approved,
             value: controller.approvedCount.value.toString(),
             icon: Assets.iconsIcTimeOutlined,
             color: isDarkMode.value ? Colors.green.shade300 : Colors.green,
           ),
           _buildStatItem(
-            title: 'Pending',
+            title: locale.value.pending,
             value: controller.pendingCount.value.toString(),
             icon: Assets.iconsIcTimeOutlined,
             color: isDarkMode.value ? Colors.orange.shade300 : Colors.orange,
@@ -152,28 +184,40 @@ class AttendancePermissionsScreen extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (controller.permissions.isEmpty)
-          Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.timer,
-                  size: 64,
-                  color: isDarkMode.value
-                      ? Colors.grey.shade600
-                      : Colors.grey[400],
-                ),
-                const SizedBox(height: 16),
-                Text(
-                  'No permissions found',
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: isDarkMode.value
-                        ? Colors.grey.shade400
-                        : Colors.grey[600],
+          RefreshIndicator(
+            onRefresh: () async => controller.fetchAttendancePermissions(),
+            backgroundColor:
+                isDarkMode.value ? scaffoldDarkColor : Colors.white,
+            color: appColorPrimary,
+            child: SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              child: SizedBox(
+                height: Get.height * 0.7,
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.timer,
+                        size: 64,
+                        color: isDarkMode.value
+                            ? Colors.grey.shade600
+                            : Colors.grey[400],
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        locale.value.noPermissionsFound,
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: isDarkMode.value
+                              ? Colors.grey.shade400
+                              : Colors.grey[600],
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              ],
+              ),
             ),
           ).paddingSymmetric(vertical: 32)
         else
@@ -311,7 +355,7 @@ class AttendancePermissionsScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Permission Details',
+                    locale.value.permissionDetails,
                     style: boldTextStyle(
                       size: 18,
                       color: isDarkMode.value ? Colors.white : textPrimaryColor,
@@ -329,45 +373,45 @@ class AttendancePermissionsScreen extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               _buildDetailRow(
-                'Employee',
+                locale.value.employee,
                 permission.user.name,
                 Icons.person,
               ),
               _buildDetailRow(
-                'Type',
+                locale.value.permissionType,
                 permission.type,
                 Icons.timer,
               ),
               _buildDetailRow(
-                'Duration',
+                locale.value.permissionDuration,
                 '${permission.duration} hours',
                 Icons.access_time,
               ),
               _buildDetailRow(
-                'Status',
+                locale.value.permissionStatus,
                 permission.status,
                 Icons.info,
               ),
               _buildDetailRow(
-                'Shift Date',
+                locale.value.dateTime,
                 DateFormat('MMM d, yyyy').format(permission.shift.startDate),
                 Icons.calendar_today,
               ),
               _buildDetailRow(
-                'Shift Time',
+                locale.value.timeSlot,
                 '${permission.shift.timeTable.checkInTime} - ${permission.shift.timeTable.checkOutTime}',
                 Icons.access_time,
               ),
               if (permission.reason != null && permission.reason!.isNotEmpty)
                 _buildDetailRow(
-                  'Reason',
+                  locale.value.reason,
                   permission.reason!,
                   Icons.note,
                 ),
               if (permission.reviewedBy != null) ...[
                 const SizedBox(height: 8),
                 Text(
-                  'Reviewed By',
+                  locale.value.reviewedBy,
                   style: boldTextStyle(
                     size: 14,
                     color: isDarkMode.value ? Colors.white : textPrimaryColor,
@@ -375,12 +419,12 @@ class AttendancePermissionsScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 _buildDetailRow(
-                  'Name',
+                  locale.value.name,
                   permission.reviewedBy!.name,
                   Icons.person,
                 ),
                 _buildDetailRow(
-                  'Email',
+                  locale.value.email,
                   permission.reviewedBy!.email,
                   Icons.email,
                 ),

@@ -237,7 +237,7 @@ class AppointmentsScreen extends StatelessWidget {
                       ? SingleChildScrollView(
                           physics: const AlwaysScrollableScrollPhysics(),
                           child: Container(
-                            height: Get.height * 0.6,
+                            height: Get.height * 0.4,
                             alignment: Alignment.center,
                             child: NoDataWidget(
                               title: locale.value.noAppointmentsFound,
