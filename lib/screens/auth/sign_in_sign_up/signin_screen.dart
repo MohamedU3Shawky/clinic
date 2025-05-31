@@ -15,6 +15,7 @@ import '../../../utils/colors.dart';
 import '../../../utils/common_base.dart';
 import '../password/forget_password_screen.dart';
 import 'signup_screen.dart';
+import 'phone_signin_screen.dart';
 
 class SignInScreen extends StatelessWidget {
   SignInScreen({Key? key}) : super(key: key);
@@ -31,7 +32,7 @@ class SignInScreen extends StatelessWidget {
           children: [
             // Top gradient section with logo
             Container(
-              height: Get.height * 0.35,
+              height: Get.height * 0.33,
               width: Get.width,
               decoration: BoxDecoration(
                 gradient: LinearGradient(
@@ -72,11 +73,12 @@ class SignInScreen extends StatelessWidget {
                 ),
               ),
             ),
-            
+
             // Login form card
             Container(
               margin: EdgeInsets.symmetric(horizontal: 24, vertical: 30),
-              padding: EdgeInsets.all(24),
+              padding:
+                  EdgeInsets.only(left: 24, right: 24, top: 15, bottom: 24),
               decoration: BoxDecoration(
                 color: context.cardColor,
                 borderRadius: BorderRadius.circular(24),
@@ -103,10 +105,12 @@ class SignInScreen extends StatelessWidget {
                       '${locale.value.welcomeBackToThe} $APP_NAME',
                       style: secondaryTextStyle(size: 14),
                     ),
-                    30.height,
-                    
+                    15.height,
+
                     // Email field
-                    Text(locale.value.email, style: boldTextStyle(size: 14, color: appColorSecondary)),
+                    Text(locale.value.email,
+                        style:
+                            boldTextStyle(size: 14, color: appColorSecondary)),
                     8.height,
                     AppTextField(
                       textStyle: primaryTextStyle(size: 14),
@@ -119,8 +123,10 @@ class SignInScreen extends StatelessWidget {
                         hintStyle: secondaryTextStyle(size: 14),
                         fillColor: appColorPrimary.withOpacity(0.05),
                         filled: true,
-                        prefixIcon: Icon(Icons.email_outlined, color: appColorPrimary, size: 20),
-                        contentPadding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+                        prefixIcon: Icon(Icons.email_outlined,
+                            color: appColorPrimary, size: 20),
+                        contentPadding:
+                            EdgeInsets.symmetric(vertical: 16, horizontal: 16),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                           borderSide: BorderSide.none,
@@ -131,14 +137,17 @@ class SignInScreen extends StatelessWidget {
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(color: appColorPrimary, width: 1),
+                          borderSide:
+                              BorderSide(color: appColorPrimary, width: 1),
                         ),
                       ),
                     ),
-                    20.height,
-                    
+                    15.height,
+
                     // Password field
-                    Text(locale.value.password, style: boldTextStyle(size: 14, color: appColorSecondary)),
+                    Text(locale.value.password,
+                        style:
+                            boldTextStyle(size: 14, color: appColorSecondary)),
                     8.height,
                     AppTextField(
                       textStyle: primaryTextStyle(size: 14),
@@ -150,8 +159,10 @@ class SignInScreen extends StatelessWidget {
                         hintStyle: secondaryTextStyle(size: 14),
                         fillColor: appColorPrimary.withOpacity(0.05),
                         filled: true,
-                        prefixIcon: Icon(Icons.lock_outline, color: appColorPrimary, size: 20),
-                        contentPadding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+                        prefixIcon: Icon(Icons.lock_outline,
+                            color: appColorPrimary, size: 20),
+                        contentPadding:
+                            EdgeInsets.symmetric(vertical: 16, horizontal: 16),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                           borderSide: BorderSide.none,
@@ -162,12 +173,13 @@ class SignInScreen extends StatelessWidget {
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(color: appColorPrimary, width: 1),
+                          borderSide:
+                              BorderSide(color: appColorPrimary, width: 1),
                         ),
                       ),
                     ),
                     16.height,
-                    
+
                     // Remember me and Forgot password
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -178,8 +190,10 @@ class SignInScreen extends StatelessWidget {
                               () => Checkbox(
                                 value: signInController.isRememberMe.value,
                                 activeColor: appColorPrimary,
-                                shape: RoundedRectangleBorder(borderRadius: radius(4)),
-                                side: BorderSide(color: appColorPrimary.withOpacity(0.5)),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: radius(4)),
+                                side: BorderSide(
+                                    color: appColorPrimary.withOpacity(0.5)),
                                 onChanged: (val) {
                                   signInController.toggleSwitch();
                                 },
@@ -187,13 +201,15 @@ class SignInScreen extends StatelessWidget {
                             ),
                             Text(
                               locale.value.rememberMe,
-                              style: secondaryTextStyle(color: appColorSecondary),
+                              style:
+                                  secondaryTextStyle(color: appColorSecondary),
                             ),
                           ],
                         ),
                         TextButton(
                           onPressed: () {
-                            Get.to(() => ForgetPassword(), transition: Transition.rightToLeft);
+                            Get.to(() => ForgetPassword(),
+                                transition: Transition.rightToLeft);
                           },
                           style: TextButton.styleFrom(
                             padding: EdgeInsets.zero,
@@ -211,8 +227,8 @@ class SignInScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-                    30.height,
-                    
+                    10.height,
+
                     // Login button
                     Container(
                       width: Get.width,
@@ -238,15 +254,79 @@ class SignInScreen extends StatelessWidget {
                           borderRadius: BorderRadius.circular(12),
                           onTap: () {
                             hideKeyboard(context);
-                            if (signInController.signInformKey.currentState!.validate()) {
-                              signInController.signInformKey.currentState!.save();
+                            if (signInController.signInformKey.currentState!
+                                .validate()) {
+                              signInController.signInformKey.currentState!
+                                  .save();
                               signInController.saveForm();
                             }
                           },
                           child: Center(
                             child: Text(
                               locale.value.signIn,
-                              style: boldTextStyle(color: Colors.white, size: 16),
+                              style:
+                                  boldTextStyle(color: Colors.white, size: 16),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    10.height,
+
+                    // Divider with "or" text
+                    Row(
+                      children: [
+                        Expanded(
+                            child: Divider(
+                                color: appColorPrimary.withOpacity(0.2))),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 16),
+                          child: Text(
+                            'or',
+                            style: secondaryTextStyle(color: appColorSecondary),
+                          ),
+                        ),
+                        Expanded(
+                            child: Divider(
+                                color: appColorPrimary.withOpacity(0.2))),
+                      ],
+                    ),
+
+                    10.height,
+                    // Continue with phone button
+                    Container(
+                      width: Get.width,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        color: appColorPrimary.withOpacity(0.05),
+                        borderRadius: BorderRadius.circular(12),
+                        border:
+                            Border.all(color: appColorPrimary.withOpacity(0.2)),
+                      ),
+                      child: Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          borderRadius: BorderRadius.circular(12),
+                          onTap: () {
+                            Get.to(() => PhoneSignInScreen(),
+                                transition: Transition.rightToLeft);
+                          },
+                          child: Center(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.phone_outlined,
+                                    color: appColorPrimary, size: 20),
+                                8.width,
+                                Text(
+                                  'Continue with Phone',
+                                  style: primaryTextStyle(
+                                    size: 16,
+                                    color: appColorPrimary,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ),
@@ -256,7 +336,7 @@ class SignInScreen extends StatelessWidget {
                 ),
               ),
             ),
-            
+
             // Demo accounts button
             if (isIqonicProduct)
               TextButton(
@@ -289,28 +369,6 @@ class SignInScreen extends StatelessWidget {
                   ),
                 ),
               ),
-            
-            // Register now
-            // 16.height,
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.center,
-            //   children: [
-            //     Text(locale.value.notAMember, style: secondaryTextStyle()),
-            //     4.width,
-            //     InkWell(
-            //       onTap: () {
-            //         Get.to(() => SignUpScreen(), transition: Transition.rightToLeft);
-            //       },
-            //       child: Text(
-            //         locale.value.registerNow,
-            //         style: boldTextStyle(
-            //           size: 14,
-            //           color: appColorPrimary,
-            //         ),
-            //       ),
-            //     ),
-            //   ],
-            // ),
             32.height,
           ],
         ),
@@ -319,13 +377,17 @@ class SignInScreen extends StatelessWidget {
   }
 }
 
-void chooseEmployeeType(BuildContext context, {RxBool? isLoading, required Function(LoginRoleData) onChange, bool isFromDemoAccountTap = false}) {
+void chooseEmployeeType(BuildContext context,
+    {RxBool? isLoading,
+    required Function(LoginRoleData) onChange,
+    bool isFromDemoAccountTap = false}) {
   Get.bottomSheet(
     Container(
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 30),
       decoration: boxDecorationDefault(
         color: context.cardColor,
-        borderRadius: const BorderRadius.only(topLeft: Radius.circular(24), topRight: Radius.circular(24)),
+        borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(24), topRight: Radius.circular(24)),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -348,7 +410,12 @@ void chooseEmployeeType(BuildContext context, {RxBool? isLoading, required Funct
                 child: SettingItemWidget(
                   title: loginRoles[index].roleName,
                   titleTextStyle: primaryTextStyle(size: 14),
-                  leading: CachedImageWidget(url: loginRoles[index].icon, color: appColorPrimary, height: 22, fit: BoxFit.fitHeight, width: 22),
+                  leading: CachedImageWidget(
+                      url: loginRoles[index].icon,
+                      color: appColorPrimary,
+                      height: 22,
+                      fit: BoxFit.fitHeight,
+                      width: 22),
                   onTap: () {
                     onChange(loginRoles[index]);
                     Get.back();
