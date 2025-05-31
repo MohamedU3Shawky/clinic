@@ -423,8 +423,17 @@ class ShiftsController extends GetxController {
         return;
       }
 
+      // Get the current attendance record
+      final hasAttendance = shift.attendance.isNotEmpty;
+      final currentAttendance = hasAttendance ? shift.attendance.last : null;
+      
+      if (currentAttendance == null) {
+        toast('No active attendance record found');
+        return;
+      }
+
       final success = await ShiftServiceApis.checkOut(
-        attendanceId: currentAttendanceId.value,
+        attendanceId: currentAttendance.id,
         userId: loginUserData.value.idString,
         shiftId: shift.id,
         checkOutLat: position.latitude,
