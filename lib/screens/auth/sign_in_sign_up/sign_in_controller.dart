@@ -74,7 +74,7 @@ class SignInController extends GetxController {
 
     isLoading(true);
     Map<String, dynamic> req = {
-      'email': emailCont.text.trim(),
+      'identifier': emailCont.text.trim(),
       'password': passwordCont.text.trim(),
     };
 
