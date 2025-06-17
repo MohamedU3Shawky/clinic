@@ -1,5 +1,6 @@
 // ignore_for_file: depend_on_referenced_packages
 
+import 'package:egphysio_clinic_admin/screens/auth/services/biometric_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
@@ -26,6 +27,9 @@ class SignInController extends GetxController {
   RxBool isRememberMe = true.obs;
   RxBool isLoading = false.obs;
   RxString userName = "".obs;
+  RxBool isBiometricAvailable = false.obs;
+  RxBool isBiometricEnabled = false.obs;
+  RxBool isFromBiometricSetup = false.obs;
 
   TextEditingController emailCont = TextEditingController();
   TextEditingController passwordCont = TextEditingController();
@@ -63,6 +67,64 @@ class SignInController extends GetxController {
       }
     }*/
     super.onInit();
+    checkBiometricAvailability();
+
+    // Check if we're coming from biometric setup
+    if (Get.arguments is Map && Get.arguments['fromBiometricSetup'] == true) {
+      isFromBiometricSetup.value = true;
+    }
+  }
+
+  Future<void> checkBiometricAvailability() async {
+    isBiometricAvailable.value = await BiometricService.isBiometricsAvailable();
+    if (isBiometricAvailable.value) {
+      final credentials = await BiometricService.getCredentials();
+      isBiometricEnabled.value = credentials != null;
+    }
+  }
+
+  Future<void> enableBiometric() async {
+    if (!isBiometricAvailable.value) {
+      toast('Biometric authentication is not available on this device');
+      return;
+    }
+
+    final authenticated = await BiometricService.authenticate();
+    if (authenticated) {
+      await BiometricService.saveCredentials(
+        emailCont.text.trim(),
+        passwordCont.text.trim(),
+      );
+      isBiometricEnabled.value = true;
+      toast('Biometric login enabled successfully');
+    } else {
+      toast('Biometric authentication failed');
+    }
+  }
+
+  Future<void> disableBiometric() async {
+    await BiometricService.deleteCredentials();
+    isBiometricEnabled.value = false;
+    toast('Biometric login disabled');
+  }
+
+  Future<void> authenticateWithBiometric() async {
+    if (!isBiometricAvailable.value || !isBiometricEnabled.value) {
+      return;
+    }
+
+    final authenticated = await BiometricService.authenticate();
+    if (authenticated) {
+      final credentials = await BiometricService.getCredentials();
+      print("credentials:${credentials}");
+      if (credentials != null) {
+        emailCont.text = credentials['email'] ?? '';
+        passwordCont.text = credentials['password'] ?? '';
+        await saveForm();
+      }
+    } else {
+      toast('Biometric authentication failed');
+    }
   }
 
   Future<void> saveForm() async {
@@ -79,6 +141,10 @@ class SignInController extends GetxController {
     };
 
     await AuthServiceApis.loginUser(request: req).then((value) async {
+      await BiometricService.saveCredentials(
+        emailCont.text.trim(),
+        passwordCont.text.trim(),
+      );
       handleLoginResponse(loginResponse: value);
     }).catchError((e) {
       isLoading(false);
@@ -166,35 +232,30 @@ class SignInController extends GetxController {
         password: passwordCont.text.trim(),
         rememberUser: isRememberMe.value,
         apiToken: apiToken,
-      ).then((_) {
+      ).then((_) async {
         // Update login status
         isLoggedIn(true);
         loginUserData(userData);
         isLoading(false);
 
-        // Handle navigation
-        Get.to(
-          () => DashboardScreen(),
-          arguments: ClinicCenterArgumentModel(
-            selectedClinc: selectedAppClinic.value,
-          ),
-        )?.then((value) {
-          if (value is ClinicData) {
-            selectedAppClinic(value);
-            log("Clinic selected: ${value.name}, ID: ${value.id}");
-
-            // Save the clinic data using our service
-            UserDataService.saveClinicData(value).then((_) {
-              // Navigate to dashboard
-              Get.offAll(() => DashboardScreen(), binding: BindingsBuilder(() {
-                Get.put(HomeController());
-              }));
-            }).catchError((e) {
-              log("Error saving clinic data: $e");
-              toast("Error saving clinic data: ${e.toString()}", print: true);
-            });
+        // If we're coming from biometric setup, save credentials and enable biometrics
+        if (isFromBiometricSetup.value) {
+          final authenticated = await BiometricService.authenticate();
+          if (authenticated) {
+            await BiometricService.saveCredentials(
+              emailCont.text.trim(),
+              passwordCont.text.trim(),
+            );
+            isBiometricEnabled.value = true;
+            toast('Biometric login enabled successfully');
+          } else {
+            toast('Biometric authentication failed');
           }
-        });
+          // Navigate to dashboard after biometric setup
+          navigateToDashboard();
+        } else {
+          navigateToDashboard();
+        }
       }).catchError((e) {
         isLoading(false);
         toast("Error saving user data: ${e.toString()}", print: true);
@@ -204,5 +265,30 @@ class SignInController extends GetxController {
       isLoading(false);
       toast("Login failed: ${e.toString()}", print: true);
     }
+  }
+
+  void navigateToDashboard() {
+    Get.to(
+      () => DashboardScreen(),
+      arguments: ClinicCenterArgumentModel(
+        selectedClinc: selectedAppClinic.value,
+      ),
+    )?.then((value) {
+      if (value is ClinicData) {
+        selectedAppClinic(value);
+        log("Clinic selected: ${value.name}, ID: ${value.id}");
+
+        // Save the clinic data using our service
+        UserDataService.saveClinicData(value).then((_) {
+          // Navigate to dashboard
+          Get.offAll(() => DashboardScreen(), binding: BindingsBuilder(() {
+            Get.put(HomeController());
+          }));
+        }).catchError((e) {
+          log("Error saving clinic data: $e");
+          toast("Error saving clinic data: ${e.toString()}", print: true);
+        });
+      }
+    });
   }
 }

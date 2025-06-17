@@ -1,5 +1,6 @@
 // ignore_for_file: depend_on_referenced_packages
 
+import 'package:egphysio_clinic_admin/screens/auth/sign_in_sign_up/sign_in_landing_screen.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
 import '../../../api/auth_apis.dart';
@@ -24,7 +25,7 @@ class ProfileController extends GetxController {
     log('HANDLELOGOUT: called');
     AuthServiceApis.clearData();
     isLoading(false);
-    Get.offAll(() => SignInScreen());
+    Get.offAll(() => SignInLandingScreen());
     // await AuthServiceApis.logoutApi().then((value) {
     //   isLoading(false);
     // }).catchError((e) {

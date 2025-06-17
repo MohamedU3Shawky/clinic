@@ -1,4 +1,5 @@
 import 'package:egphysio_clinic_admin/configs.dart';
+import 'package:egphysio_clinic_admin/screens/auth/sign_in_sign_up/signin_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
@@ -245,7 +246,7 @@ class _PhoneSignInScreenState extends State<PhoneSignInScreen> {
                       child: InkWell(
                         borderRadius: BorderRadius.circular(12),
                         onTap: () {
-                          Get.back();
+                          Get.to(() => SignInScreen());
                         },
                         child: Center(
                           child: Row(

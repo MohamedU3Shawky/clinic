@@ -1,6 +1,7 @@
 // ignore_for_file: body_might_complete_normally_catch_error
 
 import 'package:country_picker/country_picker.dart';
+import 'package:egphysio_clinic_admin/screens/auth/sign_in_sign_up/sign_in_landing_screen.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
@@ -872,7 +873,7 @@ void doIfLoggedIn(VoidCallback callback) async {
   if (isLoggedIn.value) {
     callback.call();
   } else {
-    bool? res = await Get.to(() => SignInScreen(), binding: BindingsBuilder(() {
+    bool? res = await Get.to(() => SignInLandingScreen(), binding: BindingsBuilder(() {
       setStatusBarColor(transparentColor,
           statusBarIconBrightness: Brightness.light,
           statusBarBrightness: Brightness.light);

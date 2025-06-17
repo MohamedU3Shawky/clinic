@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 
+import 'package:egphysio_clinic_admin/screens/auth/sign_in_sign_up/sign_in_landing_screen.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
 import '../api/auth_apis.dart';
@@ -48,7 +49,7 @@ getAppConfigurations() async {
     log("REMEMBER_USER value: $isRememberUser");
 
     if (!isRememberUser) {
-      Get.offAll(() => SignInScreen());
+      Get.offAll(() => SignInLandingScreen());
       return;
     }
 
@@ -57,7 +58,7 @@ getAppConfigurations() async {
     print("USER_DATA: ${userData?.toJson()}");
     if (userData == null) {
       log("User data not found, redirecting to login");
-      Get.offAll(() => SignInScreen());
+      Get.offAll(() => SignInLandingScreen());
       return;
     }
 
@@ -105,11 +106,11 @@ getAppConfigurations() async {
       // }
     } catch (e) {
       log("Error processing user data: $e");
-      Get.offAll(() => SignInScreen());
+      Get.offAll(() => SignInLandingScreen());
     }
   } catch (e) {
     log("Error in getAppConfigurations: $e");
-    Get.offAll(() => SignInScreen());
+    Get.offAll(() => SignInLandingScreen());
   }
 }
 

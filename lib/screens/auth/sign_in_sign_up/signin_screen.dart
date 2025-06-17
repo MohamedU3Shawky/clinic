@@ -98,7 +98,7 @@ class SignInScreen extends StatelessWidget {
                   children: [
                     Text(
                       locale.value.welcomeBack,
-                      style: boldTextStyle(size: 24, color: appColorPrimary),
+                      style: boldTextStyle(size: 24, color: brandColorSecondary),
                     ),
                     8.height,
                     Text(
@@ -272,66 +272,47 @@ class SignInScreen extends StatelessWidget {
                       ),
                     ),
 
-                    10.height,
-
-                    // Divider with "or" text
-                    Row(
-                      children: [
-                        Expanded(
-                            child: Divider(
-                                color: appColorPrimary.withOpacity(0.2))),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 16),
-                          child: Text(
-                            'or',
-                            style: secondaryTextStyle(color: appColorSecondary),
-                          ),
-                        ),
-                        Expanded(
-                            child: Divider(
-                                color: appColorPrimary.withOpacity(0.2))),
-                      ],
-                    ),
-
-                    10.height,
-                    // Continue with phone button
-                    Container(
-                      width: Get.width,
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: appColorPrimary.withOpacity(0.05),
-                        borderRadius: BorderRadius.circular(12),
-                        border:
-                            Border.all(color: appColorPrimary.withOpacity(0.2)),
-                      ),
-                      child: Material(
-                        color: Colors.transparent,
-                        child: InkWell(
-                          borderRadius: BorderRadius.circular(12),
-                          onTap: () {
-                            Get.to(() => PhoneSignInScreen(),
-                                transition: Transition.rightToLeft);
-                          },
-                          child: Center(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(Icons.phone_outlined,
-                                    color: appColorPrimary, size: 20),
-                                8.width,
-                                Text(
-                                  'Continue with Phone',
-                                  style: primaryTextStyle(
-                                    size: 16,
-                                    color: appColorPrimary,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
+                    // // Enable/Disable biometric login options
+                    // Obx(() {
+                    //   if (signInController.isBiometricAvailable.value) {
+                    //     return Column(
+                    //       children: [
+                    //         16.height,
+                    //         Divider(color: appColorPrimary.withOpacity(0.2)),
+                    //         16.height,
+                    //         if (!signInController.isBiometricEnabled.value)
+                    //           TextButton.icon(
+                    //             onPressed: () =>
+                    //                 signInController.enableBiometric(),
+                    //             icon: Icon(Icons.fingerprint,
+                    //                 color: appColorPrimary),
+                    //             label: Text(
+                    //               'Enable Biometric Login',
+                    //               style: primaryTextStyle(
+                    //                 size: 14,
+                    //                 color: appColorPrimary,
+                    //               ),
+                    //             ),
+                    //           )
+                    //         else
+                    //           TextButton.icon(
+                    //             onPressed: () =>
+                    //                 signInController.disableBiometric(),
+                    //             icon: Icon(Icons.fingerprint_outlined,
+                    //                 color: appColorPrimary),
+                    //             label: Text(
+                    //               'Disable Biometric Login',
+                    //               style: primaryTextStyle(
+                    //                 size: 14,
+                    //                 color: appColorPrimary,
+                    //               ),
+                    //             ),
+                    //           ),
+                    //       ],
+                    //     );
+                    //   }
+                    //   return SizedBox.shrink();
+                    // }),
                   ],
                 ),
               ),

@@ -1,3 +1,4 @@
+import 'package:egphysio_clinic_admin/screens/auth/sign_in_sign_up/sign_in_landing_screen.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
 
@@ -26,7 +27,7 @@ class SettingsController extends GetxController {
       AuthServiceApis.deleteAccountCompletely().then((value) {
         AuthServiceApis.clearData(isFromDeleteAcc: true);
         toast(value.message);
-        Get.offAll(() => SignInScreen());
+        Get.offAll(() => SignInLandingScreen());
       }).catchError((e) {
         toast(e.toString());
       }).whenComplete(() => isLoading(false));
