@@ -588,7 +588,7 @@ class LanguageAr extends BaseLanguage {
 
   @override
   String get schedule => "الجدول";
-
+  String get scheduletranslate => "خدمة الموظف الذاتيه";
   @override
   String get noAppointmentsFound => "لم يتم العثور على مواعيد";
 

@@ -383,7 +383,7 @@ abstract class BaseLanguage {
   String get appointments;
 
   String get schedule;
-
+  String get scheduletranslate;
   String get leaves;
 
   String get holidays;
