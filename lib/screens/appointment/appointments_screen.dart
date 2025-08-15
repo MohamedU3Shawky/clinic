@@ -249,6 +249,11 @@ class AppointmentsScreen extends StatelessWidget {
                         )
                       : SingleChildScrollView(
                           physics: const AlwaysScrollableScrollPhysics(),
+                           padding: EdgeInsets.only(
+                          left: 16,
+                          right: 16,
+                          bottom: 80 + MediaQuery.of(context).padding.bottom,
+                        ),
                           child: Column(
                             children: [
                               ListView.builder(
@@ -333,7 +338,7 @@ class AppointmentsScreen extends StatelessWidget {
                               //     ),
                               //   ),
                             ],
-                          ).paddingSymmetric(horizontal: 16),
+                          ),
                         ),
                 ),
               );

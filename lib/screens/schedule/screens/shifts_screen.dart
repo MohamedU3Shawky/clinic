@@ -67,6 +67,11 @@ class ShiftsScreen extends StatelessWidget {
                       )
                     : SingleChildScrollView(
                         physics: const AlwaysScrollableScrollPhysics(),
+                        padding: EdgeInsets.only(
+                          left: 16,
+                          right: 16,
+                          bottom: 80 + MediaQuery.of(context).padding.bottom,
+                        ),
                         child: _buildShiftsList(context, controller),
                       ),
               );
@@ -220,10 +225,10 @@ class ShiftsScreen extends StatelessWidget {
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       padding: const EdgeInsets.only(
-        left: 16,
-        right: 16,
+        left: 0,
+        right: 0,
         top: 0,
-        bottom: 100, // Add padding for bottom navbar
+        bottom: 0, // Add padding for bottom navbar
       ),
       itemCount: controller.shifts.length,
       itemBuilder: (context, index) {

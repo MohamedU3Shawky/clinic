@@ -24,7 +24,7 @@ class ScheduleScreen extends StatelessWidget {
 
     return AppScaffoldNew(
       hasLeadingWidget: false,
-      appBartitleText: locale.value.schedule,
+      appBartitleText: locale.value.scheduletranslate,
       appBarVerticalSize: Get.height * 0.12,
       body: Obx(() {
         if (controller.isLoading.value) {

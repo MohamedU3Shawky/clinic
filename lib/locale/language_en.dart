@@ -589,10 +589,13 @@ class LanguageEn extends BaseLanguage {
   @override
   String get appointments => "Appointments";
 
-  @override
+  
   @override
   String get schedule => "ESS";
-  String get scheduletranslate => "employee self service";
+
+  @override
+  String get scheduletranslate => "Employee Self Service";
+
   @override
   String get noAppointmentsFound => "No Appointments found";
 
