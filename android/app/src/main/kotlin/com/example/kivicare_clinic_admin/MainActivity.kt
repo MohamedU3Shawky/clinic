@@ -1,4 +1,4 @@
-package com.example.egphysio_clinic_admin
+package sortp.egphysio.EGPHYSIO
 
 import io.flutter.embedding.android.FlutterFragmentActivity
 

@@ -258,7 +258,7 @@ class SignInScreen extends StatelessWidget {
                                 .validate()) {
                               signInController.signInformKey.currentState!
                                   .save();
-                              signInController.saveForm();
+                              signInController.saveEmailForm();
                             }
                           },
                           child: Center(

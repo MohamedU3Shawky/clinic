@@ -30,12 +30,15 @@ class SignInController extends GetxController {
   RxBool isBiometricAvailable = false.obs;
   RxBool isBiometricEnabled = false.obs;
   RxBool isFromBiometricSetup = false.obs;
+  final RxString selectedCountryCode = '+20'.obs; // Default to Egypt
 
   TextEditingController emailCont = TextEditingController();
   TextEditingController passwordCont = TextEditingController();
+  TextEditingController phoneCont = TextEditingController();
 
   FocusNode emailFocus = FocusNode();
   FocusNode passwordFocus = FocusNode();
+  FocusNode phoneFocus = FocusNode();
 
   Rx<LoginRoleData> selectedLoginRole = LoginRoleData().obs;
 
@@ -120,14 +123,14 @@ class SignInController extends GetxController {
       if (credentials != null) {
         emailCont.text = credentials['email'] ?? '';
         passwordCont.text = credentials['password'] ?? '';
-        await saveForm();
+        await saveEmailForm();
       }
     } else {
       toast('Biometric authentication failed');
     }
   }
 
-  Future<void> saveForm() async {
+  Future<void> saveEmailForm() async {
     hideKeyBoardWithoutContext();
     if (emailCont.text.trim().isEmpty || passwordCont.text.trim().isEmpty) {
       toast("Please enter valid email and password");
@@ -143,6 +146,36 @@ class SignInController extends GetxController {
     await AuthServiceApis.loginUser(request: req).then((value) async {
       await BiometricService.saveCredentials(
         emailCont.text.trim(),
+        passwordCont.text.trim(),
+      );
+      handleLoginResponse(loginResponse: value);
+    }).catchError((e) {
+      isLoading(false);
+      toast(e.toString(), print: true);
+    });
+  }
+
+  Future<void> savePhoneForm() async {
+    hideKeyBoardWithoutContext();
+    if (phoneCont.text.trim().isEmpty || passwordCont.text.trim().isEmpty) {
+      toast("Please enter valid phone and password");
+      return;
+    }
+
+    String phoneNumber = phoneCont.text.trim();
+    String result = (phoneNumber.isNotEmpty && phoneNumber[0] == '0')
+        ? phoneNumber.substring(1)
+        : phoneNumber;
+
+    isLoading(true);
+    Map<String, dynamic> req = {
+      'identifier': selectedCountryCode.value + result,
+      'password': passwordCont.text.trim(),
+    };
+
+    await AuthServiceApis.loginUser(request: req).then((value) async {
+      await BiometricService.saveCredentials(
+        phoneCont.text.trim(),
         passwordCont.text.trim(),
       );
       handleLoginResponse(loginResponse: value);

@@ -1,4 +1,6 @@
 import 'package:egphysio_clinic_admin/configs.dart';
+import 'package:egphysio_clinic_admin/main.dart';
+import 'package:egphysio_clinic_admin/screens/auth/sign_in_sign_up/sign_in_controller.dart';
 import 'package:egphysio_clinic_admin/screens/auth/sign_in_sign_up/signin_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -9,6 +11,7 @@ import '../../../utils/colors.dart';
 import '../../../utils/common_base.dart';
 import '../../../utils/constants.dart';
 import '../../../generated/assets.dart';
+import '../../../utils/app_common.dart';
 
 class PhoneSignInScreen extends StatefulWidget {
   PhoneSignInScreen({Key? key}) : super(key: key);
@@ -18,8 +21,7 @@ class PhoneSignInScreen extends StatefulWidget {
 }
 
 class _PhoneSignInScreenState extends State<PhoneSignInScreen> {
-  final TextEditingController phoneController = TextEditingController();
-  final RxString selectedCountryCode = '+20'.obs; // Default to Egypt
+  final SignInController signInController = Get.put(SignInController());
 
   final List<Map<String, String>> countries = [
     {'name': 'Egypt', 'code': '+20', 'flag': '🇪🇬'},
@@ -100,11 +102,7 @@ class _PhoneSignInScreenState extends State<PhoneSignInScreen> {
                     'Enter your phone number',
                     style: boldTextStyle(size: 24, color: appColorPrimary),
                   ),
-                  8.height,
-                  Text(
-                    'We will send you a verification code',
-                    style: secondaryTextStyle(size: 14),
-                  ),
+
                   30.height,
 
                   // Country code dropdown and phone number input
@@ -117,7 +115,7 @@ class _PhoneSignInScreenState extends State<PhoneSignInScreen> {
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Obx(() => DropdownButton<String>(
-                              value: selectedCountryCode.value,
+                              value: signInController.selectedCountryCode.value,
                               underline: SizedBox(),
                               items: countries.map((country) {
                                 return DropdownMenuItem<String>(
@@ -133,7 +131,8 @@ class _PhoneSignInScreenState extends State<PhoneSignInScreen> {
                               }).toList(),
                               onChanged: (value) {
                                 if (value != null) {
-                                  selectedCountryCode.value = value;
+                                  signInController.selectedCountryCode.value =
+                                      value;
                                 }
                               },
                             )),
@@ -142,7 +141,9 @@ class _PhoneSignInScreenState extends State<PhoneSignInScreen> {
                       Expanded(
                         child: AppTextField(
                           textStyle: primaryTextStyle(size: 14),
-                          controller: phoneController,
+                          controller: signInController.phoneCont,
+                          focus: signInController.phoneFocus,
+                          nextFocus: signInController.passwordFocus,
                           textFieldType: TextFieldType.PHONE,
                           decoration: InputDecoration(
                             hintText: 'Phone Number',
@@ -171,7 +172,42 @@ class _PhoneSignInScreenState extends State<PhoneSignInScreen> {
                       ),
                     ],
                   ),
-                  30.height,
+                  15.height,
+
+                  // Password field
+                  Text(locale.value.password,
+                      style: boldTextStyle(size: 14, color: appColorSecondary)),
+                  8.height,
+                  AppTextField(
+                    textStyle: primaryTextStyle(size: 14),
+                    controller: signInController.passwordCont,
+                    focus: signInController.passwordFocus,
+                    textFieldType: TextFieldType.PASSWORD,
+                    decoration: InputDecoration(
+                      hintText: '••••••••',
+                      hintStyle: secondaryTextStyle(size: 14),
+                      fillColor: appColorPrimary.withOpacity(0.05),
+                      filled: true,
+                      prefixIcon: Icon(Icons.lock_outline,
+                          color: appColorPrimary, size: 20),
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide.none,
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide.none,
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide:
+                            BorderSide(color: appColorPrimary, width: 1),
+                      ),
+                    ),
+                  ),
+                  16.height,
 
                   // Continue button
                   Container(
@@ -197,8 +233,18 @@ class _PhoneSignInScreenState extends State<PhoneSignInScreen> {
                       child: InkWell(
                         borderRadius: BorderRadius.circular(12),
                         onTap: () {
-                          // TODO: Implement phone verification logic
                           hideKeyboard(context);
+                          if (signInController.phoneCont.text.trim().isEmpty) {
+                            toast("Please enter phone number");
+                            return;
+                          }
+                          if (signInController.passwordCont.text
+                              .trim()
+                              .isEmpty) {
+                            toast("Please enter password");
+                            return;
+                          }
+                          signInController.savePhoneForm();
                         },
                         child: Center(
                           child: Text(
