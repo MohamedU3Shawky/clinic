@@ -33,14 +33,14 @@ class ShiftModel {
     List<AttendanceModel>? attendance,
     List<AttendancePermissionModel>? attendancePermissions,
     List<AttendanceOvertimeModel>? attendanceOvertime,
-  }) : attendance = attendance ?? [],
-       attendancePermissions = attendancePermissions ?? [],
-       attendanceOvertime = attendanceOvertime ?? [];
+  })  : attendance = attendance ?? [],
+        attendancePermissions = attendancePermissions ?? [],
+        attendanceOvertime = attendanceOvertime ?? [];
 
   factory ShiftModel.fromJson(Map<String, dynamic> json) {
     return ShiftModel(
       id: json['id']?.toString() ?? '',
-      title: json['title']?.toString() ?? '',
+      title: json['title']?.toString() ?? 'Shift',
       description: json['description']?.toString() ?? '',
       startDate: json['startDate'] != null
           ? DateTime.parse(json['startDate'].toString())
@@ -69,49 +69,70 @@ class ShiftModel {
       user: json['user'] != null
           ? UserModel.fromJson(json['user'] as Map<String, dynamic>)
           : UserModel(
-              id: '',
-              name: '',
-              email: '',
+              id: json['userId']?.toString() ?? '',
+              name: json['userName']?.toString() ?? 'Unknown User',
+              email: json['userEmail']?.toString() ?? '',
             ),
       timeTable: json['timeTable'] != null
           ? TimeTableModel.fromJson(json['timeTable'] as Map<String, dynamic>)
           : TimeTableModel(
-              id: '',
-              name: '',
-              checkInTime: DateTime.now(),
-              checkOutTime: DateTime.now(),
-              punchFrom: DateTime.now(),
-              punchTo: DateTime.now(),
-              allowLateIn: false,
-              allowEarlyOut: false,
-              countAbsenceWithoutCheckIn: false,
-              countAbsenceWithoutCheckOut: false,
-              useFirstCheckInLastOutOnly: false,
-              enableOT: false,
-              isBreakPaid: false,
-              color: '',
-              lateInThreshold: 0,
-              lateInAbsenceAfterMinutes: 0,
-              earlyOutThreshold: 0,
-              earlyOutAbsenceAfterMinutes: 0,
-              earlyInOTThreshold: 0,
-              lateOutOTThreshold: 0,
-              breakStartTime: DateTime.now(),
-              breakEndTime: DateTime.now(),
-              createdAt: DateTime.now(),
-              updatedAt: DateTime.now(),
+              id: json['timeTableId']?.toString() ?? '',
+              name: json['timeTableName']?.toString() ?? 'Default Schedule',
+              checkInTime: json['checkInTime'] != null
+                  ? DateTime.parse(json['checkInTime'].toString())
+                  : DateTime.now().copyWith(hour: 9, minute: 0),
+              checkOutTime: json['checkOutTime'] != null
+                  ? DateTime.parse(json['checkOutTime'].toString())
+                  : DateTime.now().copyWith(hour: 17, minute: 0),
+              punchFrom: json['punchFrom'] != null
+                  ? DateTime.parse(json['punchFrom'].toString())
+                  : DateTime.now().copyWith(hour: 8, minute: 30),
+              punchTo: json['punchTo'] != null
+                  ? DateTime.parse(json['punchTo'].toString())
+                  : DateTime.now().copyWith(hour: 17, minute: 30),
+              allowLateIn: json['allowLateIn'] as bool? ?? true,
+              allowEarlyOut: json['allowEarlyOut'] as bool? ?? true,
+              countAbsenceWithoutCheckIn:
+                  json['countAbsenceWithoutCheckIn'] as bool? ?? false,
+              countAbsenceWithoutCheckOut:
+                  json['countAbsenceWithoutCheckOut'] as bool? ?? false,
+              useFirstCheckInLastOutOnly:
+                  json['useFirstCheckInLastOutOnly'] as bool? ?? false,
+              enableOT: json['enableOT'] as bool? ?? false,
+              isBreakPaid: json['isBreakPaid'] as bool? ?? false,
+              color: json['color']?.toString() ?? '#2196F3',
+              lateInThreshold: json['lateInThreshold'] as int? ?? 15,
+              lateInAbsenceAfterMinutes:
+                  json['lateInAbsenceAfterMinutes'] as int? ?? 30,
+              earlyOutThreshold: json['earlyOutThreshold'] as int? ?? 15,
+              earlyOutAbsenceAfterMinutes:
+                  json['earlyOutAbsenceAfterMinutes'] as int? ?? 30,
+              earlyInOTThreshold: json['earlyInOTThreshold'] as int? ?? 0,
+              lateOutOTThreshold: json['lateOutOTThreshold'] as int? ?? 0,
+              breakStartTime: json['breakStartTime'] != null
+                  ? DateTime.parse(json['breakStartTime'].toString())
+                  : DateTime.now().copyWith(hour: 12, minute: 0),
+              breakEndTime: json['breakEndTime'] != null
+                  ? DateTime.parse(json['breakEndTime'].toString())
+                  : DateTime.now().copyWith(hour: 13, minute: 0),
+              createdAt: json['createdAt'] != null
+                  ? DateTime.parse(json['createdAt'].toString())
+                  : DateTime.now(),
+              updatedAt: json['updatedAt'] != null
+                  ? DateTime.parse(json['updatedAt'].toString())
+                  : DateTime.now(),
             ),
       attendance: json['attendance'] != null
           ? List<AttendanceModel>.from(
               json['attendance'].map((x) => AttendanceModel.fromJson(x)))
           : [],
       attendancePermissions: json['attendancePermissions'] != null
-          ? List<AttendancePermissionModel>.from(
-              json['attendancePermissions'].map((x) => AttendancePermissionModel.fromJson(x)))
+          ? List<AttendancePermissionModel>.from(json['attendancePermissions']
+              .map((x) => AttendancePermissionModel.fromJson(x)))
           : [],
       attendanceOvertime: json['attendanceOvertime'] != null
-          ? List<AttendanceOvertimeModel>.from(
-              json['attendanceOvertime'].map((x) => AttendanceOvertimeModel.fromJson(x)))
+          ? List<AttendanceOvertimeModel>.from(json['attendanceOvertime']
+              .map((x) => AttendanceOvertimeModel.fromJson(x)))
           : [],
       createdAt: json['createdAt'] != null
           ? DateTime.parse(json['createdAt'].toString())
@@ -136,7 +157,8 @@ class ShiftModel {
       'user': user.toJson(),
       'timeTable': timeTable.toJson(),
       'attendance': attendance.map((x) => x.toJson()).toList(),
-      'attendancePermissions': attendancePermissions.map((x) => x.toJson()).toList(),
+      'attendancePermissions':
+          attendancePermissions.map((x) => x.toJson()).toList(),
       'attendanceOvertime': attendanceOvertime.map((x) => x.toJson()).toList(),
       'createdAt': createdAt.toIso8601String(),
       'updatedAt': updatedAt.toIso8601String(),
@@ -176,7 +198,8 @@ class ShiftModel {
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
       attendance: attendance ?? this.attendance,
-      attendancePermissions: attendancePermissions ?? this.attendancePermissions,
+      attendancePermissions:
+          attendancePermissions ?? this.attendancePermissions,
       attendanceOvertime: attendanceOvertime ?? this.attendanceOvertime,
     );
   }
@@ -227,10 +250,7 @@ class BranchModel {
       phone: json['phone']?.toString() ?? '',
       status: json['status']?.toString() ?? '',
       qrCode: json['QRCode']?.toString() ?? '',
-      openingHours: (json['openingHours'] as List?)
-              ?.map((e) => OpeningHourModel.fromJson(e as Map<String, dynamic>))
-              .toList() ??
-          [],
+      openingHours: _parseOpeningHours(json['openingHours']),
       createdAt: json['createdAt'] != null
           ? DateTime.parse(json['createdAt'].toString())
           : DateTime.now(),
@@ -238,6 +258,44 @@ class BranchModel {
           ? DateTime.parse(json['updatedAt'].toString())
           : DateTime.now(),
     );
+  }
+
+  static List<OpeningHourModel> _parseOpeningHours(dynamic openingHoursData) {
+    if (openingHoursData == null) return [];
+
+    // If it's already a List, parse it as before
+    if (openingHoursData is List) {
+      return openingHoursData
+          .map((e) => OpeningHourModel.fromJson(e as Map<String, dynamic>))
+          .toList();
+    }
+
+    // If it's a Map (new format), convert it to List of OpeningHourModel
+    if (openingHoursData is Map<String, dynamic>) {
+      return openingHoursData.entries.map((entry) {
+        final dayName = entry.key;
+        final dayData = entry.value as Map<String, dynamic>?;
+
+        if (dayData != null) {
+          return OpeningHourModel(
+            name: dayName,
+            workingHours: [
+              {
+                'open': dayData['open']?.toString() ?? '',
+                'close': dayData['close']?.toString() ?? '',
+              }
+            ],
+          );
+        }
+
+        return OpeningHourModel(
+          name: dayName,
+          workingHours: [],
+        );
+      }).toList();
+    }
+
+    return [];
   }
 
   Map<String, dynamic> toJson() {
@@ -374,8 +432,8 @@ class TimeTableModel {
         final parts = timeStr.split(':');
         if (parts.length == 2) {
           final now = DateTime.now();
-          return DateTime(now.year, now.month, now.day, 
-            int.parse(parts[0]), int.parse(parts[1]));
+          return DateTime(now.year, now.month, now.day, int.parse(parts[0]),
+              int.parse(parts[1]));
         }
         return DateTime.now();
       }
@@ -390,16 +448,20 @@ class TimeTableModel {
       punchTo: parseTimeString(json['punchTo']?.toString()),
       allowLateIn: json['allowLateIn'] as bool? ?? false,
       allowEarlyOut: json['allowEarlyOut'] as bool? ?? false,
-      countAbsenceWithoutCheckIn: json['countAbsenceWithoutCheckIn'] as bool? ?? false,
-      countAbsenceWithoutCheckOut: json['countAbsenceWithoutCheckOut'] as bool? ?? false,
-      useFirstCheckInLastOutOnly: json['useFirstCheckInLastOutOnly'] as bool? ?? false,
+      countAbsenceWithoutCheckIn:
+          json['countAbsenceWithoutCheckIn'] as bool? ?? false,
+      countAbsenceWithoutCheckOut:
+          json['countAbsenceWithoutCheckOut'] as bool? ?? false,
+      useFirstCheckInLastOutOnly:
+          json['useFirstCheckInLastOutOnly'] as bool? ?? false,
       enableOT: json['enableOT'] as bool? ?? false,
       isBreakPaid: json['isBreakPaid'] as bool? ?? false,
       color: json['color']?.toString() ?? '',
       lateInThreshold: json['lateInThreshold'] as int? ?? 0,
       lateInAbsenceAfterMinutes: json['lateInAbsenceAfterMinutes'] as int? ?? 0,
       earlyOutThreshold: json['earlyOutThreshold'] as int? ?? 0,
-      earlyOutAbsenceAfterMinutes: json['earlyOutAbsenceAfterMinutes'] as int? ?? 0,
+      earlyOutAbsenceAfterMinutes:
+          json['earlyOutAbsenceAfterMinutes'] as int? ?? 0,
       earlyInOTThreshold: json['earlyInOTThreshold'] as int? ?? 0,
       lateOutOTThreshold: json['lateOutOTThreshold'] as int? ?? 0,
       breakStartTime: parseTimeString(json['breakStartTime']?.toString()),

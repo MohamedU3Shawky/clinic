@@ -440,6 +440,7 @@ class ShiftsScreen extends StatelessWidget {
     required String value,
   }) {
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Icon(
           icon,
@@ -454,11 +455,15 @@ class ShiftsScreen extends StatelessWidget {
             color: isDarkMode.value ? Colors.grey[400] : secondaryTextColor,
           ),
         ),
-        Text(
-          value,
-          style: nb.boldTextStyle(
-            size: 14,
-            color: isDarkMode.value ? Colors.white : primaryTextColor,
+        Expanded(
+          child: Text(
+            value,
+            style: nb.boldTextStyle(
+              size: 14,
+              color: isDarkMode.value ? Colors.white : primaryTextColor,
+            ),
+            overflow: TextOverflow.ellipsis,
+            maxLines: 2,
           ),
         ),
       ],
