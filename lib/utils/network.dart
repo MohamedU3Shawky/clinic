@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 
 class Network {
   static const String baseUrl =
-      'https://bk.potentialeg.com'; // Replace with your actual API base URL
+      'https://bk.sortp.ai'; // Replace with your actual API base URL
 
   static Future<http.Response> get(String endpoint) async {
     final url = Uri.parse('$baseUrl$endpoint');

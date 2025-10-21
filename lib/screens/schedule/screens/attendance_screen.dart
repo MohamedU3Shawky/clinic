@@ -55,8 +55,8 @@ class AttendanceScreen extends StatelessWidget {
 
   Widget _buildWeekSelector(AttendanceController controller) {
     return Container(
-      margin: const EdgeInsets.all(16),
-      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+      margin: const EdgeInsets.all(8),
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
       decoration: BoxDecoration(
         color: isDarkMode.value ? scaffoldDarkColor : Colors.white,
         borderRadius: BorderRadius.circular(16),

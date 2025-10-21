@@ -2,7 +2,6 @@ import 'package:nb_utils/nb_utils.dart';
 import '../models/attendance_permission_model.dart';
 import '../network/network_utils.dart';
 import '../utils/api_end_points.dart';
-import '../utils/app_common.dart';
 
 class AttendancePermissionApi {
   static Future<Map<String, dynamic>> getAttendancePermissions({
@@ -25,10 +24,20 @@ class AttendancePermissionApi {
 
         return {
           'permissions': permissions,
-          'totalCount': data['data']['attendancePermissionsCount'],
-          'approvedCount': data['data']['approvedAttendancePermissionsCount'],
-          'pendingCount': data['data']['pendingAttendancePermissionsCount'],
-          'rejectedCount': data['data']['rejectedAttendancePermissionsCount'],
+          'totalCount':
+              data['data']['attendancePermissionsCount'] ?? permissions.length,
+          'approvedCount': data['data']['approvedAttendancePermissionsCount'] ??
+              permissions
+                  .where((p) => p.status.toLowerCase() == 'approved')
+                  .length,
+          'pendingCount': data['data']['pendingAttendancePermissionsCount'] ??
+              permissions
+                  .where((p) => p.status.toLowerCase() == 'pending')
+                  .length,
+          'rejectedCount': data['data']['rejectedAttendancePermissionsCount'] ??
+              permissions
+                  .where((p) => p.status.toLowerCase() == 'rejected')
+                  .length,
         };
       } else {
         toast(data['message'] ?? "Failed to fetch attendance permissions");
@@ -52,4 +61,4 @@ class AttendancePermissionApi {
       };
     }
   }
-} 
+}

@@ -34,9 +34,14 @@ class AttendancePermissionModel {
           ? UserModel.fromJson(json['reviewedBy'] as Map<String, dynamic>)
           : null,
       reason: json['reason'] as String?,
-      type: json['type'] as String,
-      createdAt: DateTime.parse(json['createdAt'] as String),
-      updatedAt: DateTime.parse(json['updatedAt'] as String),
+      type:
+          json['type'] as String? ?? 'latein', // Default value if not provided
+      createdAt: json['createdAt'] != null
+          ? DateTime.parse(json['createdAt'] as String)
+          : DateTime.now(), // Default to current time if not provided
+      updatedAt: json['updatedAt'] != null
+          ? DateTime.parse(json['updatedAt'] as String)
+          : DateTime.now(), // Default to current time if not provided
     );
   }
 }
@@ -59,7 +64,7 @@ class UserModel {
       id: json['id'] as String,
       name: json['name'] as String,
       email: json['email'] as String,
-      avatar: json['avatar'] as String,
+      avatar: json['avatar'] as String? ?? '', // Handle null avatar
     );
   }
 }
@@ -82,7 +87,8 @@ class ShiftModel {
       id: json['id'] as String,
       startDate: DateTime.parse(json['startDate'] as String),
       endDate: DateTime.parse(json['endDate'] as String),
-      timeTable: TimeTableModel.fromJson(json['timeTable'] as Map<String, dynamic>),
+      timeTable:
+          TimeTableModel.fromJson(json['timeTable'] as Map<String, dynamic>),
     );
   }
 }
@@ -108,4 +114,4 @@ class TimeTableModel {
       checkOutTime: json['checkOutTime'] as String,
     );
   }
-} 
+}

@@ -6,12 +6,14 @@ const DEFAULT_LANGUAGE = 'en';
 const DASHBOARD_AUTO_SLIDER_SECOND = 5;
 
 ///Live Url
-const DOMAIN_URL = "https://bk.potentialeg.com";
+const DOMAIN_URL = "https://bk.sortp.ai";
 
 const BASE_URL = '$DOMAIN_URL/';
 
-const APP_PLAY_STORE_URL = 'https://play.google.com/store/apps/details?id=com.wellness.vendor';
-const APP_APPSTORE_URL = 'https://apps.apple.com/in/app/egphysio-employee-app/id6502933651';
+const APP_PLAY_STORE_URL =
+    'https://play.google.com/store/apps/details?id=com.wellness.vendor';
+const APP_APPSTORE_URL =
+    'https://apps.apple.com/in/app/egphysio-employee-app/id6502933651';
 
 const TERMS_CONDITION_URL = '$DOMAIN_URL/page/terms-conditions';
 const PRIVACY_POLICY_URL = '$DOMAIN_URL/page/privacy-policy';
