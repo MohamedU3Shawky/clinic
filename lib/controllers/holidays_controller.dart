@@ -1,9 +1,7 @@
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:egphysio_clinic_admin/api/holiday_apis.dart';
 import 'package:egphysio_clinic_admin/models/holiday_model.dart';
 import 'package:egphysio_clinic_admin/utils/app_common.dart';
-import 'package:egphysio_clinic_admin/utils/language.dart';
 
 class HolidaysController extends GetxController {
   final _holidayService = HolidayServiceApis();
@@ -39,8 +37,15 @@ class HolidaysController extends GetxController {
         selectedMonth.value.year,
         selectedMonth.value.month,
       );
-      holidays.value = response;
-      print('Fetched ${response.length} holidays');
+
+      // Filter holidays to show only those applicable to current user
+      final currentUserId = loginUserData.value.idString;
+      final userHolidays = response.where((holiday) {
+        return holiday.users.any((user) => user.id == currentUserId);
+      }).toList();
+
+      holidays.value = userHolidays;
+      print('Fetched ${userHolidays.length} holidays for current user');
     } catch (e) {
       print('Error fetching holidays: $e');
     } finally {

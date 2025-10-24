@@ -37,6 +37,8 @@ class AttendanceController extends GetxController {
 
       if (response.success) {
         final currentUserId = loginUserData.value.idString;
+
+        // Filter to show only current user's attendance data
         final userAttendance = response.data.data.firstWhere(
           (attendance) => attendance.user.id == currentUserId,
           orElse: () => EmployeeAttendance(
@@ -49,8 +51,10 @@ class AttendanceController extends GetxController {
             days: [],
           ),
         );
+
+        // Only show current user's data
         attendanceList.assignAll([userAttendance]);
-        hasMoreData(response.data.pageCount > currentPage.value);
+        hasMoreData(false); // No pagination needed for single user
       } else {
         Get.snackbar(
           'Error',

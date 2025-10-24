@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import '../api/overtime_api.dart';
 import '../models/overtime_model.dart';
+import '../utils/app_common.dart';
 
 class OvertimeController extends GetxController {
   final RxList<OvertimeModel> overtime = <OvertimeModel>[].obs;
@@ -22,13 +23,27 @@ class OvertimeController extends GetxController {
       final result = await OvertimeApi.getOvertime(
         page: 1,
         perPage: 5,
+        userId: loginUserData.value.idString,
       );
 
-      overtime.assignAll(result['overtime'] as List<OvertimeModel>);
-      totalCount.value = result['totalCount'] as int;
-      approvedCount.value = result['approvedCount'] as int;
-      pendingCount.value = result['pendingCount'] as int;
-      rejectedCount.value = result['rejectedCount'] as int;
+      // Filter overtime to show only current user's data
+      final currentUserId = loginUserData.value.idString;
+      final userOvertime = (result['overtime'] as List<OvertimeModel>)
+          .where((overtime) => overtime.user.id == currentUserId)
+          .toList();
+
+      overtime.assignAll(userOvertime);
+
+      // Update counts based on filtered data
+      totalCount.value = userOvertime.length;
+      approvedCount.value = userOvertime
+          .where((o) => o.status.toLowerCase() == 'approved')
+          .length;
+      pendingCount.value =
+          userOvertime.where((o) => o.status.toLowerCase() == 'pending').length;
+      rejectedCount.value = userOvertime
+          .where((o) => o.status.toLowerCase() == 'rejected')
+          .length;
     } catch (e) {
       Get.snackbar(
         'Error',
@@ -39,4 +54,4 @@ class OvertimeController extends GetxController {
       isLoading.value = false;
     }
   }
-} 
+}

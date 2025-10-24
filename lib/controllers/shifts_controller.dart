@@ -120,9 +120,15 @@ class ShiftsController extends GetxController {
         endDate: endDate,
       );
 
+      // Filter shifts to show only current user's data
+      final currentUserId = loginUserData.value.idString;
+      final userShifts = fetchedShifts.where((shift) {
+        return shift.user.id == currentUserId;
+      }).toList();
+
       if (viewMode.value == 'daily') {
         // Filter shifts based on recurrence rules and selected date for daily view
-        final filteredShifts = fetchedShifts.where((shift) {
+        final filteredShifts = userShifts.where((shift) {
           // Skip inactive shifts
           if (shift.status != 'Active') return false;
 
@@ -175,8 +181,8 @@ class ShiftsController extends GetxController {
 
         shifts.value = filteredShifts;
       } else {
-        // For weekly view, show all shifts within the date range
-        shifts.value = fetchedShifts;
+        // For weekly view, show all user shifts within the date range
+        shifts.value = userShifts;
       }
     } catch (e) {
       log('fetchShifts Error: $e');
@@ -202,11 +208,17 @@ class ShiftsController extends GetxController {
         endDate: endDate,
       );
 
+      // Filter shifts to show only current user's data
+      final currentUserId = loginUserData.value.idString;
+      final userMonthShifts = monthShifts.where((shift) {
+        return shift.user.id == currentUserId;
+      }).toList();
+
       // Reset the shifts per day map
       shiftsPerDay.clear();
 
       // Process each shift and count occurrences per day
-      for (var shift in monthShifts) {
+      for (var shift in userMonthShifts) {
         _processShiftForCalendar(shift, firstDayOfMonth, lastDayOfMonth);
       }
     } catch (e) {
@@ -426,7 +438,7 @@ class ShiftsController extends GetxController {
       // Get the current attendance record
       final hasAttendance = shift.attendance.isNotEmpty;
       final currentAttendance = hasAttendance ? shift.attendance.last : null;
-      
+
       if (currentAttendance == null) {
         toast('No active attendance record found');
         return;

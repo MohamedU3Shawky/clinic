@@ -8,10 +8,12 @@ class OvertimeApi {
   static Future<Map<String, dynamic>> getOvertime({
     required int page,
     required int perPage,
+    String? userId,
   }) async {
     try {
+      final userIdParam = userId != null ? '&user_id=$userId' : '';
       final response = await buildHttpResponse(
-        '${APIEndPoints.overtime}?page=$page&per_page=$perPage',
+        '${APIEndPoints.overtime}?page=$page&per_page=$perPage$userIdParam',
         method: HttpMethodType.GET,
       );
 

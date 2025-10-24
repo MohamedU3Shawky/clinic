@@ -7,10 +7,12 @@ class AttendancePermissionApi {
   static Future<Map<String, dynamic>> getAttendancePermissions({
     required int page,
     required int perPage,
+    String? userId,
   }) async {
     try {
+      final userIdParam = userId != null ? '&user_id=$userId' : '';
       final response = await buildHttpResponse(
-        '${APIEndPoints.attendancePermissions}?page=$page&per_page=$perPage',
+        '${APIEndPoints.attendancePermissions}?page=$page&per_page=$perPage$userIdParam',
         method: HttpMethodType.GET,
       );
 

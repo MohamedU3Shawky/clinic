@@ -1,11 +1,10 @@
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import '../api/leave_apis.dart';
 import '../models/leave_model.dart';
-import '../main.dart';
 import '../utils/shared_preferences.dart';
 import '../utils/constants.dart';
 import '../controllers/permissions_controller.dart';
+import '../utils/app_common.dart';
 
 class LeavesController extends GetxController {
   // Observable state
@@ -129,7 +128,13 @@ class LeavesController extends GetxController {
 
       final response = await LeaveServiceApis.getLeaves(firstDay, lastDay);
       if (response != null) {
-        leaves.value = response.leaves;
+        // Filter leaves to show only current user's data
+        final currentUserId = loginUserData.value.idString;
+        final userLeaves = response.leaves.where((leave) {
+          return leave.user.id == currentUserId;
+        }).toList();
+
+        leaves.value = userLeaves;
         _updateLeavesPerDay();
       }
     } catch (e) {

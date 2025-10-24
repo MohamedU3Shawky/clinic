@@ -20,11 +20,13 @@ import 'model/appointments_res_model.dart';
 class AppointmentsController extends GetxController {
   RxBool isLoading = false.obs;
   RxBool isLastPage = false.obs;
-  Rx<Future<RxList<AppointmentData>>> getAppointments = Future(() => RxList<AppointmentData>()).obs;
+  Rx<Future<RxList<AppointmentData>>> getAppointments =
+      Future(() => RxList<AppointmentData>()).obs;
   RxList<AppointmentData> appointments = RxList();
   RxInt page = 1.obs;
   Rx<Doctor> selectedDoctor = Doctor().obs;
-  Rx<ServiceElement> selectedServiceData = ServiceElement(status: false.obs).obs;
+  Rx<ServiceElement> selectedServiceData =
+      ServiceElement(status: false.obs).obs;
   Rx<PatientModel> selectedPatient = PatientModel().obs;
   RxString status = "".obs;
 
@@ -34,7 +36,8 @@ class AppointmentsController extends GetxController {
   StreamController<String> searchStream = StreamController<String>();
   final _scrollController = ScrollController();
 
-  Rx<PatientArgumentModel> patientDetailArgument = PatientArgumentModel(patientModel: PatientModel()).obs;
+  Rx<PatientArgumentModel> patientDetailArgument =
+      PatientArgumentModel(patientModel: PatientModel()).obs;
 
   RxString viewMode = 'daily'.obs;
   Rx<DateTime> selectedDate = DateTime.now().obs;
@@ -47,7 +50,8 @@ class AppointmentsController extends GetxController {
       patientDetailArgument(Get.arguments);
       selectedPatient(patientDetailArgument.value.patientModel);
     }
-    _scrollController.addListener(() => Get.context != null ? hideKeyboard(Get.context) : null);
+    _scrollController.addListener(
+        () => Get.context != null ? hideKeyboard(Get.context) : null);
     searchStream.stream.debounce(const Duration(seconds: 1)).listen((s) {
       getAppointmentList();
     });
@@ -69,37 +73,59 @@ class AppointmentsController extends GetxController {
       serviceId: selectedServiceData.value.id,
       patientId: selectedPatient.value.id,
       doctorId: selectedDoctor.value.id,
-      from: viewMode.value == 'daily' ? selectedDate.value : weekStartDate.value,
+      from:
+          viewMode.value == 'daily' ? selectedDate.value : weekStartDate.value,
       to: viewMode.value == 'daily' ? selectedDate.value : weekEndDate.value,
-      clinicId: loginUserData.value.userRole.contains(EmployeeKeyConst.doctor) ? selectedAppClinic.value.id : null,
+      clinicId: loginUserData.value.userRole.contains(EmployeeKeyConst.doctor)
+          ? selectedAppClinic.value.id
+          : null,
       search: searchCont.text.trim(),
       appointments: appointments,
       lastPageCallBack: (p0) {
         isLastPage(p0);
       },
     )).then((value) {
-      // Filter appointments based on selected date or week
+      // Filter appointments to show only current user's data
+      final currentUserId = loginUserData.value.idString;
+      final userAppointments = appointments.where((appointment) {
+        // For doctors, show appointments where they are the doctor
+        if (loginUserData.value.userRole.contains(EmployeeKeyConst.doctor)) {
+          return appointment.doctorId == currentUserId;
+        }
+        // For other users, show appointments where they are the patient
+        return appointment.userId == currentUserId;
+      }).toList();
+
+      // Further filter appointments based on selected date or week
       if (viewMode.value == 'daily') {
-        appointments.value = appointments.where((appointment) {
+        appointments.value = userAppointments.where((appointment) {
           final appointmentDate = DateTime.parse(appointment.appointmentDate);
           return appointmentDate.year == selectedDate.value.year &&
-                 appointmentDate.month == selectedDate.value.month &&
-                 appointmentDate.day == selectedDate.value.day;
+              appointmentDate.month == selectedDate.value.month &&
+              appointmentDate.day == selectedDate.value.day;
         }).toList();
       } else {
-        appointments.value = appointments.where((appointment) {
+        appointments.value = userAppointments.where((appointment) {
           final appointmentDate = DateTime.parse(appointment.appointmentDate);
-          return appointmentDate.isAfter(weekStartDate.value.subtract(const Duration(days: 1))) && 
-                 appointmentDate.isBefore(weekEndDate.value.add(const Duration(days: 1)));
+          return appointmentDate.isAfter(
+                  weekStartDate.value.subtract(const Duration(days: 1))) &&
+              appointmentDate
+                  .isBefore(weekEndDate.value.add(const Duration(days: 1)));
         }).toList();
       }
     }).catchError((e) {
       log('getAppointments E: $e');
-    }).whenComplete(() =>
-     isLoading(false));
+    }).whenComplete(() => isLoading(false));
   }
 
-  updateStatus({required String status, required int id, required bool isBack, required BuildContext context, required bool isCheckOut, EncounterElement? encountDetails, Function(BuildContext)? onCallBack}) {
+  updateStatus(
+      {required String status,
+      required int id,
+      required bool isBack,
+      required BuildContext context,
+      required bool isCheckOut,
+      EncounterElement? encountDetails,
+      Function(BuildContext)? onCallBack}) {
     showConfirmDialogCustom(
       context,
       primaryColor: appColorPrimary,
@@ -115,7 +141,9 @@ class AppointmentsController extends GetxController {
             id: id,
             request: {'status': postStatus(status: status)},
           ).then((value) {
-            toast(value.message.trim().isEmpty ? locale.value.statusHasBeenUpdated : value.message.trim());
+            toast(value.message.trim().isEmpty
+                ? locale.value.statusHasBeenUpdated
+                : value.message.trim());
             if (isBack) {
               Get.back();
             }
